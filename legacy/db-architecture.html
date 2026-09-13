@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AppzetBilling — DB Architecture</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="mobtoc" id="mobtoc"></div>
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="brand">
+      <div class="mark">AppzetBilling</div>
+      <div class="sub">Technical Docs</div>
+    </div>
+    <nav class="site-nav">
+      <a href="db-architecture.html" class="active"><span class="ico">🗄</span> DB Architecture</a>
+      <a href="application-flow.html"><span class="ico">🔀</span> Application Flow</a>
+    </nav>
+    <nav class="toc" id="toc">
+      <a href="#overview"><span class="n">01</span> Overview</a>
+      <a href="#diagram"><span class="n">02</span> Schema Map</a>
+      <a href="#tenancy"><span class="n">03</span> Multi-Tenancy</a>
+      <a href="#modules"><span class="n">04</span> Modules</a>
+      <a href="#reference"><span class="n">05</span> Table Reference</a>
+      <a href="#findings"><span class="n">06</span> Findings</a>
+    </nav>
+    <div class="meta">
+      Percona 8.4.10-10 · InnoDB<br>
+      utf8mb4_unicode_ci<br>
+      Hostinger VPS · Ubuntu 24.04<br>
+      Investigated 2026-09-13
+    </div>
+  </aside>
+
+  <main>
+    <div class="topband" style="margin:-38px -56px 0;padding:26px clamp(16px,4vw,56px);">
+      <div class="title-row">
+        <div>
+          <h1>AppzetBilling — Production Database Schema</h1>
+          <div class="desc">A live map of the <code class="mono">appzetsbilling</code> MySQL database: 97 tables, 206 foreign keys, one multi-tenant billing platform. Every fact below traces to a query or a source file — nothing here is inferred.</div>
+        </div>
+        <div class="badge-date">investigated 2026‑09‑13</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat accent"><div class="num">97</div><div class="lbl">Tables</div></div>
+        <div class="stat"><div class="num">206</div><div class="lbl">Foreign keys</div></div>
+        <div class="stat"><div class="num">9</div><div class="lbl">Modules</div></div>
+        <div class="stat"><div class="num">1</div><div class="lbl">Stored procedure</div></div>
+        <div class="stat"><div class="num">0</div><div class="lbl">Views · triggers</div></div>
+        <div class="stat"><div class="num">16</div><div class="lbl">Findings</div></div>
+      </div>
+
+      <div class="flagbar">
+        <div class="flag crit"><span class="ic">BUG</span><p><b>sales.billing_address_id</b> foreign-keys to <code>sales.id</code> instead of <code>billing_addresses.id</code> — a real migration defect. See Finding&nbsp;1. Fix scripted, not yet applied.</p></div>
+        <div class="flag ok"><span class="ic">FIXED</span><p>Production <code>.env</code> had <b>APP_DEBUG=true</b> / <b>APP_ENV=local</b> — corrected 2026‑09‑13 (now <code>APP_DEBUG=false</code>, <code>APP_ENV=production</code>). See Finding&nbsp;15.</p></div>
+      </div>
+    </div>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section id="overview">
+      <div class="eyebrow">01 · Overview</div>
+      <h2>What this database is</h2>
+      <p class="lede">AppzetBilling is a single-database, shared-schema multi-tenant SaaS for restaurant and retail billing/POS. One MySQL database serves every tenant; isolation is enforced by a <code class="mono">business_id</code> column discipline rather than separate schemas. On top of a core schema, the Laravel application is extended with pluggable addon modules — HR, Multi-Branch, Cash Register, Custom Domain, Inventory, Online Store — each owning its own slice of tables.</p>
+
+      <div class="card pad" style="margin-top:18px;">
+        <table class="facts">
+          <tr><td>Engine</td><td>MySQL — Percona Server 8.4.10‑10, all 97 tables InnoDB</td></tr>
+          <tr><td>Database</td><td><code class="mono">appzetsbilling</code>, charset utf8mb4 (a few columns carry <code class="mono">utf8mb4_general_ci</code> / <code class="mono">utf8mb4_0900_ai_ci</code> instead of the schema default)</td></tr>
+          <tr><td>Hosting</td><td>Hostinger VPS <code class="mono">srv1772946</code>, Ubuntu 24.04, <code class="mono">203.0.113.10</code></td></tr>
+          <tr><td>Application</td><td>Laravel, app root <code class="mono">/home/appzetsbilling-app/htdocs</code>, live at <code class="mono">appzetsbilling.com</code></td></tr>
+          <tr><td>Addon modules</td><td>HrmAddon · MultiBranchAddon · CashRegisterAddon · CustomDomainAddon · InventoryAddon · RestaurantOnlineStore · RestaurantWebAddon — gated by <code class="mono">moduleCheck()</code>, layered under a separate per‑subscription <code class="mono">available_modules</code> JSON entitlement</td></tr>
+          <tr><td>Provisioning</td><td>One stored procedure, <code class="mono">clone_business_catalog</code>, seeds a new tenant's catalog from a template business (§03, §Modules)</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ DIAGRAM ============ -->
+    <section id="diagram">
+      <div class="eyebrow">02 · Schema Map</div>
+      <h2>Module hierarchy</h2>
+      <p class="lede">Every tenant-owned table hangs off one root: <code class="mono">businesses</code>. The nine modules below are how the application organizes that ownership — several map directly onto Laravel addon packages.</p>
+      <div class="diagram-wrap">
+<pre class="mermaid">
+graph TD
+    ROOT["businesses<br/>tenant root · 38 rows"]:::root
+    ROOT --> TEN["Tenancy &amp; Auth<br/>14 tables"]:::ten
+    ROOT --> CAT["Catalog<br/>12 tables"]:::cat
+    ROOT --> POS["Sales / POS<br/>22 tables"]:::pos
+    ROOT --> INV["Inventory &amp; Purchasing<br/>9 tables"]:::inv
+    ROOT --> FIN["Finance<br/>11 tables"]:::fin
+    ROOT --> HR["HR — HrmAddon<br/>9 tables"]:::hr
+    ROOT --> MB["Multi-Branch<br/>3 tables"]:::mb
+    ROOT --> MKT["Marketing<br/>9 tables"]:::mkt
+    ROOT --> SYS["System / Framework<br/>8 tables"]:::sys
+
+    TEN --> TEN1[users]
+    TEN --> TEN2[plan_subscribes]
+    TEN --> TEN3[staff]
+    CAT --> CAT1[products · 327 rows]
+    CAT --> CAT2[categories / menus]
+    CAT --> CAT3[modifier_groups]
+    POS --> POS1[sales · 76 rows]
+    POS --> POS2[kot_tickets]
+    POS --> POS3[reservations]
+    INV --> INV1[ingredients]
+    INV --> INV2[purchases]
+    FIN --> FIN1[transactions]
+    FIN --> FIN2[expenses / incomes]
+    HR --> HR1[employees]
+    MB --> MB1["branches — 0 rows"]
+    MKT --> MKT1[blogs / reviews]
+    SYS --> SYS1[notifications · 862 rows]
+
+    classDef root fill:#0E7C86,stroke:#0B5F67,color:#fff,font-weight:bold;
+    classDef ten fill:#7C6FB0,stroke:#5f5490,color:#fff;
+    classDef cat fill:#B08040,stroke:#8a6530,color:#fff;
+    classDef pos fill:#C05A3E,stroke:#9c4630,color:#fff;
+    classDef inv fill:#5F8A3C,stroke:#496b2d,color:#fff;
+    classDef fin fill:#3F7CA6,stroke:#305f80,color:#fff;
+    classDef hr fill:#A85585,stroke:#824168,color:#fff;
+    classDef mb fill:#5C7A8A,stroke:#48606c,color:#fff;
+    classDef mkt fill:#B06590,stroke:#8a4f70,color:#fff;
+    classDef sys fill:#7A828C,stroke:#5f666e,color:#fff;
+</pre>
+      </div>
+      <div class="diagram-caption">Table counts per module — see §04 for what each module owns and §05 to browse every table in it.</div>
+
+      <h3 style="margin-top:34px;">Entity relationships — core 45 tables</h3>
+      <p class="lede">The full 97-table graph is unreadable as a picture; this covers the high-traffic, structurally central tables. Pure lookup/static/framework tables and second-order pivots are listed underneath, and all 97 (including these) are searchable in §05.</p>
+      <div class="diagram-wrap">
+<pre class="mermaid">
+erDiagram
+    BUSINESS_CATEGORIES ||--o{ BUSINESSES : categorizes
+    PLANS ||--o{ PLAN_SUBSCRIBES : "priced as"
+    PLAN_SUBSCRIBES ||--o{ BUSINESSES : "subscribed via (plan_subscribe_id, nullable)"
+    GATEWAYS ||--o{ PLAN_SUBSCRIBES : "paid through"
+    BUSINESSES ||--o{ BRANCHES : has
+    BUSINESSES ||--o{ USERS : employs
+    BUSINESSES ||--o{ STAFF : employs
+    BUSINESSES ||--o{ DOMAINS : "custom domain"
+    BUSINESSES ||--o{ BUSINESS_GATEWAYS : configures
+    BUSINESSES ||--o{ CATEGORIES : defines
+    BUSINESSES ||--o{ MENUS : defines
+    BUSINESSES ||--o{ AREAS : defines
+    BUSINESSES ||--o{ TABLES : defines
+    BUSINESSES ||--o{ KITCHENS : defines
+    BUSINESSES ||--o{ UNITS : defines
+    BUSINESSES ||--o{ TAXES : defines
+    BUSINESSES ||--o{ PAYMENT_TYPES : defines
+    BUSINESSES ||--o{ COUPONS : defines
+    BUSINESSES ||--o{ PARTIES : has
+    BUSINESSES ||--o{ PRODUCTS : sells
+    BUSINESSES ||--o{ MODIFIER_GROUPS : defines
+    BUSINESSES ||--o{ INVENTORY_CATEGORIES : defines
+    BUSINESSES ||--o{ INGREDIENTS : stocks
+    BUSINESSES ||--o{ RECIPES : defines
+    BUSINESSES ||--o{ STOCK_MOVEMENTS : logs
+    BUSINESSES ||--o{ SALES : records
+    BUSINESSES ||--o{ PURCHASES : records
+    BUSINESSES ||--o{ QUOTATIONS : records
+    BUSINESSES ||--o{ TRANSACTIONS : records
+    BUSINESSES ||--o{ DUE_COLLECTS : records
+    BUSINESSES ||--o{ EXPENSES : records
+    BUSINESSES ||--o{ INCOMES : records
+    BUSINESSES ||--o{ EMPLOYEES : employs
+    BUSINESSES ||--o{ DEPARTMENTS : defines
+    BUSINESSES ||--o{ DESIGNATIONS : defines
+    BUSINESSES ||--o{ SHIFTS : defines
+    BUSINESSES ||--o{ CASH_REGISTERS : operates
+    BUSINESSES ||--o{ RESERVATIONS : takes
+    BUSINESSES ||--o{ KOT_TICKETS : issues
+    BUSINESSES ||--o{ LOYALTY_ITEMS : rewards
+
+    BRANCHES ||--o{ USERS : "assigned to (optional)"
+    CATEGORIES ||--o{ PRODUCTS : classifies
+    MENUS ||--o{ PRODUCTS : groups
+    PRODUCTS ||--o{ PRODUCT_VARIATIONS : has
+    PRODUCTS ||--o{ MODIFIERS : has
+    MODIFIER_GROUPS ||--o{ MODIFIER_GROUP_OPTIONS : has
+    MODIFIER_GROUPS ||--o{ MODIFIERS : groups
+    KITCHENS }o--o{ PRODUCTS : "routes (kitchen_product)"
+    PRODUCTS ||--o{ LOYALTY_ITEMS : "eligible for"
+    LOYALTY_ITEMS ||--o{ LOYALTY_ITEM_CUSTOMERS : "earned by"
+    PARTIES ||--o{ LOYALTY_ITEM_CUSTOMERS : earns
+    PARTIES ||--o{ DELIVERY_ADDRESSES : has
+    PARTIES ||--o{ SALES : "buys as customer"
+    PARTIES ||--o{ PURCHASES : "sells as supplier"
+    PARTIES ||--o{ INGREDIENTS : "supplied by (optional)"
+    UNITS ||--o{ UNITS : "base_unit_id (self-ref)"
+    UNITS ||--o{ INGREDIENTS : measures
+    INVENTORY_CATEGORIES ||--o{ INGREDIENTS : classifies
+    INGREDIENTS ||--o{ RECIPE_INGREDIENTS : "used in"
+    RECIPES ||--o{ RECIPE_INGREDIENTS : composed_of
+    PRODUCTS ||--o{ RECIPES : "costed by"
+    INGREDIENTS ||--o{ STOCK_MOVEMENTS : tracks
+    INGREDIENTS ||--o{ PURCHASE_DETAILS : "line item"
+    PURCHASES ||--o{ PURCHASE_DETAILS : contains
+    PARTIES ||--o{ PURCHASES : "via party_id"
+    AREAS ||--o{ TABLES : contains
+    TABLES ||--o{ SALES : "dine-in at"
+    TABLES ||--o{ KOT_TICKETS : "ticket for"
+    STAFF ||--o{ SALES : served_by
+    TAXES ||--o{ SALES : applies_to
+    PAYMENT_TYPES ||--o{ SALES : "paid via"
+    COUPONS ||--o{ SALES : discounts
+    SALES ||--o{ SALES : "billing_address_id (self-ref, see Finding 1)"
+    BUSINESS_GATEWAYS ||--o{ SALES : "online payment via"
+    SALES ||--o{ SALE_DETAILS : contains
+    SALE_DETAILS ||--o{ PRODUCTS : references
+    KOT_TICKETS ||--o{ SALE_DETAILS : "kitchen-routes"
+    KITCHENS ||--o{ KOT_TICKETS : prepares
+    CANCEL_REASONS ||--o{ KOT_TICKETS : "cancel reason"
+    SALES ||--o{ DUE_COLLECTS : "settles dues of"
+    PURCHASES ||--o{ DUE_COLLECTS : "settles dues of"
+    QUOTATIONS ||--o{ QUOTATION_DETAILS : contains
+    QUOTATION_DETAILS ||--o{ PRODUCTS : references
+    SALES ||--o{ TRANSACTIONS : "payment record"
+    PURCHASES ||--o{ TRANSACTIONS : "payment record"
+    PAYMENT_TYPES ||--o{ TRANSACTIONS : via
+    USERS ||--o{ SALES : "created by (nullable)"
+    USERS ||--o{ PRODUCTS : "created by (nullable)"
+    USERS ||--o{ PARTIES : "linked to (nullable)"
+    STAFF ||--o{ USERS : "staff_id (optional login link)"
+    EMPLOYEES ||--o{ ATTENDANCES : clocks
+    EMPLOYEES ||--o{ LEAVES : requests
+    EMPLOYEES ||--o{ PAYROLLS : "paid via"
+    DEPARTMENTS ||--o{ EMPLOYEES : groups
+    DESIGNATIONS ||--o{ EMPLOYEES : titles
+    SHIFTS ||--o{ EMPLOYEES : schedules
+    LEAVE_TYPES ||--o{ LEAVES : categorizes
+    CASH_REGISTERS ||--o{ CASH_REGISTER_TRANSACTIONS : logs
+    RESERVATIONS ||--o{ RESERVATION_TABLES : "table assignment"
+    TABLES ||--o{ RESERVATION_TABLES : reserved_in
+</pre>
+      </div>
+      <p class="tight" style="font-size:.85rem;color:var(--ink-faint);margin-top:10px;">Omitted from the picture: <code class="mono">business_categories, currencies, languages, permissions, roles, features, faqs, countries, states, jobs, failed_jobs, password_resets(_tokens), personal_access_tokens, notifications, options, migrations, pos_app_interfaces</code>, the Spatie pivot tables, and second-order pivots (<code class="mono">sale_detail_options, quotation_detail_options, quotation_detail_product_variations, sale_detail_product_variations, reservation_tables, kitchen_product</code>). All are in §05.</p>
+    </section>
+
+    <!-- ============ TENANCY ============ -->
+    <section id="tenancy">
+      <div class="eyebrow">03 · Multi-Tenancy</div>
+      <h2>How one database serves every tenant</h2>
+      <p class="lede">Shared database, shared schema, row-level isolation. There is one set of 97 tables; a tenant is a row in <code class="mono">businesses</code>, and isolation is enforced by a <code class="mono">business_id</code> column discipline — not by separate schemas or databases.</p>
+
+      <div class="scopebar" role="img" aria-label="1 root table, 60 direct, 14 transitive, 22 global">
+        <div style="width:1.0%;background:var(--accent-strong);" title="Root"></div>
+        <div style="width:61.9%;background:var(--accent);">60 direct</div>
+        <div style="width:14.4%;background:#4FA3A8;">14 transitive</div>
+        <div style="width:22.7%;background:var(--ink-faint);">22 global</div>
+      </div>
+      <div class="scope-legend">
+        <span><i class="dot" style="background:var(--accent-strong);"></i> Root — <code class="mono">businesses</code> itself</span>
+        <span><i class="dot" style="background:var(--accent);"></i> Direct — own <code class="mono">business_id</code> column, 56 required + 5 nullable</span>
+        <span><i class="dot" style="background:#4FA3A8;"></i> Transitive — one join from a tenant via a parent FK</span>
+        <span><i class="dot" style="background:var(--ink-faint);"></i> Global — no tenant linkage at all</span>
+      </div>
+
+      <p style="margin-top:16px;">56 of the 60 direct tables use <code class="mono">business_id NOT NULL ON DELETE CASCADE</code> — deleting a business deletes that tenant's row outright. Five are nullable by design: <code class="mono">blogs</code>, <code class="mono">messages</code>, <code class="mono">testimonials</code> (public-site content optionally attributed to a business, <code class="mono">SET NULL</code>), <code class="mono">users</code> (platform staff — superadmin/admin/manager — carry no business), and <code class="mono">recipe_ingredients</code> (nullable <code class="mono">SET NULL</code>, inconsistent with its sibling <code class="mono">recipes</code> — Finding 5).</p>
+
+      <h3 style="margin-top:26px;">Two isolation gaps at the database level</h3>
+      <div class="gapcard">
+        <div class="g"><h4>coupons.code — globally unique</h4><p>Despite <code class="mono">business_id NOT NULL</code>, <code class="mono">coupons_code_unique</code> is a plain, non-composite key. Two tenants cannot use the same coupon code. Independently confirmed: the <code class="mono">clone_business_catalog</code> procedure's own comments skip cloning coupons for exactly this reason.</p></div>
+        <div class="g"><h4>parties.phone — globally unique</h4><p><code class="mono">parties_phone_unique</code> is likewise non-composite. Two tenants cannot each have a customer or supplier with the same phone number.</p></div>
+      </div>
+
+      <h3 style="margin-top:30px;">Application-layer scopes (beyond the DB)</h3>
+      <p><code class="mono">app/Models/Scopes/BranchScope.php</code> adds branch-level filtering on top of tenant isolation once MultiBranchAddon is enabled and the user has an <code class="mono">active_branch_id</code> — enforced in Eloquent, not the database, so raw SQL bypasses it. <code class="mono">app/Models/Scopes/DataManager.php</code> is a separate ownership scope restricting queries to the current user unless they hold a named permission or are <code class="mono">shop-owner</code>.</p>
+
+      <h3 style="margin-top:30px;">Tenant provisioning — <code class="mono">clone_business_catalog(source, target)</code></h3>
+      <p>The only stored procedure in the database (<code class="mono">database/scripts/clone_business_catalog.sql</code> in the repo). A hands-on operational tool for spinning up a new tenant pre-populated from a template business, not something ordinary request traffic calls.</p>
+      <div class="steps">
+        <div class="step" data-n="1"><h4>Validate</h4><p>Both business IDs exist and differ; target already has a <code class="mono">shop-owner</code> user. Fails with <code class="mono">SIGNAL SQLSTATE '45000'</code> otherwise.</p></div>
+        <div class="step" data-n="2"><h4>Guard idempotency</h4><p>Refuses to run if the target already has <code class="mono">categories</code> rows — prevents double-cloning.</p></div>
+        <div class="step" data-n="3"><h4>Copy catalog, remap keys</h4><p>Inside one transaction: taxes, payment types, currencies, categories, menus, units (self-referencing <code class="mono">base_unit_id</code> fixed up in a second pass), kitchens, modifier groups, ingredients (stock reset to 0, party dropped), recipes, products (forced to the target's own owner), tables (booking state cleared), and more — using a temporary <code class="mono">_clone_id_map(table_name, old_id, new_id)</code> to rewrite foreign keys.</p></div>
+        <div class="step" data-n="4"><h4>Never touch live data</h4><p>Explicitly excludes <code class="mono">coupons</code> (global-unique bug above), <code class="mono">sales/purchases</code> and all transactional history, <code class="mono">parties</code> (real vendor/customer contacts), <code class="mono">domains</code>, <code class="mono">business_gateways</code> (live credentials).</p></div>
+      </div>
+    </section>
+
+    <!-- ============ MODULES ============ -->
+    <section id="modules">
+      <div class="eyebrow">04 · Modules</div>
+      <h2>Module-by-module ownership</h2>
+      <p class="lede">Click a module to jump to its tables in the reference below, filtered.</p>
+      <div class="modgrid" id="modgrid"></div>
+    </section>
+
+    <!-- ============ REFERENCE ============ -->
+    <section id="reference">
+      <div class="eyebrow">05 · Table Reference</div>
+      <h2>All 97 tables</h2>
+      <p class="lede">Search by name, filter by module or tenant scope, then open a row for its primary key, every foreign key with its <code class="mono">ON DELETE</code> rule, and any findings that touch it.</p>
+
+      <div class="chiprow">
+        <span class="chip"><i class="dot" style="background:var(--accent);"></i> ON DELETE CASCADE</span>
+        <span class="chip"><i class="dot" style="background:var(--info);"></i> ON DELETE SET NULL</span>
+        <span class="chip"><i class="dot" style="background:var(--warn);"></i> NO ACTION (no rule set)</span>
+        <span class="chip"><i class="dot" style="background:var(--crit);"></i> Confirmed defect</span>
+        <span class="chip" style="border-style:dashed;"><i class="dot" style="background:var(--ink-faint);"></i> Column has no FK constraint</span>
+      </div>
+
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Search table name…" aria-label="Search tables">
+        <div class="pillgroup" id="scopeFilter">
+          <button class="pill" data-scope="all" aria-pressed="true">All scopes</button>
+          <button class="pill" data-scope="root" aria-pressed="false">Root</button>
+          <button class="pill" data-scope="direct" aria-pressed="false">Direct</button>
+          <button class="pill" data-scope="transitive" aria-pressed="false">Transitive</button>
+          <button class="pill" data-scope="global" aria-pressed="false">Global</button>
+        </div>
+      </div>
+      <div class="pillgroup" id="modFilter" style="margin-top:6px;"></div>
+      <div class="resultcount" id="resultcount"></div>
+      <div class="tlist" id="tlist"></div>
+    </section>
+
+    <!-- ============ FINDINGS ============ -->
+    <section id="findings">
+      <div class="eyebrow">06 · Findings</div>
+      <h2>16 things worth your attention</h2>
+      <p class="lede">Ranked roughly by how much damage each could do if left alone. Two are independently corroborated by comments already written into <code class="mono">clone_business_catalog</code> by whoever built it.</p>
+      <div class="findlist" id="findlist"></div>
+
+      <div class="unverified">
+        <h4>Could not be verified</h4>
+        <ul>
+          <li>Whether <code class="mono">plan_subscribes.available_modules</code> (per-tenant entitlement JSON) is actually enforced in request handling, versus <code class="mono">moduleCheck()</code>'s install-wide toggle — belongs in the Application Flow doc, not here.</li>
+          <li>Row-count exactness for 90 of 97 tables: seven were spot-checked with a live <code class="mono">COUNT(*)</code> against the <code class="mono">information_schema</code> estimate (<code class="mono">businesses, branches, sales, products, users, plan_subscribes, stock_movements</code>) and all matched exactly; the rest are inferred to be exact at this row scale, not individually re-verified.</li>
+          <li>Application routes/controllers were out of scope for this document — every "purpose" note here comes from column shapes, FK topology, and Model/migration files only. See the Application Flow doc for request-path detail.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      AppzetBilling Schema Reference · built from live <code>information_schema</code> / <code>SHOW CREATE TABLE</code> queries + Laravel model/migration cross-checks · 2026‑09‑13
+    </footer>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script>
+mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+  themeVariables:{fontFamily:'IBM Plex Mono, monospace'}});
+</script>
+
+<script>
+/* ---------- data ---------- */
+const MODULES = [
+  {k:'ten',name:'Tenancy & Auth',desc:'Tenant identity, subscriptions/billing, logins and role-based access.'},
+  {k:'cat',name:'Catalog',desc:'Menu setup: categories, products, variations, modifiers, kitchens, units.'},
+  {k:'pos',name:'Sales / POS',desc:'Orders, KOT kitchen routing, tables & reservations, coupons, quotations, cash registers.'},
+  {k:'inv',name:'Inventory & Purchasing',desc:'Suppliers, raw-material stock, recipes/BOM, purchase orders.'},
+  {k:'fin',name:'Finance',desc:'Taxes, payment types, ledgers, manual expenses/income, payment gateways, currency.'},
+  {k:'hr',name:'HR — HrmAddon',desc:'Departments, shifts, attendance, leave, payroll — a separate person model from Sales staff.'},
+  {k:'mb',name:'Multi-Branch',desc:'Sub-location support — fully wired, currently unused (0 rows).'},
+  {k:'mkt',name:'Marketing',desc:'Public landing-site content: blog, testimonials, contact form, reviews.'},
+  {k:'sys',name:'System / Framework',desc:'Laravel & package plumbing — queues, auth scaffolding, notifications, settings.'},
+];
+const RULE = {C:'CASCADE',SN:'SET NULL',NA:'NO ACTION'};
+const fk=(c,r,d,bad)=>({c,r,d,bad:!!bad});
+const weak=(c,r)=>({c,r});
+
+const TABLES = [
+{n:'businesses',m:'ten',rows:38,scope:'root',pk:'id',fks:[fk('business_category_id','business_categories.id','C')],weakfk:[weak('plan_subscribe_id','plan_subscribes.id')],note:'Tenant record — one row per restaurant/business on the platform.',flags:[2]},
+{n:'business_categories',m:'ten',rows:7,scope:'global',pk:'id',fks:[],note:'Global lookup: restaurant/business type taxonomy.'},
+{n:'plans',m:'ten',rows:5,scope:'global',pk:'id',fks:[],note:'Global subscription plan catalog — pricing, limits, available_modules JSON.'},
+{n:'plan_subscribes',m:'ten',rows:75,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('gateway_id','gateways.id','C'),fk('plan_id','plans.id','C')],note:"A tenant's subscription instance — 75 rows for 38 businesses, so history/renewals are kept."},
+{n:'users',m:'ten',rows:54,scope:'direct',nullableBiz:true,pk:'id',fks:[fk('business_id','businesses.id','C'),fk('branch_id','branches.id','C'),fk('active_branch_id','branches.id','SN'),fk('staff_id','staff.id','SN')],note:'Logins across every role. business_id nullable for platform staff (superadmin/admin/manager).',flags:[7]},
+{n:'roles',m:'ten',rows:4,scope:'global',pk:'id',fks:[],note:'Spatie laravel-permission role catalog.',flags:[12]},
+{n:'permissions',m:'ten',rows:67,scope:'global',pk:'id',fks:[],note:'Spatie permission catalog.',flags:[12]},
+{n:'model_has_roles',m:'ten',rows:3,scope:'global',pk:'(role_id, model_id, model_type)',fks:[fk('role_id','roles.id','C')],note:'User↔role assignment — only 3 rows for 54 users.',flags:[12]},
+{n:'model_has_permissions',m:'ten',rows:0,scope:'global',pk:'(permission_id, model_id, model_type)',fks:[fk('permission_id','permissions.id','C')],note:'User↔permission assignment — 0 rows.',flags:[12]},
+{n:'role_has_permissions',m:'ten',rows:121,scope:'global',pk:'(permission_id, role_id)',fks:[fk('permission_id','permissions.id','C'),fk('role_id','roles.id','C')],note:'Role↔permission grants.'},
+{n:'staff',m:'ten',rows:53,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:"Lightweight per-tenant staff directory used to attribute sales.staff_id — no link to employees.",flags:[9]},
+{n:'personal_access_tokens',m:'ten',rows:39,scope:'global',pk:'id',fks:[],note:'Laravel Sanctum API tokens.'},
+{n:'domains',m:'ten',rows:1,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Custom-domain mapping (CustomDomainAddon) — no unique constraint on the domain string.',flags:[13]},
+{n:'configurations',m:'ten',rows:12,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant role/feature toggle table.'},
+
+{n:'categories',m:'cat',rows:75,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Product category per tenant.'},
+{n:'menus',m:'cat',rows:22,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Menu grouping per tenant.'},
+{n:'products',m:'cat',rows:327,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('branch_id','branches.id','SN'),fk('category_id','categories.id','C'),fk('menu_id','menus.id','C'),fk('user_id','users.id','SN')],note:'The sellable item — the largest master-data table. status is stored as varchar, not tinyint.',flags:[14]},
+{n:'product_variations',m:'cat',rows:20,scope:'transitive',pk:'id',fks:[fk('product_id','products.id','C')],note:'Size/variant pricing per product.'},
+{n:'modifier_groups',m:'cat',rows:26,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Add-on group definition (e.g. "Toppings").'},
+{n:'modifier_group_options',m:'cat',rows:60,scope:'transitive',pk:'id',fks:[fk('modifier_group_id','modifier_groups.id','C')],note:'A specific option within a modifier group (e.g. "Extra Cheese").'},
+{n:'modifiers',m:'cat',rows:46,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('product_id','products.id','C'),fk('modifier_group_id','modifier_groups.id','C'),fk('branch_id','branches.id','SN')],note:'Links a product to a modifier group.'},
+{n:'kitchens',m:'cat',rows:18,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('branch_id','branches.id','SN')],note:'Prep-station definition for KOT routing.'},
+{n:'kitchen_product',m:'cat',rows:300,scope:'transitive',pk:'id',fks:[fk('kitchen_id','kitchens.id','C'),fk('product_id','products.id','C')],note:'Pivot: which kitchen prepares which product.'},
+{n:'units',m:'cat',rows:84,scope:'direct',pk:'id',fks:[fk('base_unit_id','units.id','SN'),fk('business_id','businesses.id','C')],note:'Measurement units — self-referencing base_unit_id (e.g. kg as base of g).'},
+{n:'loyalty_items',m:'cat',rows:6,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('product_id','products.id','C')],note:'Per-product loyalty/rewards eligibility.'},
+{n:'loyalty_item_customers',m:'cat',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('party_id','parties.id','C'),fk('product_id','products.id','C')],note:'Per-customer loyalty purchase-count — currently empty.'},
+
+{n:'sales',m:'pos',rows:76,scope:'direct',pk:'id',fks:[fk('address_id','delivery_addresses.id','SN'),fk('billing_address_id','sales.id','SN',true),fk('branch_id','branches.id','SN'),fk('business_gateway_id','business_gateways.id','SN'),fk('business_id','businesses.id','C'),fk('coupon_id','coupons.id','SN'),fk('party_id','parties.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('staff_id','staff.id','SN'),fk('table_id','tables.id','SN'),fk('tax_id','taxes.id','SN'),fk('user_id','users.id','SN')],note:'Central order/transaction table — the busiest FK hub in the schema.',flags:[1]},
+{n:'sale_details',m:'pos',rows:103,scope:'transitive',pk:'id',fks:[fk('kot_ticket_id','kot_tickets.id','C'),fk('product_id','products.id','C'),fk('sale_id','sales.id','C')],note:'Line items of a sale.'},
+{n:'sale_detail_options',m:'pos',rows:18,scope:'transitive',pk:'id',fks:[fk('modifier_id','modifiers.id','C'),fk('option_id','modifier_group_options.id','C'),fk('sale_detail_id','sale_details.id','C')],note:'Modifier selections on a sale line item.'},
+{n:'sale_detail_product_variations',m:'pos',rows:1,scope:'transitive',pk:'id',fks:[fk('sale_detail_id','sale_details.id','C'),fk('variation_id','product_variations.id','C')],note:'Variation selection on a sale line item.'},
+{n:'kot_tickets',m:'pos',rows:27,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('cancel_reason_id','cancel_reasons.id','SN'),fk('kitchen_id','kitchens.id','C'),fk('sale_id','sales.id','C'),fk('table_id','tables.id','SN')],note:'Kitchen Order Ticket — routes a sale to a kitchen.'},
+{n:'cancel_reasons',m:'pos',rows:29,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Reasons a KOT/order can be cancelled with.'},
+{n:'tables',m:'pos',rows:44,scope:'direct',pk:'id',fks:[fk('area_id','areas.id','C'),fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C')],note:'Physical restaurant table.'},
+{n:'areas',m:'pos',rows:19,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('branch_id','branches.id','SN')],note:'Floor-plan grouping of tables.'},
+{n:'reservations',m:'pos',rows:8,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('user_id','users.id','SN')],note:'Table booking.'},
+{n:'reservation_tables',m:'pos',rows:2,scope:'transitive',pk:'id',fks:[fk('reservation_id','reservations.id','C'),fk('table_id','tables.id','C')],note:'Pivot: tables assigned to a reservation.'},
+{n:'coupons',m:'pos',rows:6,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Discount codes — code is globally unique, breaking tenant isolation.',flags:[8]},
+{n:'due_collects',m:'pos',rows:10,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('party_id','parties.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('purchase_id','purchases.id','C'),fk('sale_id','sales.id','C'),fk('user_id','users.id','SN')],note:'Partial/installment payments against an outstanding due balance.'},
+{n:'quotations',m:'pos',rows:6,scope:'direct',pk:'id',fks:[fk('address_id','delivery_addresses.id','SN'),fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('coupon_id','coupons.id','SN'),fk('party_id','parties.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('tax_id','taxes.id','SN'),fk('user_id','users.id','SN')],note:'Pre-sale quote/estimate — structurally mirrors sales but is a separate table set.'},
+{n:'quotation_details',m:'pos',rows:10,scope:'transitive',pk:'id',fks:[fk('product_id','products.id','C'),fk('quotation_id','quotations.id','C')],note:'Line items of a quotation.'},
+{n:'quotation_detail_options',m:'pos',rows:3,scope:'transitive',pk:'id',fks:[fk('modifier_id','modifiers.id','C'),fk('option_id','modifier_group_options.id','C'),fk('quotation_detail_id','quotation_details.id','C')],note:'Modifier selections on a quotation line item.'},
+{n:'quotation_detail_product_variations',m:'pos',rows:0,scope:'transitive',pk:'id',fks:[fk('quotation_detail_id','quotation_details.id','C'),fk('variation_id','product_variations.id','C')],note:'Variation selection on a quotation line item.'},
+{n:'cash_registers',m:'pos',rows:3,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('closed_by','users.id','NA'),fk('opened_by','users.id','NA')],note:'Shift-based cash drawer session. opened_by/closed_by use NO ACTION — deleting that user will fail instead of nulling.',flags:[3]},
+{n:'cash_register_transactions',m:'pos',rows:9,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('cash_register_id','cash_registers.id','C'),fk('created_by','users.id','NA')],note:'Individual add/remove cash events within a register session.',flags:[3]},
+{n:'denominations',m:'pos',rows:54,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant note/coin list for physical cash counting.'},
+{n:'billing_addresses',m:'pos',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('user_id','users.id','C')],note:'Address-book table — nothing in the schema actually references it.',flags:[1]},
+{n:'delivery_addresses',m:'pos',rows:5,scope:'transitive',pk:'id',fks:[fk('party_id','parties.id','C')],note:'Delivery address book entries for a party/customer.'},
+{n:'time_slots',m:'pos',rows:147,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant day/slot availability windows for online ordering & reservations.'},
+
+{n:'parties',m:'inv',rows:14,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('user_id','users.id','SN')],note:'Unified customer/supplier contact. phone is globally unique, breaking tenant isolation.',flags:[8]},
+{n:'inventory_categories',m:'inv',rows:36,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Raw-material category.'},
+{n:'ingredients',m:'inv',rows:73,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('party_id','parties.id','SN'),fk('unit_id','units.id','SN')],weakfk:[weak('inventory_category_id','inventory_categories.id')],note:'Raw-material catalog with stock_quantity/stock_alert low-stock tracking.',flags:[4]},
+{n:'recipes',m:'inv',rows:30,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('product_id','products.id','C')],note:'Bill-of-materials header — costs a product.'},
+{n:'recipe_ingredients',m:'inv',rows:90,scope:'direct',nullableBiz:true,pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','SN'),fk('ingredient_id','ingredients.id','C'),fk('recipe_id','recipes.id','C'),fk('unit_id','units.id','SN')],note:'Ingredient list per recipe. business_id is nullable/SET NULL, unlike sibling recipes.',flags:[5]},
+{n:'stock_movements',m:'inv',rows:32,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('created_by','users.id','SN'),fk('ingredient_id','ingredients.id','C')],note:'Append-only stock in/out ledger — the audit trail behind ingredients.stock_quantity.'},
+{n:'purchases',m:'inv',rows:10,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('party_id','parties.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('user_id','users.id','SN')],note:'Supplier purchase order header.'},
+{n:'purchase_details',m:'inv',rows:15,scope:'transitive',pk:'id',fks:[fk('ingredient_id','ingredients.id','C'),fk('purchase_id','purchases.id','C'),fk('unit_id','units.id','C')],note:'Ingredient line items of a purchase.'},
+{n:'stocks',m:'inv',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('product_id','products.id','C')],note:'Simple product stock counter — 0 rows, superseded by stock_movements + ingredients.stock_quantity.',flags:[11]},
+
+{n:'taxes',m:'fin',rows:35,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant tax rate, supports compound sub-taxes.'},
+{n:'payment_types',m:'fin',rows:26,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant payment method list.'},
+{n:'transactions',m:'fin',rows:84,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('payment_type_id','payment_types.id','SN'),fk('purchase_id','purchases.id','SN'),fk('sale_id','sales.id','SN')],note:'Generic payment ledger row against a sale or purchase.'},
+{n:'expenses',m:'fin',rows:11,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('expense_category_id','expense_categories.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('user_id','users.id','SN')],note:'Manual expense entry. Column expanseFor is a typo.',flags:[14]},
+{n:'expense_categories',m:'fin',rows:36,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Expense category lookup.'},
+{n:'incomes',m:'fin',rows:10,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('income_category_id','income_categories.id','SN'),fk('payment_type_id','payment_types.id','SN'),fk('user_id','users.id','SN')],note:'Manual income entry.'},
+{n:'income_categories',m:'fin',rows:35,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Income category lookup.'},
+{n:'business_gateways',m:'fin',rows:9,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('currency_id','currencies.id','C'),fk('gateway_id','gateways.id','C')],note:"A tenant's configured payment gateway instance/credentials."},
+{n:'gateways',m:'fin',rows:10,scope:'global',pk:'id',fks:[fk('currency_id','currencies.id','C')],note:'Global catalog of supported payment providers.'},
+{n:'currencies',m:'fin',rows:151,scope:'global',pk:'id',fks:[],note:'Global currency master.'},
+{n:'user_currencies',m:'fin',rows:43,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('currency_id','currencies.id','C')],note:"A tenant's chosen currency and rate override."},
+
+{n:'departments',m:'hr',rows:24,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant HR department lookup.'},
+{n:'designations',m:'hr',rows:36,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant job title lookup.'},
+{n:'shifts',m:'hr',rows:18,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant work shift definition.'},
+{n:'leave_types',m:'hr',rows:24,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Per-tenant leave category lookup.'},
+{n:'employees',m:'hr',rows:3,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('department_id','departments.id','SN'),fk('designation_id','designations.id','SN'),fk('shift_id','shifts.id','SN')],note:'HrmAddon employee record — separate from, and unlinked to, staff.',flags:[9]},
+{n:'attendances',m:'hr',rows:3,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('employee_id','employees.id','C'),fk('shift_id','shifts.id','SN')],note:'Daily clock-in/out per employee.'},
+{n:'leaves',m:'hr',rows:2,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('department_id','departments.id','SN'),fk('employee_id','employees.id','C'),fk('leave_type_id','leave_types.id','SN')],note:'Leave request.'},
+{n:'holidays',m:'hr',rows:2,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C')],note:'Per-tenant/branch holiday calendar.'},
+{n:'payrolls',m:'hr',rows:3,scope:'direct',pk:'id',fks:[fk('branch_id','branches.id','SN'),fk('business_id','businesses.id','C'),fk('employee_id','employees.id','C'),fk('payment_type_id','payment_types.id','SN')],note:'Monthly payroll run per employee.'},
+
+{n:'branches',m:'mb',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('country_id','countries.id','SN'),fk('state_id','states.id','SN')],note:'Sub-location of a business — fully wired, 0 rows, feature not yet adopted.',flags:[10,7]},
+{n:'countries',m:'mb',rows:0,scope:'global',pk:'id',fks:[],note:'Global geography reference, used only by branches.'},
+{n:'states',m:'mb',rows:0,scope:'global',pk:'id',fks:[],weakfk:[weak('country_id','countries.id')],note:'Global geography reference.',flags:[4]},
+
+{n:'blogs',m:'mkt',rows:8,scope:'direct',nullableBiz:true,pk:'id',fks:[fk('business_id','businesses.id','C'),fk('user_id','users.id','C')],note:'Simple blog post, globally-unique title/slug.'},
+{n:'comments',m:'mkt',rows:0,scope:'transitive',pk:'id',fks:[fk('blog_id','blogs.id','C'),fk('comment_id','comments.id','C')],note:'Threaded blog comments, self-referencing.'},
+{n:'faqs',m:'mkt',rows:6,scope:'global',pk:'id',fks:[],note:'Static landing-page FAQ content.'},
+{n:'features',m:'mkt',rows:16,scope:'global',pk:'id',fks:[],note:'Static landing-page feature blocks.'},
+{n:'testimonials',m:'mkt',rows:4,scope:'direct',nullableBiz:true,pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Landing-page testimonial, optionally attributed to a business.'},
+{n:'messages',m:'mkt',rows:7,scope:'direct',nullableBiz:true,pk:'id',fks:[fk('business_id','businesses.id','C')],note:'Public contact-form submission.'},
+{n:'news_letters',m:'mkt',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('user_id','users.id','SN')],note:'Newsletter signup.'},
+{n:'reviews',m:'mkt',rows:0,scope:'direct',pk:'id',fks:[fk('business_id','businesses.id','C'),fk('product_id','products.id','C'),fk('user_id','users.id','C')],note:'Product review — 0 rows, feature appears unlaunched.'},
+{n:'pos_app_interfaces',m:'mkt',rows:6,scope:'global',pk:'id',fks:[],note:'Screenshots for the POS mobile-app store listing.'},
+
+{n:'migrations',m:'sys',rows:97,scope:'global',pk:'id',fks:[],note:'Laravel migration ledger.'},
+{n:'jobs',m:'sys',rows:0,scope:'global',pk:'id',fks:[],note:'Laravel queue table.'},
+{n:'failed_jobs',m:'sys',rows:0,scope:'global',pk:'id',fks:[],note:'Laravel failed-queue-job table.'},
+{n:'password_resets',m:'sys',rows:0,scope:'global',pk:'email',fks:[],note:'Legacy Laravel password-reset table — superseded, likely dead.',flags:[6]},
+{n:'password_reset_tokens',m:'sys',rows:0,scope:'global',pk:'email',fks:[],note:"Current Laravel password-reset table — coexists with the legacy one above.",flags:[6]},
+{n:'notifications',m:'sys',rows:862,scope:'transitive',pk:'id',fks:[],note:'Laravel database notifications, polymorphic — the largest table by on-disk size.',flags:[16]},
+{n:'options',m:'sys',rows:25,scope:'global',pk:'id',fks:[],note:'Generic key/value settings store — no unique constraint on key.'},
+{n:'languages',m:'sys',rows:102,scope:'global',pk:'id',fks:[],note:'Global i18n language list.'},
+];
+
+const FINDINGS = [
+ {sev:'crit',t:'sales.billing_address_id foreign-keys to sales.id, not billing_addresses.id',tbls:['sales','billing_addresses'],d:"Confirmed directly from SHOW CREATE TABLE sales: the constraint references sales(id), a self-reference. A dedicated billing_addresses table exists (with business_id/user_id FKs) but nothing in the schema points into it — billing_addresses is effectively orphaned. Reads as a migration copy-paste bug: the column name implies the intended target. Fix migration drafted, not yet applied — pending go-ahead."},
+ {sev:'warn',t:'businesses.plan_subscribe_id has no FK constraint',tbls:['businesses','plan_subscribes'],d:"Every other cross-table column on businesses (business_category_id) is FK-enforced; plan_subscribe_id is a bare, unconstrained column even though plan_subscribes.business_id FKs the other direction. Nothing stops it pointing at a deleted or nonexistent row."},
+ {sev:'warn',t:'Cash-register audit columns use NO ACTION instead of SET NULL',tbls:['cash_registers','cash_register_transactions'],d:"opened_by, closed_by and created_by reference users.id with no ON DELETE rule (defaults to NO ACTION), while every comparable “who did this” column elsewhere (expenses.user_id, stock_movements.created_by, sales.user_id…) uses SET NULL. Deleting a user who ever opened/closed a register will fail with a constraint violation instead of quietly nulling the reference."},
+ {sev:'warn',t:'Two FK-shaped columns have no FK constraint at all',tbls:['ingredients','states'],d:"ingredients.inventory_category_id and states.country_id are plain indexed columns pointing at obviously-intended tables (inventory_categories, countries) that exist — but referential integrity for both relationships is not enforced by the database."},
+ {sev:'warn',t:'recipe_ingredients.business_id is nullable/SET NULL, unlike its sibling recipes',tbls:['recipe_ingredients','recipes'],d:"Both tables are tenant-owned recipe data one join from products, but recipes.business_id is NOT NULL/CASCADE while recipe_ingredients.business_id can go NULL — breaking the “every operational row has a live tenant” invariant that holds for the other 55 NOT NULL/CASCADE tenant tables."},
+ {sev:'info',t:'Duplicate password-reset tables',tbls:['password_resets','password_reset_tokens'],d:"Laravel's old and new password-reset table shapes both exist. password_resets is very likely dead — the framework moved to password_reset_tokens — but was never dropped. Both are currently empty, so it's schema debt rather than active risk."},
+ {sev:'warn',t:'users.branch_id cascades on delete; users.active_branch_id only nulls',tbls:['users','branches'],d:"Both reference branches.id, but branch_id is ON DELETE CASCADE while active_branch_id is SET NULL. Deleting a branch will delete every user permanently assigned to it — the only place in the schema where deleting a non-business row cascades into deleting users. Branches has 0 rows today, so this is armed but not yet triggered."},
+ {sev:'warn',t:'Two global-uniqueness constraints break tenant isolation',tbls:['coupons','parties'],d:"coupons.code and parties.phone are both UNIQUE with no business_id in the key, despite business_id being NOT NULL on both tables. Two tenants cannot independently reuse a coupon code or a contact phone number. The coupon issue is independently confirmed by a comment inside clone_business_catalog, which deliberately skips cloning coupons for this exact reason."},
+ {sev:'info',t:'Two unlinked “employee” concepts',tbls:['staff','employees'],d:"staff (free-text designation, used for sales.staff_id) and employees (HrmAddon: department/designation/shift FKs, used for attendance/leave/payroll) share no foreign key or identifier. A person who both rings up sales and draws a payroll needs two entirely separate records."},
+ {sev:'info',t:'branches is fully wired but has zero rows',tbls:['branches'],d:"FKs, addon module and ~35 optional branch_id columns across the schema are all in place, but no live tenant has created a branch yet. Multi-branch reads as installed, not adopted — confirmed by both a direct COUNT(*) and a comment inside clone_business_catalog."},
+ {sev:'info',t:'stocks looks like a dead table',tbls:['stocks','stock_movements','ingredients'],d:"A simple product_id → productStock counter with 0 rows, apparently superseded by the combination of ingredients.stock_quantity and the actively-used stock_movements ledger (32 rows)."},
+ {sev:'info',t:'RBAC is split, and the fine-grained half is barely populated',tbls:['users','roles','role_has_permissions','model_has_roles','model_has_permissions'],d:"users.role (a plain string) is checked directly in application code. The Spatie permission tables also exist (67 permissions, 121 role grants) but model_has_roles has only 3 rows and model_has_permissions has 0, against 54 users — the fine-grained layer is essentially unpopulated in production."},
+ {sev:'info',t:'Duplicate Domain model class across two addon namespaces',tbls:['domains'],d:"Modules/CustomDomainAddon/App/Models/Domain.php and Modules/RestaurantOnlineStore/App/Models/Domain.php both declare namespace Modules\\CustomDomainAddon\\App\\Models — an application-code observation surfaced while tracing which model maps to the domains table."},
+ {sev:'info',t:'Two naming issues found reading columns directly',tbls:['expenses','products'],d:"expenses.expanseFor is a typo (should be expenseFor). products.status is stored as varchar(191) DEFAULT '1' — the sole status column in the schema stored as text rather than the tinyint(1) every other table uses."},
+ {sev:'ok',t:'Production .env had APP_ENV=local and APP_DEBUG=true — fixed 2026‑09‑13',tbls:[],d:"Observed incidentally while locating DB credentials on the VPS. Debug mode on a live SaaS can expose verbose stack traces and internals to visitors. Corrected directly on the VPS: APP_ENV set to production, APP_DEBUG set to false, config cache cleared and verified via php artisan tinker. A timestamped backup of the original .env was kept."},
+ {sev:'info',t:'notifications is the largest table by on-disk size',tbls:['notifications'],d:"862 rows but 278,528 bytes of data — an order of magnitude above every other table — consistent with Laravel's notification channel storing a full serialized payload per row. Worth watching for growth/pruning as usage increases."},
+];
+
+/* ---------- render: modules ---------- */
+const modgrid = document.getElementById('modgrid');
+MODULES.forEach(mod=>{
+  const count = TABLES.filter(t=>t.m===mod.k).length;
+  const el = document.createElement('div');
+  el.className='modcard';
+  el.style.setProperty('--m', `var(--mod-${mod.k})`);
+  el.innerHTML = `<div class="top"><h4>${mod.name}</h4><span class="cnt">${count}</span></div>
+    <p>${mod.desc}</p>
+    <div class="tbls">${TABLES.filter(t=>t.m===mod.k).slice(0,6).map(t=>t.n).join(' · ')}${count>6?' …':''}</div>`;
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('#modFilter .pill').forEach(p=>p.setAttribute('aria-pressed', p.dataset.mod===mod.k ? 'true':'false'));
+    activeMod = mod.k;
+    document.getElementById('reference').scrollIntoView({behavior:'smooth'});
+    applyFilters();
+  });
+  modgrid.appendChild(el);
+});
+
+/* module filter pills */
+const modFilterEl = document.getElementById('modFilter');
+let activeMod='all';
+const allModPill = document.createElement('button');
+allModPill.className='pill'; allModPill.textContent='All modules'; allModPill.dataset.mod='all'; allModPill.setAttribute('aria-pressed','true');
+modFilterEl.appendChild(allModPill);
+MODULES.forEach(mod=>{
+  const p=document.createElement('button');
+  p.className='pill'; p.textContent=mod.name; p.dataset.mod=mod.k; p.setAttribute('aria-pressed','false');
+  modFilterEl.appendChild(p);
+});
+modFilterEl.addEventListener('click',e=>{
+  const btn=e.target.closest('.pill'); if(!btn) return;
+  activeMod=btn.dataset.mod;
+  modFilterEl.querySelectorAll('.pill').forEach(p=>p.setAttribute('aria-pressed', p===btn?'true':'false'));
+  applyFilters();
+});
+
+/* scope filter */
+let activeScope='all';
+document.getElementById('scopeFilter').addEventListener('click',e=>{
+  const btn=e.target.closest('.pill'); if(!btn) return;
+  activeScope=btn.dataset.scope;
+  document.querySelectorAll('#scopeFilter .pill').forEach(p=>p.setAttribute('aria-pressed', p===btn?'true':'false'));
+  applyFilters();
+});
+
+const scopeColor = {root:'var(--accent-strong)',direct:'var(--accent)',transitive:'#4FA3A8',global:'var(--ink-faint)'};
+const scopeLabel = {root:'root',direct:'direct',transitive:'transitive',global:'global'};
+
+/* ---------- render: table list ---------- */
+const tlist = document.getElementById('tlist');
+TABLES.forEach((t,i)=>{
+  const modName = MODULES.find(m=>m.k===t.m).name;
+  const row = document.createElement('div');
+  row.className='trow';
+  row.dataset.name=t.n; row.dataset.mod=t.m; row.dataset.scope=t.scope;
+
+  const fkChips = (t.fks||[]).map(f=>{
+    const ruleClass = f.bad ? '' : (f.d==='C'?'rule-CASCADE':f.d==='SN'?'rule-SETNULL':'rule-NOACTION');
+    const ruleText = f.bad ? 'BUG' : RULE[f.d];
+    return `<span class="fk${f.bad?' bad':''}">${f.c} → ${f.r}<span class="rule ${ruleClass}">${ruleText}</span></span>`;
+  }).join('');
+  const weakChips = (t.weakfk||[]).map(w=>`<span class="fk weak">${w.c} ⇢ ${w.r}<span class="rule" style="background:transparent;color:var(--ink-faint);">no FK</span></span>`).join('');
+  const flagChips = (t.flags||[]).map(f=>`<a href="#findings" data-jump="${f}">Finding ${f}</a>`).join('');
+
+  row.innerHTML = `
+    <div class="thead">
+      <div class="tname">${t.n}</div>
+      <div class="badge-mod tpk-col"><i class="dot" style="background:var(--mod-${t.m});"></i>${modName}</div>
+      <div class="trows">${t.rows.toLocaleString()} rows</div>
+      <div class="tscope fkcount-col" style="color:${scopeColor[t.scope]}">${scopeLabel[t.scope]}${t.nullableBiz?' · nullable':''}</div>
+      <div class="tscope" style="color:var(--ink-faint)">${(t.fks||[]).length} FK${(t.fks||[]).length===1?'':'s'}</div>
+      <div class="chev">›</div>
+    </div>
+    <div class="tdetail">
+      <p class="purpose">${t.note}</p>
+      <div class="pkline">PRIMARY KEY: ${t.pk}</div>
+      ${fkChips || weakChips ? `<div class="fklabel">Foreign keys</div><div class="fkrow">${fkChips}${weakChips}</div>` : ''}
+      ${flagChips ? `<div class="flaglinks">${flagChips}</div>` : ''}
+    </div>`;
+  row.querySelector('.thead').addEventListener('click',()=>row.classList.toggle('open'));
+  tlist.appendChild(row);
+});
+
+/* jump to a specific finding number and flash it */
+tlist.addEventListener('click', e=>{
+  const a = e.target.closest('[data-jump]');
+  if(!a) return;
+  e.stopPropagation();
+});
+document.addEventListener('click', e=>{
+  const a = e.target.closest('[data-jump]');
+  if(!a) return;
+  const idx = parseInt(a.dataset.jump,10)-1;
+  const findEls = document.querySelectorAll('.finding');
+  if(findEls[idx]){
+    setTimeout(()=>{
+      findEls[idx].scrollIntoView({behavior:'smooth',block:'center'});
+      findEls[idx].style.outline = '2px solid var(--crit)';
+      setTimeout(()=>findEls[idx].style.outline='',1600);
+    },50);
+  }
+});
+
+/* ---------- filters ---------- */
+const searchEl = document.getElementById('search');
+const resultcount = document.getElementById('resultcount');
+function applyFilters(){
+  const q = searchEl.value.trim().toLowerCase();
+  let shown=0;
+  tlist.querySelectorAll('.trow').forEach(row=>{
+    const matchesQ = !q || row.dataset.name.includes(q);
+    const matchesMod = activeMod==='all' || row.dataset.mod===activeMod;
+    const matchesScope = activeScope==='all' || row.dataset.scope===activeScope;
+    const show = matchesQ && matchesMod && matchesScope;
+    row.classList.toggle('hidden-row', !show);
+    if(show) shown++;
+  });
+  resultcount.textContent = `Showing ${shown} of ${TABLES.length} tables`;
+}
+searchEl.addEventListener('input', applyFilters);
+applyFilters();
+
+/* ---------- render: findings ---------- */
+const findlist = document.getElementById('findlist');
+FINDINGS.forEach((f,i)=>{
+  const el=document.createElement('div');
+  el.className='finding';
+  el.innerHTML = `<div class="num">${String(i+1).padStart(2,'0')}</div>
+    <div>
+      <h4>${f.t} <span class="sev sev-${f.sev}">${f.sev==='ok'?'Fixed':f.sev==='crit'?'Bug / Risk':f.sev==='warn'?'Data integrity':'Tech debt'}</span></h4>
+      <p>${f.d}</p>
+      ${f.tbls.length?`<div class="tblrefs">${f.tbls.map(x=>`<code>${x}</code>`).join('')}</div>`:''}
+    </div>`;
+  findlist.appendChild(el);
+});
+
+/* ---------- nav: mobile toc + scrollspy ---------- */
+const sections = ['overview','diagram','tenancy','modules','reference','findings'];
+const mobtoc = document.getElementById('mobtoc');
+sections.forEach((id,i)=>{
+  const a=document.createElement('a');
+  a.href='#'+id; a.textContent=document.querySelector(`#toc a[href="#${id}"]`).textContent.trim();
+  mobtoc.appendChild(a);
+});
+const tocLinks = document.querySelectorAll('#toc a');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      tocLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+en.target.id));
+    }
+  });
+},{rootMargin:'-15% 0px -70% 0px'});
+sections.forEach(id=>{ const s=document.getElementById(id); if(s) io.observe(s); });
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AppzetBilling — Application Flow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="mobtoc" id="mobtoc"></div>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <div class="mark">AppzetBilling</div>
+      <div class="sub">Technical Docs</div>
+    </div>
+    <nav class="site-nav">
+      <a href="db-architecture.html"><span class="ico">🗄</span> DB Architecture</a>
+      <a href="application-flow.html" class="active"><span class="ico">🔀</span> Application Flow</a>
+    </nav>
+    <div class="meta">
+      Not yet investigated<br>
+      Planned scope below
+    </div>
+  </aside>
+
+  <main>
+    <div class="topband" style="margin:-38px -56px 0;padding:26px clamp(16px,4vw,56px);">
+      <div class="title-row">
+        <div>
+          <h1>AppzetBilling — Application Flow</h1>
+          <div class="desc">Request-path and business-process documentation: what actually happens in code, not just what the schema implies. Not started yet — planned as a follow-up investigation.</div>
+        </div>
+        <div class="badge-date">not started</div>
+      </div>
+    </div>
+
+    <section>
+      <div class="placeholder">
+        <div class="big">🔀</div>
+        <h3>Coming soon</h3>
+        <p>This page will map the real request/data flows through the Laravel app — pulled from the actual Controllers, routes, and job/event classes on the VPS, the same way the <a href="db-architecture.html">DB Architecture</a> doc was built from live queries rather than assumption.</p>
+
+        <div class="scopelist">
+          <div class="si"><b>POS checkout →</b> cart / online-store checkout → <code class="mono">sales</code> + <code class="mono">sale_details</code> creation → KOT routing to <code class="mono">kitchens</code> → cooking status updates → payment/<code class="mono">transactions</code> → due settlement.</div>
+          <div class="si"><b>Tenant onboarding →</b> signup → <code class="mono">plan_subscribes</code> creation → gateway payment callback → <code class="mono">clone_business_catalog</code> invocation → first-login setup.</div>
+          <div class="si"><b>Inventory →</b> purchase order → <code class="mono">stock_movements</code> ledger entry → <code class="mono">ingredients.stock_quantity</code> update → low-stock alerting.</div>
+          <div class="si"><b>Multi-tenancy enforcement →</b> where <code class="mono">BranchScope</code> / <code class="mono">DataManager</code> global scopes actually attach, and whether <code class="mono">plan_subscribes.available_modules</code> is enforced anywhere in request handling (flagged as unverified in the DB doc).</div>
+          <div class="si"><b>Addon module gating →</b> how <code class="mono">moduleCheck()</code> and per-plan <code class="mono">available_modules</code> interact at runtime across HrmAddon, MultiBranchAddon, CashRegisterAddon, etc.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      AppzetBilling Technical Docs · Application Flow not yet investigated
+    </footer>
+  </main>
+</div>
+</body>
+</html>
