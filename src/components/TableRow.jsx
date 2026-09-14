@@ -43,6 +43,7 @@ export default function TableRow({ table, moduleName, hidden, onJumpToFinding, i
         <div className="chev">›</div>
       </div>
       <div className="tdetail">
+       <div className="tdetail-inner">
         <p className="purpose">{table.note}</p>
         <div className="identity-row">
           <span className="identity-chip">
@@ -131,6 +132,7 @@ export default function TableRow({ table, moduleName, hidden, onJumpToFinding, i
             ))}
           </div>
         )}
+       </div>
       </div>
     </div>
   );

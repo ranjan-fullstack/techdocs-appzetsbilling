@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Sidebar from '../components/Sidebar.jsx';
-import MobileToc from '../components/MobileToc.jsx';
 import Mermaid from '../components/Mermaid.jsx';
 import AppAreaGrid from '../components/AppAreaGrid.jsx';
 import TableList from '../components/TableList.jsx';
@@ -115,11 +114,10 @@ export default function DbArchitecture() {
 
   return (
     <>
-      <MobileToc toc={TOC} />
       <div className="shell">
         <Sidebar toc={TOC} activeSection={activeSection} meta={META} />
         <main>
-          <div className="topband" style={{ margin: '-38px -56px 0', padding: '26px clamp(16px,4vw,56px)' }}>
+          <div className="topband topband-bleed">
             <div className="title-row">
               <div>
                 <h1>AppzetBilling — Production Database Schema</h1>

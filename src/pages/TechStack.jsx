@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
 import Sidebar from '../components/Sidebar.jsx';
-import MobileToc from '../components/MobileToc.jsx';
 import StartHereCard from '../components/StartHereCard.jsx';
 import { STACK } from '../data/techStack.js';
 
@@ -38,11 +37,10 @@ export default function TechStack() {
 
   return (
     <>
-      <MobileToc toc={TOC} />
       <div className="shell">
         <Sidebar toc={TOC} activeSection={activeSection} meta={META} />
         <main>
-          <div className="topband" style={{ margin: '-38px -56px 0', padding: '26px clamp(16px,4vw,56px)' }}>
+          <div className="topband topband-bleed">
             <div className="title-row">
               <div>
                 <h1>AppzetBilling — Tech Stack</h1>
