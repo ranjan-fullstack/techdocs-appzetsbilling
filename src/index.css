@@ -413,6 +413,32 @@ p.tight{max-width:none;}
 
 footer{border-top:1px solid var(--border);margin-top:50px;padding:22px clamp(16px,4vw,56px) 40px;color:var(--ink-faint);font-size:.78rem;font-family:var(--mono);}
 
+.vtag{display:inline-flex;align-items:center;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:8px;vertical-align:1px;}
+.vtag.verified{background:var(--accent-soft);color:var(--accent-strong);}
+.vtag.assumption{background:var(--surface-alt);color:var(--ink-soft);border:1px solid var(--border);}
+.vtag.review{background:var(--warn-soft);color:var(--warn);}
+
+.dtwrap{overflow-x:auto;border:1px solid var(--border);border-radius:11px;margin-top:14px;box-shadow:var(--shadow);}
+table.dtable{border-collapse:collapse;width:100%;font-size:.85rem;min-width:520px;}
+table.dtable th,table.dtable td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--border-soft);white-space:nowrap;}
+table.dtable th{background:var(--surface-alt);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;}
+table.dtable tr:last-child td{border-bottom:none;}
+table.dtable td.wrap,table.dtable th.wrap{white-space:normal;}
+table.dtable td.num{text-align:right;font-family:var(--mono);}
+table.dtable tr.hl td{background:var(--accent-soft);font-weight:600;}
+table.dtable tbody tr:hover{background:var(--surface-alt);}
+
+.pricetier{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:16px;}
+.tier{border:1px solid var(--border);border-radius:12px;padding:20px;background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;transition:transform .16s ease,box-shadow .16s ease;}
+.tier:hover{transform:translateY(-3px);}
+.tier.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow);}
+.tier .name{font-family:var(--disp);font-weight:800;font-size:1.1rem;}
+.tier .price{font-family:var(--mono);font-size:1.55rem;font-weight:700;}
+.tier .price .per{font-size:.7rem;color:var(--ink-faint);font-weight:400;}
+.tier ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:.84rem;color:var(--ink-soft);}
+.tier li{padding-left:16px;position:relative;}
+.tier li::before{content:'—';position:absolute;left:0;color:var(--ink-faint);}
+
 .mobbar{display:none;}
 .mobtoc{display:none;}
 .mobbar-overlay{display:none;}

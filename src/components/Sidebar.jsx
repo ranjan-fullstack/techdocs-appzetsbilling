@@ -6,6 +6,7 @@ const PAGES = [
   { to: '/application-flow', ico: '🔀', label: 'Application Flow' },
   { to: '/tech-stack', ico: '🧰', label: 'Tech Stack' },
   { to: '/known-issues', ico: '🐞', label: 'Known Issues' },
+  { to: '/backup-migration', ico: '🗃', label: 'Backup & Migration' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {

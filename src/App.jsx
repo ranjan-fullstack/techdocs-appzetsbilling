@@ -3,6 +3,7 @@ import DbArchitecture from './pages/DbArchitecture.jsx';
 import ApplicationFlow from './pages/ApplicationFlow.jsx';
 import TechStack from './pages/TechStack.jsx';
 import KnownIssues from './pages/KnownIssues.jsx';
+import BackupMigration from './pages/BackupMigration.jsx';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Route path="/application-flow" element={<ApplicationFlow />} />
       <Route path="/tech-stack" element={<TechStack />} />
       <Route path="/known-issues" element={<KnownIssues />} />
+      <Route path="/backup-migration" element={<BackupMigration />} />
     </Routes>
   );
 }
