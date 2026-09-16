@@ -6,6 +6,7 @@ import {
   RETENTION_TABLE, PRICING_PLANS, MIGRATION_ENTITIES, MIGRATION_STEPS, SCHEMA_TABLES,
   API_ENDPOINTS, DR_TARGETS, DR_SCENARIOS, DR_PROCEDURE, COST_INPUTS, COST_SIM,
   BACKUP_ROADMAP, SECURITY_RISKS, OPEN_QUESTIONS,
+  IMPLEMENTATION_STATS, IMPLEMENTATION_STEPS, TRANSFORMER_PHASES,
 } from '../data/backupMigration.js';
 import { PRI_LABEL } from '../data/roadmap.js';
 
@@ -25,6 +26,7 @@ const TOC = [
   { id: 'roadmap', num: '13', label: 'Implementation Roadmap' },
   { id: 'security', num: '14', label: 'Security Risks' },
   { id: 'open', num: '15', label: 'Open Questions' },
+  { id: 'implementation', num: '16', label: 'Implementation Log' },
 ];
 
 const META = (
@@ -103,7 +105,8 @@ export default function BackupMigration() {
                   A read-only audit of the live Hostinger VPS API and account catalog, cross-checked against this site's own
                   DB Architecture audit, followed by a backup, retention, pricing and migration architecture designed for
                   what was actually found — not a generic multi-tenant SaaS template. No production data, backups or
-                  configuration were changed while producing this.
+                  configuration were changed while producing the audit itself (§01–§15). §16 is the one later exception —
+                  the top roadmap recommendation was actually implemented and verified against the live server on 2026-09-17.
                 </div>
               </div>
               <div className="badge-date">audited 2026‑09‑15/16</div>
@@ -122,6 +125,7 @@ export default function BackupMigration() {
                 { q: 'What will this cost at scale?', a: '§12 Cost Simulation, 10 → 5,000 restaurants', href: '#cost' },
                 { q: 'What do we need to build?', a: '§10 Schema & API Design', href: '#schema' },
                 { q: 'What needs sign-off before anything changes?', a: '§15 Open Questions', href: '#open' },
+                { q: "What's already been done?", a: '§16 Implementation Log — offsite R2 push, live since 2026-09-17', href: '#implementation' },
               ]}
               note={
                 <>
@@ -357,6 +361,38 @@ export default function BackupMigration() {
                 </p>
               </div>
             </div>
+
+            <h3 style={{ marginTop: 26 }}>Real-world trigger: a Petpooja migration request</h3>
+            <p style={{ marginTop: 8 }}>
+              This section stopped being theoretical when an actual Petpooja user asked to move their data in. Petpooja is
+              closed SaaS — no direct database access — so what a merchant can actually hand over is Excel/CSV exports from
+              their own back-office <strong>Reports</strong> screen: typically an Item Master, a Customer/Party Master, a
+              Sales Register, and Purchase/Inventory reports. Their column names won't match AppzetBilling's, and won't for
+              the next POS system either — which is why the tool below maps columns instead of hardcoding against one
+              source, and why it's built in phases rather than as one big wizard.
+            </p>
+            <h3 style={{ marginTop: 26 }}>Build order — the transformer first, the full wizard second</h3>
+            <p className="lede">Ships value at Phase 1 without waiting on the queue worker or staging tables.</p>
+            <div className="dtwrap">
+              <table className="dtable">
+                <thead><tr><th className="wrap">Phase</th><th className="wrap">Scope</th><th className="wrap">What it builds</th></tr></thead>
+                <tbody>
+                  {TRANSFORMER_PHASES.map((p) => (
+                    <tr key={p.phase}><td className="wrap"><strong>{p.phase}</strong></td><td className="wrap">{p.scope}</td><td className="wrap">{p.build}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flagbar" style={{ marginTop: 18 }}>
+              <div className="flag info">
+                <div className="ic">STATUS</div>
+                <p>
+                  Plan only — no code exists yet. Deliberately deferred; see §13 "later" for where this sits in priority.
+                  Needs the actual AppzetBilling app repo (not this docs site) plus a real Petpooja export sample before
+                  Phase 1 can start.
+                </p>
+              </div>
+            </div>
           </section>
 
           <section id="schema">
@@ -477,7 +513,9 @@ export default function BackupMigration() {
                 <div className="gapcard">
                   {BACKUP_ROADMAP.filter((r) => r.pri === pri).map((r) => (
                     <div key={r.t} className="card pad">
-                      <div style={{ fontWeight: 700, fontSize: '.92rem', marginBottom: 6 }}>{r.t}</div>
+                      <div style={{ fontWeight: 700, fontSize: '.92rem', marginBottom: 6 }}>
+                        {r.t} {r.done && <VTag kind="verified">done · §16</VTag>}
+                      </div>
                       <p className="tight" style={{ fontSize: '.85rem', color: 'var(--ink-soft)', margin: 0 }}>{r.d}</p>
                     </div>
                   ))}
@@ -499,10 +537,40 @@ export default function BackupMigration() {
             <Steps items={OPEN_QUESTIONS} />
           </section>
 
+          <section id="implementation">
+            <div className="eyebrow">16 · Implementation Log <VTag kind="verified">live as of 2026-09-17</VTag></div>
+            <h2>The §13 "now" item, actually shipped</h2>
+            <p className="lede">
+              Everything in §01–§15 is the original read-only audit (2026-09-15/16) — nothing on the server was touched
+              while producing it. This section is the one exception: "stand up the offsite copy" was implemented and
+              verified against the live production VPS on 2026-09-17, not just planned.
+            </p>
+            <div className="stats">
+              {IMPLEMENTATION_STATS.map((s) => (
+                <div className="stat accent" key={s.k}><div className="num">{s.v}</div><div className="lbl">{s.k} · {s.u}</div></div>
+              ))}
+            </div>
+            <div style={{ marginTop: 22 }}>
+              <Steps items={IMPLEMENTATION_STEPS} />
+            </div>
+            <div className="flagbar" style={{ marginTop: 18 }}>
+              <div className="flag warn">
+                <div className="ic">STILL OPEN</div>
+                <p>
+                  This closes only the <em>location</em> half of §14's top risk ("backups are unencrypted and
+                  single-location") — the R2 copies are exact, unencrypted gzip dumps, same as the local ones. Encryption
+                  before upload, and object-versioning/immutability on the R2 bucket (§13 "soon" — closes the ransomware
+                  gap in §11), are both deliberately not done yet, pending a decision on approach.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <footer>
             AppzetBilling Backup &amp; Migration Blueprint · compiled from a live, read-only Hostinger VPS API audit (2026‑09‑15/16)
             and this repo's own DB Architecture / Tech Stack / Known Issues audits (2026‑09‑13/14) · no production data,
-            backups, or configuration were changed
+            backups, or configuration were changed for the audit itself · §16 documents the one later exception — the
+            offsite R2 backup push, implemented and verified live on 2026‑09‑17
           </footer>
         </main>
       </div>

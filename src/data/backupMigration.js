@@ -18,7 +18,7 @@ export const ARCH_FACTS = [
   { k: 'Web / proxy', v: 'nginx 1.30.3 → nginx :8080 → php-fpm :17001 (pm=ondemand, max_children=250)' },
   { k: 'Hosting', v: 'Hostinger VPS, Ubuntu 24.04.4 LTS, CloudPanel control panel (clpctl)' },
   { k: 'Queue / scheduler', v: 'Queue driver = database, but no worker process runs; no cron calls schedule:run anywhere on the server' },
-  { k: 'Backups (existing)', v: 'CloudPanel: daily gzipped mysqldump, 7-day retention, local disk only. Hostinger: weekly whole-VM snapshot via Proxmox Backup Server' },
+  { k: 'Backups (existing)', v: 'CloudPanel: daily gzipped mysqldump (03:15, clpctl db:backup), 7-day local retention. Hostinger: weekly whole-VM snapshot via Proxmox Backup Server. Offsite copy to Cloudflare R2 added 2026-09-17 — see §16' },
   { k: 'Source control', v: 'github.com/ranjan-fullstack/appzetbilling, single branch, no CI/CD' },
 ];
 
@@ -128,6 +128,15 @@ export const MIGRATION_STEPS = [
   { t: 'Stage', d: 'Import into staging tables, not production. Duplicate detection runs here against existing production rows — the admin decides skip/merge/import-anyway per conflict class, not per row.' },
   { t: 'Confirm & commit', d: 'Only valid, confirmed rows move to production, in FK-dependency order (parties → products → purchases/sales → line items → payments), inside transactions.' },
   { t: 'Report & rollback window', d: "Every row this migration created is tagged with its migration_job_id; a rollback within the window deletes exactly those rows and nothing the tenant created independently since." },
+];
+
+// A real Petpooja customer asked to move their data in while this document was being built —
+// the trigger for formalizing the workflow above into a concrete, phased tool below, rather than
+// leaving it as an architecture description with no build order.
+export const TRANSFORMER_PHASES = [
+  { phase: 'Phase 1 — MVP', scope: 'One entity at a time, starting with Products', build: "Upload a .csv/.xlsx → confirm entity type manually → plain fuzzy-match column suggestions (no AI needed yet) → validation report (required fields, type checks, duplicates against the existing table) → download a cleaned file already shaped to AppzetBilling's table structure." },
+  { phase: 'Phase 2 — Reusable across sources', scope: 'Multi-sheet files, any POS system, not just Petpooja', build: 'Auto-split a multi-sheet file by detected entity (header-keyword matching first, AI classification for ambiguous cases). Save each confirmed mapping as a template per source_system_label — the next Petpooja migration maps itself instead of repeating the manual step.' },
+  { phase: 'Phase 3 — Full wizard', scope: 'Removes the download/re-upload step entirely', build: 'Commit straight into migration_staging_rows with a review screen, then a transactional, FK-ordered commit + rollback window — this is where the tool becomes the full 7-step workflow above instead of a standalone transformer.' },
 ];
 
 export const SCHEMA_TABLES = [
@@ -323,13 +332,14 @@ export const COST_SIM = [
 
 export const BACKUP_ROADMAP = [
   { pri: 'now', t: 'Add the missing schedule:run cron entry', d: 'Already on the engineering roadmap independent of this audit — but every automated backup-verification and retention-purge job depends on it. One line, zero application risk.' },
-  { pri: 'now', t: 'Stand up the offsite copy', d: "Push the existing daily mysqldump to Cloudflare R2 (§05) immediately after it's produced — this alone closes the single biggest risk in §03." },
+  { pri: 'now', t: 'Stand up the offsite copy', d: "Push the existing daily mysqldump to Cloudflare R2 (§05) immediately after it's produced — this alone closes the single biggest risk in §03.", done: true },
   { pri: 'now', t: 'Fix the two tenant-isolation bugs', d: 'coupons.code and parties.phone (§02) — required before building any per-tenant export/import tooling that assumes clean isolation.' },
   { pri: 'soon', t: 'Enable object versioning / immutability on the offsite bucket', d: 'Closes the ransomware gap in §11 — a configuration step on the R2 bucket, not new code.' },
   { pri: 'soon', t: 'Stand up a queue worker', d: 'Already flagged as a standalone gap — but also a hard prerequisite for the migration architecture in §09, which cannot run large imports synchronously.' },
   { pri: 'soon', t: 'Build backup_jobs / backup_files / storage_usage and wire up the storage-usage API', d: "Turns §12's modeled numbers into real measured ones, and is the metadata layer every later feature reads from." },
   { pri: 'later', t: 'Per-tenant logical export capability', d: 'Makes §06 Q5 ("restore one restaurant") and Q8 (offboarding export) direct operations instead of manual procedures.' },
   { pri: 'later', t: 'Migration wizard: upload → mapping → staging → import', d: 'Build the full pipeline in §09/§10, including AI-assisted mapping, after the queue worker above exists.' },
+  { pri: 'later', t: 'Import transformer, Phase 1 (Products)', d: 'Triggered by a real Petpooja customer migration request — column-mapping + validation + clean-file-output tool, one entity at a time. See §09 for the phased build plan; does not require the queue worker or staging tables to start.' },
   { pri: 'later', t: 'First restore drill, then a recurring one', d: 'Prove the backup actually restores before promising customers it does. Repeat on a schedule once the scheduler is fixed.' },
   { pri: 'later', t: 'Split database onto its own VPS', d: 'Triggered by the CPU/RAM trend crossing a comfortable threshold, not by tenant count alone — instrument and watch, per §12.' },
 ];
@@ -352,4 +362,24 @@ export const OPEN_QUESTIONS = [
   { t: 'Security review before opening customer file uploads', d: 'The migration wizard (§09) is new attack surface (§14) — worth a dedicated review pass before customer-facing.' },
   { t: 'Budget sign-off for the phased VPS path', d: 'KVM 2 → split DB onto KVM 4/8 as usage crosses the thresholds in §12 — real pricing, no purchase made.' },
   { t: 'Restore SLA commitments', d: "§08's pricing tiers reference restore turnaround by plan — those numbers need an operational commitment before publishing." },
+];
+
+// Everything above this point is the original read-only audit (2026-09-15/16) — nothing on the
+// server was touched while producing it. The arrays below document the one exception: the §13
+// "now" item "stand up the offsite copy" was actually implemented and verified against the live
+// production VPS on 2026-09-17.
+
+export const IMPLEMENTATION_STATS = [
+  { k: 'Offsite copy', v: 'Live', u: 'Cloudflare R2 · appzetsbilling-backup · since 2026-09-17' },
+  { k: 'Push schedule', v: '03:20 daily', u: '5 min after the existing 03:15 local dump' },
+  { k: 'Cost impact', v: '₹0', u: "current DB size stays inside R2's free tier — §12" },
+  { k: 'Verification', v: 'End-to-end', u: "today's real dump pushed, then confirmed present in the bucket" },
+];
+
+export const IMPLEMENTATION_STEPS = [
+  { t: 'Connect & re-verify the environment', d: 'SSHed into the production VPS (srv1772946 / 203.0.113.10) with the existing key and confirmed the actual backup mechanics, which differ slightly from the generic description in §01: clpctl db:backup runs at 03:15 via /etc/cron.d/clp, and dumps land at /home/appzetsbilling-app/backups/databases/appzetsbilling/YYYY-MM-DD/*.sql.gz.' },
+  { t: 'Create the R2 bucket and a scoped access token', d: 'Created the appzetsbilling-backup bucket (Standard storage class, Automatic/Asia-Pacific location) and an Account API Token restricted to Object Read & Write on that one bucket only — not account-wide, per the least-privilege note in §15.' },
+  { t: 'Configure and debug the S3 client', d: "rclone was already installed on the VPS but at an old version (1.60.1) with no R2 remote configured. Writes initially failed with 403 Access Denied despite correct credentials — traced to that old version issuing a CreateBucket preflight check the scoped token isn't permitted to make. Fixed by upgrading to rclone 1.75.1 (official .deb, not a piped install script) and setting no_check_bucket=true." },
+  { t: 'Deploy the push script and cron job', d: "/usr/local/bin/push-backup-to-r2.sh finds each day's dump and copies it to r2:appzetsbilling-backup/YYYY-MM-DD/, logging outcome to syslog. Scheduled via a new /etc/cron.d/r2-backup-push at 03:20 — kept as a separate file from CloudPanel's own cron.d/clp so a panel update can't silently remove it." },
+  { t: 'Verify, not just deploy', d: "Ran the script manually against the real 2026-09-16 dump, then confirmed independently — via rclone tree and rclone ls against the live bucket, not just a clean exit code — that the file actually landed in R2." },
 ];
