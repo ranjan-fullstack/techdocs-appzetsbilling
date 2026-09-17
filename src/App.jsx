@@ -6,6 +6,7 @@ import KnownIssues from './pages/KnownIssues.jsx';
 import BackupMigration from './pages/BackupMigration.jsx';
 import Deployment from './pages/Deployment.jsx';
 import WhatsAppModule from './pages/WhatsAppModule.jsx';
+import PetpoojaComparison from './pages/PetpoojaComparison.jsx';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/backup-migration" element={<BackupMigration />} />
       <Route path="/deployment" element={<Deployment />} />
       <Route path="/whatsapp-module" element={<WhatsAppModule />} />
+      <Route path="/petpooja-comparison" element={<PetpoojaComparison />} />
     </Routes>
   );
 }

@@ -9,6 +9,7 @@ const PAGES = [
   { to: '/backup-migration', ico: '🗃', label: 'Backup & Migration' },
   { to: '/deployment', ico: '🚀', label: 'Deployment & Source Mgmt' },
   { to: '/whatsapp-module', ico: '💬', label: 'WhatsApp Module' },
+  { to: '/petpooja-comparison', ico: '🆚', label: 'Petpooja Comparison' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
