@@ -8,6 +8,7 @@ const PAGES = [
   { to: '/known-issues', ico: '🐞', label: 'Known Issues' },
   { to: '/backup-migration', ico: '🗃', label: 'Backup & Migration' },
   { to: '/deployment', ico: '🚀', label: 'Deployment & Source Mgmt' },
+  { to: '/whatsapp-module', ico: '💬', label: 'WhatsApp Module' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
