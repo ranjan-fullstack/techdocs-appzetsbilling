@@ -1,0 +1,101 @@
+<!--TITLE:08 WhatsApp, Delivery &amp; Offline — Phases 10, 11, 12-->
+<p class="sub">Petpooja-verified facts and AppZetBilling recommendations are kept in separate sections, as required. A detailed WhatsApp feasibility study already exists in this docs site (the "WhatsApp Business Module" page, recommending a Meta Cloud API integration with tenant-owned WABAs via Embedded Signup). This part adds the Petpooja comparison, the transactional/marketing split, and the Odisha view — it does not repeat that page's milestone plan.</p>
+
+<h2>1. WhatsApp and communication (Phase 10)</h2>
+<h3>1.1 What Petpooja verifiably does [[PO]]</h3>
+<ul>
+<li>SMS is a paid add-on (SMS Marketing; loyalty-credit SMS; birthday/anniversary campaigns). WhatsApp is <strong>not</strong> mentioned on the CRM page.</li>
+<li>WhatsApp appears on the Table Reservation Manager page (post-visit feedback request, sharing a booking link via WhatsApp) and as a CRM channel in the integrations blog. Provider, template model and pricing are [[UNK]].</li>
+<li>A third-party summary says Petpooja's <em>Invoice</em> product supports WhatsApp marketing (Diwali alerts, bill copies, payment reminders) [[TP]] — that concerns the retail/B2B product, not the restaurant POS.</li>
+</ul>
+<div class="callout"><b>Reading</b> WhatsApp is a real opening: Petpooja's restaurant POS publicly leans on SMS and a few WhatsApp touchpoints. AppZetBilling has nothing today ([[V]] zero code), so it is a build-from-scratch item, but it can be built <em>WhatsApp-first</em> rather than SMS-first.</div>
+
+<h3>1.2 Platform rules that shape the design</h3>
+<ul>
+<li>[[MO]] Meta (official Meta docs, not Petpooja): per-message pricing since <strong>1 July 2025</strong>; marketing templates always charged; utility and authentication templates charged outside an open customer-service window and free inside it; service (customer-initiated) conversations free; non-template messages free; India INR billing localisation from <strong>1 Jan 2026</strong> with WABAs to be migrated to INR by <strong>31 Dec 2026</strong>; rate cards published in INR (effective 1 Jul 2026). Source: <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing">Meta pricing docs</a>.</li>
+<li>[[TP]] Indicative INR rates from BSP blogs: marketing ≈ ₹0.86–0.88, utility/authentication ≈ ₹0.115–0.13 per message plus 18% GST and any BSP fee. One blog claims a change from 1 Oct 2026 making in-window utility messages chargeable; this <strong>conflicts</strong> with Meta's current page and is unverified. Always price from Meta's own rate card at build time.</li>
+<li>[[TP]] Template languages: BSP documentation lists Odia among supported template languages — verify the exact template language code in Meta's official language list before building Odia templates. [[UNK]] until then.</li>
+</ul>
+
+<h3>1.3 Transactional vs marketing (recommended)</h3>
+<div class="tblw"><table><thead><tr><th>Use case</th><th>Category</th><th>Trigger</th><th>Consent basis</th><th>Notes</th></tr></thead><tbody>
+<tr><td colspan="5"><strong>Transactional (utility)</strong></td></tr>
+<tr><td>Bill / e-bill with PDF or link</td><td>Utility</td><td>Sale closed, customer phone present</td><td>Customer supplied the number for this transaction; provide opt-out</td><td>Highest-value first feature; no dependency on aggregators</td></tr>
+<tr><td>Order confirmation and status (online store)</td><td>Utility</td><td>Order state change</td><td>Transaction</td><td>Uses existing <code>order_status</code> values</td></tr>
+<tr><td>Payment confirmation / payment link</td><td>Utility</td><td>Gateway webhook</td><td>Transaction</td><td>Needs inbound webhook first</td></tr>
+<tr><td>Reservation confirmation and reminder</td><td>Utility</td><td>Booking created; T-2h job</td><td>Transaction</td><td>Reduces no-shows</td></tr>
+<tr><td>Delivery updates (assigned, out for delivery, delivered)</td><td>Utility</td><td>Delivery state change</td><td>Transaction</td><td>Depends on the delivery module</td></tr>
+<tr><td>Feedback request after visit</td><td>Utility or marketing — Meta decides [[INF]]</td><td>Bill closed + delay</td><td>Transaction; keep neutral wording</td><td>If classified marketing it costs more; test</td></tr>
+<tr><td>Customer support replies</td><td>Service (within 24 h window)</td><td>Customer messages first</td><td>Customer-initiated</td><td>Free inside the window [[MO]] — needs an inbox UI</td></tr>
+<tr><td colspan="5"><strong>Marketing</strong></td></tr>
+<tr><td>Offers, festival campaigns, win-back</td><td>Marketing</td><td>Campaign schedule</td><td><strong>Explicit opt-in required</strong>; store source and time</td><td>Charged per delivered message</td></tr>
+<tr><td>Loyalty balance / reward promos</td><td>Marketing (balance-only notices may be utility [[INF]])</td><td>Ledger events</td><td>Opt-in</td><td>—</td></tr>
+<tr><td>Birthday / anniversary greetings</td><td>Marketing</td><td>Nightly job from <code>parties.dob/anniversary</code> (new columns)</td><td>Opt-in</td><td>—</td></tr>
+</tbody></table></div>
+
+<h3>1.4 Recommended controls</h3>
+<ul>
+<li><strong>Tenant-specific WhatsApp numbers:</strong> tenant owns its WABA via Embedded Signup; AppZet stores encrypted tokens ([[REC]], consistent with the existing WhatsApp page).</li>
+<li><strong>Opt-in/opt-out:</strong> <code>message_consents</code> table (Part 07); honour "STOP" replies via the inbound webhook; separate consent for transactional vs marketing.</li>
+<li><strong>Delivery status + webhooks:</strong> verify signature, store raw event, idempotent on <code>wa_message_id</code>; update <code>whatsapp_messages.status</code> (sent/delivered/read/failed).</li>
+<li><strong>Usage billing:</strong> meter by category (<code>usage_meters</code>); plan includes an allowance, overage billed at cost plus margin — do not invent prices; see Part 10.</li>
+<li><strong>Rate limiting and quality:</strong> per-tenant sending caps, warm-up, and pause campaigns if the number's quality rating drops.</li>
+<li><strong>India compliance [[INF]]:</strong> keep an unsubscribe mechanism and consent records; get legal advice on DPDP Act obligations before marketing at scale (see Part 09).</li>
+</ul>
+
+<h2>2. Delivery management (Phase 11)</h2>
+<h3>2.1 Petpooja verified [[PO]]</h3>
+<ul>
+<li>Manages aggregator delivery orders from one screen; names rider-management partners (Dunzo [spelled "Duzno" on the page], Shadowfax, Pidge) and "B2B delivery agents" — direction and depth of these integrations [[UNK]].</li>
+<li>Token Management lets delivery executives and takeaway customers see order status; Zomato/Swiggy OTP check-in for delivery executives [[PO]].</li>
+<li>Petpooja's own <em>Delivery Dispatch Drive</em> (driver dispatch, route optimisation, real-time tracking for in-house delivery) is reported only by a third-party summary [[TP]]; no official page was found → [[UNK]].</li>
+<li>Not verified anywhere official: delivery zones, distance-based charges, COD settlement, rider app, customer tracking link.</li>
+</ul>
+<h3>2.2 AppZetBilling today [[V]]</h3>
+<p>Delivery order type, saved customer delivery addresses, a flat delivery-charge setting, online-store order statuses (pending → confirmed → processing → delivered). No delivery person entity (the model lists <code>deliveryman_id</code> but the column does not exist), no dispatch, no zones, no tracking.</p>
+<h3>2.3 Recommended for AppZetBilling [[REC]] — staged</h3>
+<div class="tblw"><table><thead><tr><th>Stage</th><th>Scope</th><th>Why in this order</th></tr></thead><tbody>
+<tr><td>D1</td><td>Delivery charge rules by pincode/area and minimum order; COD flag; delivery person master; assign rider to order; status: assigned → picked → delivered; WhatsApp "out for delivery/delivered" messages.</td><td>Covers most small-restaurant delivery without maps or rider app.</td></tr>
+<tr><td>D2</td><td>Rider web view (limited token): my orders, call customer, mark delivered, collect COD; COD reconciliation report.</td><td>Cash handling is the real pain point.</td></tr>
+<tr><td>D3</td><td>Distance-based charge and tracking link (maps API); optional third-party rider integrations.</td><td>Introduces variable cost and vendor dependency; do after D1/D2 prove use.</td></tr>
+</tbody></table></div>
+
+<h2>3. Cloud + offline architecture (Phase 12)</h2>
+<h3>3.1 Petpooja documented behaviour [[PO]]</h3>
+<p>See Part 04. Summary: "POS Local" keeps a database on a Windows machine (Bridge Server) at the outlet; counters and kitchen/captain devices connect through a master billing station; fully offline when co-located, up to 5 days when the server is separate; menu/price/settings/aggregator orders sync from the cloud when connectivity returns; scheduled local backups. The captain app and kiosk are stated to work offline with sync. Conflict resolution and duplicate prevention are [[UNK]].</p>
+
+<h3>3.2 AppZetBilling today [[V]]</h3>
+<p>Server-rendered cloud application on one VPS. No service worker for the POS, no IndexedDB, no local database, no sync engine, no idempotency keys on sale creation. If the internet drops, billing stops. Moreover, [[V]] <code>AcnooInvoiceController::newInvoice</code> builds the sales invoice number as <code>(sales count + KOT count) + 1</code> per business: it is racy under concurrent sales, and because a <code>sales.delete-all</code> route exists, deleting rows can cause numbers to be re-issued. This must be fixed before any offline design because offline devices multiply the collision risk.</p>
+
+<h3>3.3 Proposed architecture [[REC]]</h3>
+<pre>Level 0  Harden the online path (prerequisite)
+  - server-side invoice sequence per outlet (row-locked counter)
+  - client_uuid on every sale/KOT write (unique per business) -> duplicate-proof retries
+  - queue worker + scheduler running
+
+Level 1  Offline-tolerant web POS  (fast, no new hardware)
+  - PWA + service worker caches app shell, menu, tables, taxes, payment types
+  - IndexedDB "outbox": new sale / KOT / payment operations queued with client_uuid,
+    device_id, local sequence, timestamp
+  - reads served from cache; writes queued when offline, replayed in order on reconnect
+    via POST /sync/batch (idempotent, per-operation result)
+  - printing: local print agent works without internet (LAN printers)
+  - limits: one active device per table while offline; bill number = outlet prefix +
+    device prefix + local counter (reconciled to official number after sync)
+
+Level 2  Outlet server (only for customers who need days offline / multi-device offline)
+  - small local service (Windows/Linux mini-PC) with SQLite/MySQL mirror of one outlet
+  - devices talk to the local server on the LAN; it syncs to the cloud (pull config,
+    push transactions) with the same batch API
+  - this is the closest analogue of Petpooja's Bridge Server; costly to support</pre>
+<h4>Conflict and duplicate rules</h4>
+<ul>
+<li><strong>Duplicates:</strong> unique (business_id, client_uuid) on sales/KOT/payments; a replay returns the original result.</li>
+<li><strong>Ordering:</strong> operations carry a device sequence; server applies per-entity in sequence; a table opened on two offline devices becomes a conflict item for a manager to merge (uses the same merge feature as table merge).</li>
+<li><strong>Master data (menu/price):</strong> server wins; device pulls <code>changes?since=</code> on reconnect.</li>
+<li><strong>Stock:</strong> deductions are applied on sync (ledger style); negative stock allowed offline, flagged after.</li>
+<li><strong>Payments:</strong> cash/UPI-manual payments queue offline; gateway payments require connectivity and are not attempted offline.</li>
+<li><strong>Retry:</strong> exponential backoff, visible "unsynced" counter, manual "sync now", alert if unsynced older than N hours.</li>
+<li><strong>Offline KOT:</strong> kitchen printer on LAN prints without cloud; a KDS needs LAN or connectivity (Level 2).</li>
+</ul>
+<div class="callout warn"><b>Priority note</b> Offline is a CRITICAL capability gap against Petpooja's documented core offering and a top concern for low-connectivity towns, but Level 1 is roughly a quarter of engineering work and Level 2 is a product line of its own. Recommendation: build Level 0 immediately, Level 1 in Phase 1–2, and defer Level 2 until customer demand is measured. [[INF]] whether Odisha customers need multi-day offline is unknown; ask during the customer interviews in Part 11.</div>

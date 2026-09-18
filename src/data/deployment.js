@@ -12,12 +12,12 @@ export const LIVE_STATS = [
 ];
 
 export const CURRENT_STATE = [
-  { k: 'Source control', v: 'github.com/ranjan-fullstack/appzetbilling, single branch (main), SSH remote' },
-  { k: 'Where the code actually lives', v: '/home/appzetsbilling-app/htdocs on the production VPS — this is also the git working copy' },
+  { k: 'Source control', v: 'github.com/your-org/your-repo, single branch (main), SSH remote' },
+  { k: 'Where the code actually lives', v: '/home/SITE_USER/htdocs on the production VPS — this is also the git working copy' },
   { k: 'Deploy method', v: 'Manual: SSH in, git pull, whatever steps the operator remembers. No deploy script exists on the server.' },
   { k: 'Rollback method', v: 'Manual git revert, live, directly on production' },
   { k: 'Control panel', v: 'CloudPanel 2.5.4-3+clp-noble — confirmed no built-in git-deploy/webhook command in clpctl (only site:add:php/nodejs/python/static/reverse-proxy)' },
-  { k: 'Staging', v: 'None — only one site user (appzetsbilling-app) exists on the VPS at all' },
+  { k: 'Staging', v: 'None — only one site user (SITE_USER) exists on the VPS at all' },
   { k: 'CI/CD', v: 'None — no .github/workflows in the repo, no composer.json "test" script' },
   { k: 'Automated tests', v: '2 test files exist under tests/, but nothing ever runs them' },
   { k: 'Queue worker / process manager', v: 'Not installed — no supervisord/supervisorctl on the VPS (same gap flagged in the Backup & Migration audit)' },

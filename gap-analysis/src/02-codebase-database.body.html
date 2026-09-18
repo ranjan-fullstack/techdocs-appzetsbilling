@@ -1,0 +1,90 @@
+<!--TITLE:02 Codebase &amp; Database — Phase 2 and Phase 17 (existing schema)-->
+<p class="sub">Source: source tree at <code>/home/SITE_USER/htdocs</code> (git HEAD <code>7ca9f03</code>) and read-only queries against <code>information_schema</code> of the live database. No row contents were read. Row counts are InnoDB estimates and can be slightly off.</p>
+
+<div class="grid">
+<div class="card"><b>Framework</b><span class="v">Laravel 10</span>PHP ^8.1 (runs 8.2), Sanctum 3, Spatie Permission 5, nwidart modules</div>
+<div class="card"><b>Tables</b><span class="v">97</span>206 foreign-key column rows, 324 index rows</div>
+<div class="card"><b>Modules</b><span class="v">7</span>all enabled in <code>modules_statuses.json</code></div>
+<div class="card"><b>Languages</b><span class="v">102</span>rows in <code>languages</code>; Odia file has 2090 of 2166 English keys</div>
+</div>
+
+<h2>1. Frontend</h2>
+<div class="tblw"><table><thead><tr><th>Aspect</th><th>Finding</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Framework</td><td><strong>Server-rendered Laravel Blade</strong> with jQuery 3.7.1, Bootstrap (+ RTL build), select2, toastr, jquery-confirm, jquery-validation. It is <em>not</em> a SPA. <code>package.json</code> lists Vite 3, Tailwind and Alpine as dev dependencies but the layouts observed load Bootstrap/jQuery assets.</td><td>[[V]] <code>resources/views/layouts</code>, module layout partials, package.json</td></tr>
+<tr><td>Routing</td><td>Laravel web routes: <code>admin.php</code> (109 routes, super-admin panel), <code>web.php</code> (24), per-module <code>web.php</code> (RestaurantWebAddon <strong>284</strong>, RestaurantOnlineStore 54, HrmAddon 46, InventoryAddon 34, CashRegister 20, MultiBranch 12, CustomDomain 10) + <code>kitchen.php</code> (15).</td><td>[[V]] route file counts</td></tr>
+<tr><td>Authentication (UI)</td><td>Breeze-style session auth (cookie <code>appzetsbilling_session</code>, HttpOnly, SameSite=Lax), email OTP verification on sign-up, separate customer auth for the online store (<code>CustomerAuthenticate</code>).</td><td>[[V]] middleware list, routes/auth.php, response headers</td></tr>
+<tr><td>Tenant handling (UI)</td><td>Subdomain / custom-domain / <code>restaurant_slug</code> resolution by <code>ResolveBusiness</code> middleware for the public online store; back-office users are bound by <code>users.business_id</code>.</td><td>[[V]] ResolveBusiness.php</td></tr>
+<tr><td>Dashboard, Billing/POS, Admin, Inventory, Reports, Settings, Users, Roles, Customers, Suppliers, Purchases, Menu, Tables, Kitchen, Payments, Online ordering, Subscription, Notifications</td><td>All present as Blade views/controllers. See Part 03 for the capability-level inventory.</td><td>[[V]] controllers &amp; named routes</td></tr>
+<tr><td>Mobile app</td><td>A REST API under <code>/api/v1</code> (Sanctum bearer tokens) serves a separate Android/iOS app; the plan feature list advertises "Android &amp; iOS App Support" and the <code>pos_app_interfaces</code> table stores app-screen images. <strong>The mobile app source is not on this server</strong> — its capabilities beyond what the API exposes are UNKNOWN.</td><td>[[V]] routes/api.php, plan seed; [[UNK]] app internals</td></tr>
+<tr><td>Offline / PWA</td><td>No service worker in the POS UI (only one in the RestaurantWebAddon layout partial, not verified as offline-capable); no IndexedDB use.</td><td>[[V]] grep (0 hits for IndexedDB)</td></tr>
+</tbody></table></div>
+
+<h2>2. Backend</h2>
+<div class="tblw"><table><thead><tr><th>Aspect</th><th>Finding</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>API architecture</td><td><strong>REST</strong>, JSON, prefix <code>/api/v1</code>, Laravel <code>apiResource</code> conventions (plural kebab-case: <code>/sales</code>, <code>/kots</code>, <code>/kitchens</code>, <code>/modifier-groups</code>, <code>/loyalty-settings</code>…), middleware <code>auth:sanctum</code>, <code>module</code>, <code>active.branch</code>. No GraphQL. No OpenAPI spec found.</td><td>[[V]] routes/api.php (≈76 routes core + HRM 13, Inventory 6, MultiBranch 12)</td></tr>
+<tr><td>Authorization</td><td>Spatie roles/permissions (67 permissions, 3 roles, 121 role-permission links) + a per-module permission map in <code>config/staff_permissions.php</code> (view / create / update / delete / view-all-data). Middleware: <code>CheckPermission</code>, <code>CheckModuleAccess</code>, <code>AdminMiddleware</code>, <code>KitchenMiddleware</code>, <code>ExpiredMiddleware</code> (subscription expiry). Plan gating through <code>plans.available_modules</code> JSON and <code>PlanLimitService</code>.</td><td>[[V]]</td></tr>
+<tr><td>Tenant isolation</td><td><code>business_id</code> column on 60 tables (see §4). Isolation is enforced by <strong>manual <code>where('business_id', …)</code> in controllers</strong>. There is a global scope for <em>branch</em> (<code>BranchScope</code>) and a data-visibility scope (<code>DataManager</code> "view-all-data") but <strong>no global business scope</strong> — one forgotten <code>where</code> would leak across tenants.</td><td>[[V]] <code>app/Models/Scopes</code> contains only BranchScope.php and DataManager.php; Sale::booted()</td></tr>
+<tr><td>Layering</td><td>Controllers hold most logic. Services exist: <code>NotificationService</code>, <code>PlanLimitService</code>, <code>ModuleSubscriptionService</code>, <code>StockService</code>, <code>IngredientConsumptionReportService</code>, <code>PurchaseService</code>, <code>LoyaltyItemService</code>. <strong>No repository layer, no Laravel Policies, no FormRequest classes</strong> (validation is inline; <code>app/Http/Requests</code> holds only Auth).</td><td>[[V]] directory listing</td></tr>
+<tr><td>Jobs / commands</td><td>One job (<code>SendPushNotificationJob</code>), one command (<code>ingredient:check-low-stock</code>, scheduled but scheduler not running). Model observers in InventoryAddon (<code>SaleObserver</code> confirmed at <code>Modules/InventoryAddon/App/Observers</code>) drive stock movement.</td><td>[[V]] app/Jobs, app/Console</td></tr>
+<tr><td>Webhooks</td><td><strong>None.</strong> No inbound webhook route and no outbound webhook dispatcher. Payment confirmation is handled by redirect callbacks in <code>PaymentController</code>.</td><td>[[V]] grep "webhook" → 1 hit (logging config only)</td></tr>
+<tr><td>Payment libraries</td><td><code>app/Library</code>: Razorpay, Stripe, Mollie, Paystack, Flutterwave, Instamojo, Toyyibpay, Thawani, Tap. Composer also requires <code>laravel-paytm-wallet</code>, <code>laravel-phonepe</code>, <code>omnipay</code>; no application code referencing PhonePe/Paytm was found.</td><td>[[V]] composer.json, app/Library, grep</td></tr>
+<tr><td>Notifications</td><td>In-app notification rows (872), Pusher broadcast, FCM push (<code>NotificationService</code>, triggered on new sale in the sale controllers), SMTP mail (welcome, registration, password reset). <strong>No SMS or WhatsApp code.</strong></td><td>[[V]] grep whatsapp/sms/twilio/msg91 → 0 relevant hits</td></tr>
+<tr><td>Reports / exports</td><td>Excel via <code>maatwebsite/excel</code>, PDF via <code>barryvdh/laravel-dompdf</code>, CSV; nearly every list has <code>.pdf/.excel/.csv</code> routes. One import class (<code>ProductImport</code>, bulk product upload).</td><td>[[V]]</td></tr>
+<tr><td>File handling</td><td><code>HasUploader</code> helper writes to <code>public/uploads</code> (local disk).</td><td>[[V]]</td></tr>
+<tr><td>Error handling</td><td>Default Laravel handler; <code>APP_DEBUG=false</code>. Tests folders exist (<code>tests/Feature</code>, <code>tests/Unit</code>) — coverage not assessed.</td><td>[[V]] / [[UNK]] coverage</td></tr>
+</tbody></table></div>
+
+<h2>3. Add-on modules (nwidart)</h2>
+<div class="tblw"><table><thead><tr><th>Module</th><th>Version</th><th>What it contains</th></tr></thead><tbody>
+<tr><td>RestaurantWebAddon</td><td>2.5</td><td>The main back-office: dashboard, sales/POS, quotations, purchases, parties, products, categories, menus, modifiers, tables/areas/QR, reservations, kitchens/KOT, coupons, discounts, delivery charge, order-type settings, payment types/gateways, taxes (VAT), income/expense, transactions, dues, reports, staff/roles, currencies, notifications, settings, bulk upload. Services: <code>PurchaseService</code>, <code>LoyaltyItemService</code>.</td></tr>
+<tr><td>RestaurantOnlineStore</td><td>1.4</td><td>Public storefront per restaurant: menu, cart, checkout with business gateways, customer register/login/dashboard/order list/billing address, reservations, reviews, blog, testimonials, newsletter, store schedule.</td></tr>
+<tr><td>InventoryAddon</td><td>1.1</td><td>Ingredients (inventory items), inventory categories, units, recipes, stock in/out/adjust, ingredient consumption report. <code>StockService</code>.</td></tr>
+<tr><td>HrmAddon</td><td>1.1</td><td>Departments, designations, shifts, employees, attendance, leave types, leave, holidays, payroll + attendance/leave/payroll reports (+ 13 API routes).</td></tr>
+<tr><td>CashRegisterAddon</td><td>1.1</td><td>Cash registers, denominations, opening/closing, approvals, configuration, overview and reports.</td></tr>
+<tr><td>MultiBranchAddon</td><td>1.0</td><td>Branches (country/state), branch switching, branch-wise stock/employees/sales/purchases/income-expense/revenue (12 API routes).</td></tr>
+<tr><td>CustomDomainAddon</td><td>1.0</td><td>Tenant custom-domain requests, verification and SSL flags (business + admin controllers).</td></tr>
+</tbody></table></div>
+
+<h2>4. Database — ER-level understanding</h2>
+<div class="callout"><b>Tenant model</b> [[V]] Single shared database, shared schema. The tenant is <code>businesses</code> (id, companyName, slug UNIQUE, business_category_id, plan_subscribe_id, vat_name, vat_no, shopOpeningBalance, remainingShopBalance…). <code>business_id</code> appears on 60 of 97 tables. Outlets are <code>branches</code> (MultiBranch addon; <code>branch_id</code> on 27 tables) — currently <strong>0 rows</strong>, so no tenant actually uses multi-branch yet. Users belong to a business (<code>users.business_id</code>) and optionally a branch (<code>branch_id</code>, <code>active_branch_id</code>).</div>
+
+<div class="tblw"><table><thead><tr><th>Domain</th><th>Tables (approx. rows)</th><th>Key relationships</th></tr></thead><tbody>
+<tr><td>Identity &amp; access</td><td>businesses (39), users (55), staff (53), roles (3), permissions (67), role_has_permissions (121), model_has_roles (3), personal_access_tokens (42), password_resets, password_reset_tokens</td><td>users→business, users→staff, users→branch; staff→business</td></tr>
+<tr><td>Catalogue</td><td>menus (22), categories (75), products (327), product_variations (20), modifier_groups (26), modifiers (46), modifier_group_options (60), kitchens (18), kitchen_product (300), units (84)</td><td>products→category, menu; products↔kitchens (pivot); modifier_groups↔modifiers</td></tr>
+<tr><td>Floor &amp; reservations</td><td>areas (19), tables (44, has <code>qr_code</code>, <code>is_booked</code>, <code>capacity</code>), reservations (8), reservation_tables (2), time_slots (147)</td><td>tables→area; reservations↔tables</td></tr>
+<tr><td>Sales &amp; kitchen</td><td>sales (77), sale_details (104), sale_detail_options (18), sale_detail_product_variations (1), kot_tickets (27), quotations (7), quotation_details (14), quotation_detail_options (3), coupons (6), taxes (35), payment_types (27), cancel_reasons (29), transactions (85), due_collects (10), delivery_addresses (5), billing_addresses (0)</td><td>sales→party, table, tax, coupon, payment_type, staff, branch, address; sale_details→sale, product, kot_ticket; kot_tickets→sale, kitchen, table, cancel_reason</td></tr>
+<tr><td>Parties &amp; purchasing</td><td>parties (14; customers <em>and</em> suppliers via <code>type</code>), purchases (10), purchase_details (15)</td><td>purchases→party; details→purchase</td></tr>
+<tr><td>Inventory</td><td>ingredients (73), inventory_categories (36), recipes (30), recipe_ingredients (90), stock_movements (32), stocks (0)</td><td>recipes→product; recipe_ingredients→ingredient, unit; stock_movements→ingredient (polymorphic <code>reference_type/id</code>)</td></tr>
+<tr><td>Finance</td><td>incomes (10), income_categories (35), expenses (11), expense_categories (36), cash_registers (3), cash_register_transactions (9), denominations (54), configurations (12)</td><td>—</td></tr>
+<tr><td>HRM</td><td>employees (3), departments (24), designations (36), shifts (18), attendances (3), leaves (2), leave_types (24), holidays (2), payrolls (3)</td><td>—</td></tr>
+<tr><td>Multi-branch</td><td>branches (0), countries (0), states (0)</td><td>branch→business, country, state</td></tr>
+<tr><td>Loyalty</td><td>loyalty_items (6), loyalty_item_customers (0) — <strong>per-product purchase-count enrolment</strong> (unique on business+product+party), not a points ledger</td><td>→product, party</td></tr>
+<tr><td>SaaS / platform</td><td>plans (5), plan_subscribes (76), gateways (10), business_gateways (9), business_categories (7), features (16), faqs (6), blogs (8), comments, testimonials (4), messages (9), news_letters, languages (102), currencies (151), user_currencies (44), notifications (872), options (25; global key/value config JSON), domains (1), pos_app_interfaces (6), reviews (0), migrations (97), jobs (0), failed_jobs (0)</td><td>plan_subscribes→plan, business, gateway</td></tr>
+</tbody></table></div>
+
+<h3>Tables without <code>business_id</code> (isolation only through a parent)</h3>
+<p>[[V]] Child/pivot tables: <code>sale_details</code>, <code>sale_detail_options</code>, <code>sale_detail_product_variations</code>, <code>purchase_details</code>, <code>quotation_details</code> (+ options/variations), <code>product_variations</code>, <code>kitchen_product</code>, <code>modifier_group_options</code>, <code>reservation_tables</code>, <code>delivery_addresses</code> (via party), <code>model_has_*</code>, <code>role_has_permissions</code>. Global/reference tables: <code>plans</code>, <code>gateways</code>, <code>features</code>, <code>faqs</code>, <code>languages</code>, <code>currencies</code>, <code>countries</code>, <code>states</code>, <code>business_categories</code>, <code>options</code>. Note <code>roles</code>/<code>permissions</code> are global (unique on name+guard) — custom per-tenant roles would collide by name; the earlier audit observed only 3 roles.</p>
+
+<h3>Global unique keys that break tenant isolation (carry-over from the blueprint audit, re-verified)</h3>
+<div class="tblw"><table><thead><tr><th>Constraint</th><th>Problem</th></tr></thead><tbody>
+<tr><td><code>parties.parties_phone_unique(phone)</code></td><td>A customer/supplier phone number can exist for <strong>one tenant only</strong>. Two restaurants serving the same customer will collide. Critical for CRM, WhatsApp and any import tool.</td></tr>
+<tr><td><code>coupons.coupons_code_unique(code)</code></td><td>Coupon codes (e.g. <code>WELCOME10</code>) are unique across all tenants — the second restaurant cannot reuse a common code.</td></tr>
+<tr><td><code>businesses.businesses_slug_unique(slug)</code></td><td>Correct (it is the tenant subdomain).</td></tr>
+<tr><td><code>loyalty_*_unique(business_id, …)</code></td><td>Correctly tenant-scoped (good pattern to copy).</td></tr>
+</tbody></table></div>
+
+<h3>Observed usage (real data shape, counts only)</h3>
+<ul>
+<li>[[V]] 39 businesses, all <code>status=1</code>; 55 users (38 shop-owners, 6 staff, 3 chefs, 3 customers, 2 kitchen, 1 each superadmin/admin/manager).</li>
+<li>[[V]] Subscriptions by plan id: plan 1 (the Free 7-day plan per seed order) ×48, plan 6 ×22, plan 3 ×6.</li>
+<li>[[V]] 77 sales rows in total: <code>dine_in</code> 70, <code>pick_up</code> 4, <code>delivery</code> 3; 76 from POS, 1 from the online store.</li>
+<li>[[V]] Branches: 0. Loyalty customer rows: 0. Stock table: 0 rows (movements: 32). Reviews: 0.</li>
+<li>[[INF]] Actual production usage is early-stage/trial-scale, so every "gap" below is a build-ahead decision, not a fix for existing customer pain. Real usage of order types is dine-in dominant.</li>
+</ul>
+
+<h3>Schema anomalies found</h3>
+<ul>
+<li>[[V]] <code>Sale::$fillable</code> lists <code>deliveryman_id</code>, <code>kot_id</code> and <code>isPaid</code>, but the <code>sales</code> table has none of these columns → any code path assigning them would fail or silently drop data. There is no delivery-person model at all.</li>
+<li>[[V]] <code>sales</code> has no columns for delivery charge, service charge, packaging, tip or per-line tax; these are not first-class fields (likely inside <code>sale_data</code>/<code>meta</code> JSON — [[INF]]). This makes tax and charge reporting on JSON fields fragile.</li>
+<li>[[V]] Seed data is internationally generic: payment types <code>Cash, Card, Bank, Bkash, Nagad, COD</code> (Bangladeshi wallets), gateways Stripe/Mollie/Paystack/Razorpay/Instamojo/Toyyibpay/Flutterwave/Thawani/Tap. <strong>UPI is not a seeded payment type</strong>; Indian tenants must create it manually.</li>
+</ul>

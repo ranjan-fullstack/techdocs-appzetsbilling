@@ -146,8 +146,8 @@ export default function WhatsAppModule() {
             <div className="eyebrow">01 · What's Running <VTag kind="verified">verified live, 2026-09-18</VTag></div>
             <h2>Discovered on the VPS, not assumed</h2>
             <p className="lede">
-              Connected to the production VPS (Hostinger, srv1772946, CloudPanel) and read the live app at
-              /home/appzetsbilling-app/htdocs — read-only, nothing below was modified.
+              Connected to the production VPS (Hostinger, srv-example, CloudPanel) and read the live app at
+              /home/SITE_USER/htdocs — read-only, nothing below was modified.
             </p>
             <table className="facts" style={{ marginTop: 16 }}>
               <tbody>{STACK_FACTS.map((f) => <tr key={f.k}><td>{f.k}</td><td>{f.v}</td></tr>)}</tbody>

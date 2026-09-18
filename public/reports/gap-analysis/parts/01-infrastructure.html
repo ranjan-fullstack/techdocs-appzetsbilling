@@ -1,0 +1,90 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>if(window.self!==window.top)document.documentElement.classList.add("embedded")</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>01 Infrastructure — Phase 1: what actually runs in production</title><style>:root{--bg:#fafaf7;--fg:#1c1f24;--mut:#5b6472;--line:#dfe2e6;--card:#fff;--acc:#0b6b5c;--acc2:#e8f3f0;--warn:#b45309;--warn2:#fef3e2;--bad:#b42318;--bad2:#fdecea;--ok:#127a3d;--ok2:#e6f5ec;--info:#1d4ed8;--info2:#e8eefc;--code:#f1f3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171a;--fg:#e6e8eb;--mut:#9aa4b2;--line:#2b3138;--card:#1b1f24;--acc:#4fd1b5;--acc2:#16302b;--warn:#f5b453;--warn2:#3a2c12;--bad:#ff8a80;--bad2:#3b1a18;--ok:#63d68e;--ok2:#142e1f;--info:#8fb0ff;--info2:#1a2646;--code:#242a31}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 80px}
+header.top{border-bottom:1px solid var(--line);padding:22px 0 14px;margin-bottom:18px}
+header.top .k,.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 6px}h2{font-size:21px;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}h3{font-size:16.5px;margin:22px 0 6px}h4{font-size:13px;margin:16px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:8px 0}li{margin:3px 0}
+a{color:var(--info)}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px;word-break:break-word}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.45}
+.sub{color:var(--mut);margin:0}
+nav.parts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}nav.parts a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--fg);background:var(--card)}nav.parts a.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--acc2);font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}td.n{white-space:nowrap}
+.callout{border-left:4px solid var(--info);background:var(--info2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}.callout.warn{border-color:var(--warn);background:var(--warn2)}.callout.bad{border-color:var(--bad);background:var(--bad2)}.callout.ok{border-color:var(--ok);background:var(--ok2)}.callout>b:first-child{display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}.card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 13px}.card b{display:block}.card .v{font-size:22px;font-weight:700;color:var(--acc)}
+.b{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:99px;white-space:nowrap;border:1px solid transparent;vertical-align:1px}
+.b.v{background:var(--ok2);color:var(--ok);border-color:var(--ok)}.b.po{background:var(--info2);color:var(--info);border-color:var(--info)}.b.tp{background:var(--warn2);color:var(--warn);border-color:var(--warn)}.b.inf{background:var(--code);color:var(--mut);border-color:var(--line)}.b.unk{background:var(--bad2);color:var(--bad);border-color:var(--bad)}.b.add{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+.s-ex,.g-none{color:var(--ok);font-weight:700}.s-pa,.g-minor,.g-moderate{color:var(--warn);font-weight:700}.s-nf,.g-major,.g-critical{color:var(--bad);font-weight:700}.s-unk{color:var(--mut);font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}.toolbar input,.toolbar select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.part-sep{margin-top:60px;border-top:3px solid var(--acc);padding-top:14px}
+footer{margin-top:50px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:640px){h1{font-size:23px}body{font-size:14.5px}}
+@media print{nav.parts,.toolbar{display:none}.part-sep{page-break-before:always}}
+
+/* when shown inside the docs site iframe, the site sidebar does the navigation */
+.embedded nav.parts,.embedded header.top .k{display:none}
+.embedded header.top{padding-top:6px}
+.embedded .wrap{padding-top:8px}
+</style></head><body><div class="wrap"><header class="top"><div class="k">AppZetBilling gap analysis - part 01 of 12</div><h1>01 Infrastructure — Phase 1: what actually runs in production</h1><nav class="parts"><a class="cur" href="01-infrastructure.html">01 Infrastructure</a><a class="" href="02-codebase-database.html">02 Codebase &amp; Database</a><a class="" href="03-feature-inventory.html">03 AppZetBilling Feature Inventory</a><a class="" href="04-petpooja-catalog.html">04 Petpooja Capability Catalog</a><a class="" href="05-integration-map.html">05 Integration Ecosystem Map</a><a class="" href="06-master-matrix.html">06 Master Comparison Matrix</a><a class="" href="07-blueprint-db-api.html">07 Implementation Blueprint, DB &amp; API Gaps</a><a class="" href="08-whatsapp-delivery-offline.html">08 WhatsApp, Delivery &amp; Offline</a><a class="" href="09-security.html">09 Security Audit</a><a class="" href="10-roadmap-architecture-cost.html">10 Roadmap, Architecture, Monetization &amp; Cost</a><a class="" href="11-odisha-strategy.html">11 Odisha-First Strategy</a><a class="" href="12-executive-summary.html">12 Executive Report &amp; Odisha #1 Roadmap</a></nav></header>
+<p class="sub">Source: read-only SSH inspection of the production VPS on 2026-09-18. Nothing was modified, restarted or installed. Secret values were never printed or stored; only environment <em>key names</em> were read. Where a secret exists it is reported as "Credential/secret detected — REDACTED".</p>
+
+<div class="callout bad"><b>URGENT — TLS certificate cannot auto-renew (expires 2026-09-24)</b>
+<span class="b v">VERIFIED</span> The wildcard certificate for <code>appzetsbilling.com</code> + <code>*.appzetsbilling.com</code> (Let's Encrypt) has <code>notAfter = Sep 24 2026</code>. The certbot renewal config (<code>/etc/letsencrypt/renewal/appzetsbilling.com.conf</code>) uses <code>authenticator = manual</code> with DNS-01 and no <code>--manual-auth-hook</code>. The certbot log shows renewals failing on every timer run, including today's (2026-09-18 11:12 and 12:22 UTC): "An authentication script must be provided with --manual-auth-hook when using the manual plugin non-interactively."
+<br><b>Impact:</b> unless renewed by hand (or re-issued with a DNS-API hook) before 24 Sep, the main site, the admin panel and every tenant subdomain / online store will show browser certificate errors. The separate <code>hosti.appzetsbilling.com</code> custom-domain cert is valid to 2026-12-11.
+<br><b>Not fixed</b> — this task is analysis-only. Recommended fix is in Part 09 (Security) and Part 10 (Roadmap, Phase 1).</div>
+
+<h2>1. Hosting and server</h2>
+<div class="tblw"><table><thead><tr><th>Item</th><th>Finding</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Provider</td><td>Hostinger VPS (hostname <code>srv-example</code>)</td><td><span class="b v">VERIFIED</span> hostname; provider per earlier blueprint audit (Part "Backup &amp; Migration Blueprint")</td></tr>
+<tr><td>OS</td><td>Ubuntu 24.04.4 LTS</td><td><span class="b v">VERIFIED</span> <code>/etc/os-release</code></td></tr>
+<tr><td>CPU / RAM / Disk</td><td>2 vCPU · 7.8 GiB RAM (2.2 GiB used, 5.6 GiB available) · 96 GB disk (9.6 GB used, 10%)</td><td><span class="b v">VERIFIED</span> <code>nproc</code>, <code>free -h</code>, <code>df -h</code></td></tr>
+<tr><td>Uptime / load</td><td>89 days; load average 0.00</td><td><span class="b v">VERIFIED</span> <code>uptime</code></td></tr>
+<tr><td>Architecture</td><td><strong>Non-Docker</strong> (docker not installed). Single-server, single-node monolith managed by <strong>CloudPanel</strong>.</td><td><span class="b v">VERIFIED</span> <code>docker: command not found</code>; <code>clp-nginx</code>, <code>clp-php-fpm</code>, <code>clp-agent</code> services</td></tr>
+<tr><td>Docker Compose</td><td>None</td><td><span class="b v">VERIFIED</span></td></tr>
+</tbody></table></div>
+
+<h2>2. Web tier</h2>
+<ul>
+<li><span class="b v">VERIFIED</span> <strong>Reverse proxy chain:</strong> nginx (443/80) → Varnish (127.0.0.1:6081/8080) → nginx → PHP-FPM. The site vhost <code>appzetsbilling.com.conf</code> serves <code>root /home/SITE_USER/htdocs/public</code> for <code>appzetsbilling.com</code> and <code>*.appzetsbilling.com</code> (tenant subdomains), with <code>fastcgi_pass 127.0.0.1:17001</code> (PHP 8.2 pool).</li>
+<li><span class="b v">VERIFIED</span> Second vhost <code>custom-domain.conf</code> for a tenant custom domain (<code>hosti.appzetsbilling.com</code>), matching the <code>CustomDomainAddon</code> module and the <code>domains</code> table (1 row).</li>
+<li><span class="b v">VERIFIED</span> <code>add_header Access-Control-Allow-Origin "*"</code> is set at the nginx layer for the vhost (see security findings).</li>
+<li><span class="b v">VERIFIED</span> Response headers observed: <code>X-Frame-Options: SAMEORIGIN</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy: same-origin</code>. <strong>No</strong> HSTS, no Content-Security-Policy, no Permissions-Policy header observed.</li>
+<li><span class="b v">VERIFIED</span> Nine PHP-FPM versions (7.1 → 8.5) run simultaneously (a CloudPanel default). Only PHP 8.2 serves the application. The unused pools consume RAM (~50 MB each) but no correctness risk.</li>
+<li><span class="b v">VERIFIED</span> Firewall <code>ufw</code> active: allows 22, 80, 443 (tcp+udp), 8433–8443. <code>fail2ban</code> active. Also listening but not opened in ufw: FTP 21 (proftpd), SMTP 25 (Postfix).</li>
+</ul>
+
+<h2>3. Application, database, cache, queue</h2>
+<div class="tblw"><table><thead><tr><th>Component</th><th>Finding</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Application</td><td>Laravel 10 (PHP ^8.1), <code>nwidart/laravel-modules</code> 10.0.6, path <code>/home/SITE_USER/htdocs</code>, site user <code>SITE_USER</code>. <code>APP_ENV=production</code>, <code>APP_DEBUG=false</code>.</td><td><span class="b v">VERIFIED</span> composer.json, .env keys</td></tr>
+<tr><td>Database</td><td>Percona Server (MySQL-compatible), local, database <code>appzetsbilling</code>, 97 tables, ~1.1 GB resident. Bound to localhost only (no 3306 listener).</td><td><span class="b v">VERIFIED</span> <code>ss -tlnp</code>, information_schema</td></tr>
+<tr><td>Redis</td><td>Running, bound to 127.0.0.1/::1, <code>protected-mode yes</code>. Used as <strong>cache only</strong> (<code>CACHE_DRIVER=redis</code>). Sessions are files; queue is database.</td><td><span class="b v">VERIFIED</span> redis.conf, .env keys</td></tr>
+<tr><td>Memcached</td><td>Running on localhost (CloudPanel default). Not used by the app (no <code>MEMCACHED</code> driver selected).</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Queue</td><td><code>QUEUE_CONNECTION=database</code>; <code>jobs</code> table exists (0 rows, 0 failed). <strong>No queue worker process</strong> exists: no supervisor, no systemd unit, no <code>queue:work</code> process. The only job class is <code>SendPushNotificationJob</code>.</td><td><span class="b v">VERIFIED</span> ps, systemctl, <code>ls /etc/supervisor</code> (absent)</td></tr>
+<tr><td>Background workers</td><td><strong>None running.</strong></td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Scheduler / cron</td><td><code>app/Console/Kernel.php</code> schedules <code>ingredient:check-low-stock</code> <em>every minute</em>, but <strong>no <code>schedule:run</code> cron exists</strong> for any user (checked <code>/etc/cron*</code>, <code>/var/spool/cron</code>). The low-stock alert therefore never fires in production. Existing cron: CloudPanel updates, certbot timer, <code>db:backup</code> 03:15, <code>r2-backup-push</code> 03:20.</td><td><span class="b v">VERIFIED</span> Kernel.php line 15; crontab audit</td></tr>
+<tr><td>Realtime</td><td>Broadcasting via Pusher (<code>BROADCAST_DRIVER=pusher</code>); FCM push via <code>kreait/laravel-firebase</code> (Firebase project config committed as "appzet-billing").</td><td><span class="b v">VERIFIED</span> .env key names, composer.json, git log</td></tr>
+<tr><td>Email</td><td>SMTP (<code>MAIL_MAILER=smtp</code>); Mailchimp key names present in .env (whether any code path uses them was not verified).</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Object / file storage</td><td>Local disk only (<code>FILESYSTEM_DISK=public</code>; <code>public/uploads</code> 89 MB). AWS/S3-style env keys (<code>AWS_*</code>, <code>WAS_*</code>) exist but the default disk is local.</td><td><span class="b v">VERIFIED</span> .env key names, du</td></tr>
+</tbody></table></div>
+
+<h2>4. Backup, logging, monitoring, deployment</h2>
+<div class="tblw"><table><thead><tr><th>Area</th><th>Finding</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Database backup</td><td>CloudPanel <code>clpctl db:backup</code> 03:15 daily, 7-day retention → <code>/home/SITE_USER/backups/databases</code>; pushed offsite to Cloudflare R2 bucket <code>example-backup-bucket</code> at 03:20 (<code>/etc/cron.d/r2-backup-push</code>). R2 copies are <strong>unencrypted</strong> (encryption decision pending).</td><td><span class="b v">VERIFIED</span> cron files; earlier blueprint §16</td></tr>
+<tr><td>File backup</td><td>The R2 push script is documented as pushing "the day's mysqldump". <code>public/uploads</code> (tenant images, 89 MB) is <strong>not</strong> covered offsite.</td><td><span class="b v">VERIFIED</span> cron comment; <span class="b inf">INFERENCE</span> uploads not included</td></tr>
+<tr><td>Logging</td><td>Single <code>storage/logs/laravel.log</code> (2.2 MB, 125 ERROR lines; top recurring: <code>SQLSTATE[22001] String data, right truncated</code>). No rotation config seen; no external log shipping.</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Monitoring</td><td>CloudPanel monitoring + <code>sysstat</code> + <strong>Monarx</strong> malware agent. No uptime monitor, APM, error tracker (Sentry etc.) or alerting found.</td><td><span class="b v">VERIFIED</span> systemd; <span class="b inf">INFERENCE</span> no external monitor</td></tr>
+<tr><td>CI/CD</td><td><strong>None.</strong> Deployment is manual: git repo on the VPS with origin <code>git@github.com:your-org/your-repo.git</code>; the working tree is dirty (1 modified view; untracked <code>public/assets.zip</code> and a <code>.env.bak-…</code> file). See the earlier "Deployment &amp; Source Management" page.</td><td><span class="b v">VERIFIED</span> <code>git status</code>, <code>git remote</code></td></tr>
+<tr><td>Recent commits</td><td>"sync: VPS server working tree state (multi-branch addon…)", "odia language added" (2026-07-11), "Update Firebase project config to appzet-billing".</td><td><span class="b v">VERIFIED</span> <code>git log</code></td></tr>
+<tr><td>Deploy / rollback</td><td>No automated migration/rollback process, no staging environment observed.</td><td><span class="b v">VERIFIED</span> / <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+
+<h2>5. Infrastructure implications for the roadmap</h2>
+<ul>
+<li><strong>Single point of failure:</strong> app, DB, cache and files live on one 2 vCPU host. Adequate for the current footprint (39 businesses, 77 sales rows, see Part 02) but not for multi-outlet chains or Odisha-wide scale.</li>
+<li><strong>Two dormant capabilities need switching on before any new feature ships:</strong> a Laravel scheduler cron and a supervised queue worker. Almost every proposed module (WhatsApp, aggregator sync, campaigns, reservations reminders, low-stock alerts) depends on them.</li>
+<li><strong>Cert renewal, log rotation, uptime monitoring and offsite file backup</strong> are the cheapest reliability gains.</li>
+</ul>
+<footer>AppZetBilling vs Petpooja gap analysis - generated 2026-09-18 - analysis only, no production changes were made.</footer></div></body></html>

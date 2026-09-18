@@ -1,0 +1,173 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>if(window.self!==window.top)document.documentElement.classList.add("embedded")</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>04 Petpooja Capability Catalog — Phases 4, 5, 22, 23 (with sources)</title><style>:root{--bg:#fafaf7;--fg:#1c1f24;--mut:#5b6472;--line:#dfe2e6;--card:#fff;--acc:#0b6b5c;--acc2:#e8f3f0;--warn:#b45309;--warn2:#fef3e2;--bad:#b42318;--bad2:#fdecea;--ok:#127a3d;--ok2:#e6f5ec;--info:#1d4ed8;--info2:#e8eefc;--code:#f1f3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171a;--fg:#e6e8eb;--mut:#9aa4b2;--line:#2b3138;--card:#1b1f24;--acc:#4fd1b5;--acc2:#16302b;--warn:#f5b453;--warn2:#3a2c12;--bad:#ff8a80;--bad2:#3b1a18;--ok:#63d68e;--ok2:#142e1f;--info:#8fb0ff;--info2:#1a2646;--code:#242a31}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 80px}
+header.top{border-bottom:1px solid var(--line);padding:22px 0 14px;margin-bottom:18px}
+header.top .k,.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 6px}h2{font-size:21px;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}h3{font-size:16.5px;margin:22px 0 6px}h4{font-size:13px;margin:16px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:8px 0}li{margin:3px 0}
+a{color:var(--info)}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px;word-break:break-word}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.45}
+.sub{color:var(--mut);margin:0}
+nav.parts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}nav.parts a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--fg);background:var(--card)}nav.parts a.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--acc2);font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}td.n{white-space:nowrap}
+.callout{border-left:4px solid var(--info);background:var(--info2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}.callout.warn{border-color:var(--warn);background:var(--warn2)}.callout.bad{border-color:var(--bad);background:var(--bad2)}.callout.ok{border-color:var(--ok);background:var(--ok2)}.callout>b:first-child{display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}.card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 13px}.card b{display:block}.card .v{font-size:22px;font-weight:700;color:var(--acc)}
+.b{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:99px;white-space:nowrap;border:1px solid transparent;vertical-align:1px}
+.b.v{background:var(--ok2);color:var(--ok);border-color:var(--ok)}.b.po{background:var(--info2);color:var(--info);border-color:var(--info)}.b.tp{background:var(--warn2);color:var(--warn);border-color:var(--warn)}.b.inf{background:var(--code);color:var(--mut);border-color:var(--line)}.b.unk{background:var(--bad2);color:var(--bad);border-color:var(--bad)}.b.add{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+.s-ex,.g-none{color:var(--ok);font-weight:700}.s-pa,.g-minor,.g-moderate{color:var(--warn);font-weight:700}.s-nf,.g-major,.g-critical{color:var(--bad);font-weight:700}.s-unk{color:var(--mut);font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}.toolbar input,.toolbar select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.part-sep{margin-top:60px;border-top:3px solid var(--acc);padding-top:14px}
+footer{margin-top:50px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:640px){h1{font-size:23px}body{font-size:14.5px}}
+@media print{nav.parts,.toolbar{display:none}.part-sep{page-break-before:always}}
+
+/* when shown inside the docs site iframe, the site sidebar does the navigation */
+.embedded nav.parts,.embedded header.top .k{display:none}
+.embedded header.top{padding-top:6px}
+.embedded .wrap{padding-top:8px}
+</style></head><body><div class="wrap"><header class="top"><div class="k">AppZetBilling gap analysis - part 04 of 12</div><h1>04 Petpooja Capability Catalog — Phases 4, 5, 22, 23 (with sources)</h1><nav class="parts"><a class="" href="01-infrastructure.html">01 Infrastructure</a><a class="" href="02-codebase-database.html">02 Codebase &amp; Database</a><a class="" href="03-feature-inventory.html">03 AppZetBilling Feature Inventory</a><a class="cur" href="04-petpooja-catalog.html">04 Petpooja Capability Catalog</a><a class="" href="05-integration-map.html">05 Integration Ecosystem Map</a><a class="" href="06-master-matrix.html">06 Master Comparison Matrix</a><a class="" href="07-blueprint-db-api.html">07 Implementation Blueprint, DB &amp; API Gaps</a><a class="" href="08-whatsapp-delivery-offline.html">08 WhatsApp, Delivery &amp; Offline</a><a class="" href="09-security.html">09 Security Audit</a><a class="" href="10-roadmap-architecture-cost.html">10 Roadmap, Architecture, Monetization &amp; Cost</a><a class="" href="11-odisha-strategy.html">11 Odisha-First Strategy</a><a class="" href="12-executive-summary.html">12 Executive Report &amp; Odisha #1 Roadmap</a></nav></header>
+<p class="sub">Researched 2026-09-18 from Petpooja's own pages first (petpooja.com and blog.petpooja.com), then third-party sources. Official pages were read through an automated page-to-text extraction, so wording is quoted where the extraction quoted it and paraphrased otherwise. <strong>Marketing claims are recorded as claims</strong> ("Petpooja publicly states…"), never as independently verified facts. Petpooja publishes no full public feature matrix or API reference, so anything not on an official page is marked THIRD-PARTY or UNKNOWN.</p>
+
+<div class="callout warn"><b>How to read the tags</b> <span class="b po">PETPOOJA OFFICIAL</span> stated on an official Petpooja page (URL given) · <span class="b tp">THIRD-PARTY</span> from a review site, snippet or third-party summary · <span class="b inf">INFERENCE</span> reasonable inference, not stated · <span class="b unk">UNKNOWN</span> could not be verified. Classification: <strong>Core</strong> (in the base POS plan), <span class="b add">ADD-ON</span> add-on / marketplace app, <strong>Hardware</strong>, <strong>Integration</strong> (third-party service), <strong>Separate product</strong>.</div>
+
+<h2>1. Petpooja product family</h2>
+<div class="tblw"><table><thead><tr><th>Product</th><th>What it is</th><th>Source</th></tr></thead><tbody>
+<tr><td><strong>Poss</strong> (restaurant POS)</td><td>The restaurant POS/management platform this analysis compares against.</td><td><span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss">petpooja.com/poss</a></td></tr>
+<tr><td><strong>Attendo</strong></td><td>Separate product: "Software + Biometric hardware combo for effortless leave, attendance, and payroll" (attendohr.com). AppZet's HrmAddon overlaps this.</td><td><span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com">petpooja.com</a></td></tr>
+<tr><td><strong>Invoice</strong></td><td>Separate product: "GST billing software for retail &amp; B2B businesses" (e-invoicing and e-way bills per Petpooja's blog).</td><td><span class="b po">PETPOOJA OFFICIAL</span> homepage; <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://blog.petpooja.com/finance-compliance/what-is-petpooja-invoice/">blog</a></td></tr>
+<tr><td><strong>Tasks</strong></td><td>Separate product: task assignment/tracking for operations.</td><td><span class="b po">PETPOOJA OFFICIAL</span> homepage</td></tr>
+<tr><td>Delivery Dispatch Drive, Waiter Calling, FoodBOT/robot</td><td>Named as additional products in a third-party pricing summary; details not verified on official pages.</td><td><span class="b tp">THIRD-PARTY</span> <a href="https://www.dineopen.com/blog/petpooja-pricing-plans-2026.html">DineOpen</a> · <span class="b unk">UNKNOWN</span> official detail</td></tr>
+</tbody></table></div>
+
+<h2>2. Headline numbers and discrepancies (Phase 22 rule: record, don't reconcile)</h2>
+<div class="tblw"><table><thead><tr><th>Claim</th><th>What different sources say</th><th>Handling</th></tr></thead><tbody>
+<tr><td>Number of reports</td><td>"50+ Free reports" (reports page) · "80+ essential business reports" and "100+ downloadable reports" (/poss) · "90+ Reports" in the Base plan (pricing) · Dynamic Reports add-on "40+ insightful reports" (marketplace) · "100-plus" (G2 summary)</td><td>Petpooja publicly states several different figures; none is an itemised list. Only nine report types are named on the reports page (see §4-P).</td></tr>
+<tr><td>Customers</td><td>"150k+ businesses" (homepage) · "1,00,000+ restaurants" (/poss) · "75,000+ restaurants across India, Middle East, Canada, South Africa" (third-party summaries)</td><td>Unreconciled; treat as marketing. Different denominators (businesses vs restaurants, and date).</td></tr>
+<tr><td>Languages</td><td>"15+ Indian languages plus international" (billing page) · "18+ Indian languages" (support page)</td><td>Discrepancy. <strong>Odia is not named</strong> on any page fetched → Odia support is UNKNOWN.</td></tr>
+<tr><td>Marketplace size</td><td>Marketplace page lists 15 services; search snippet says "11+ types"</td><td>Use the page list (§4-Marketplace).</td></tr>
+<tr><td>Integrations</td><td>"150+ third-party integrations" (/poss, integrations page)</td><td>The integrations page names <em>no</em> individual partners; names come from product pages/blog only.</td></tr>
+<tr><td>Support phone</td><td>+91 91043 69797 (homepage) vs +91 7969223344 (support page)</td><td>Two numbers published (sales vs support is <span class="b inf">INFERENCE</span>).</td></tr>
+<tr><td>Pricing</td><td>Official page shows ₹12,000 to ₹40,000 (ex-tax) with <strong>no billing period</strong>; G2/Capterra-style summaries show $50–$135 per <em>month</em> or ₹3,000–₹12,000 per month.</td><td>Billing period UNKNOWN on the official page; do not assume annual or monthly.</td></tr>
+</tbody></table></div>
+
+<h2>3. Pricing and packaging</h2>
+<div class="tblw"><table><thead><tr><th>Plan (official, ex-tax)</th><th>Price</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Base Plan</td><td>₹12,000</td><td>Cloud billing, Dynamic Reports module, inventory, menu management, "90+ Reports", food-aggregator integrations, <strong>unlimited users and terminals</strong>, purchase-manager integrations, smart-stock manager, "AI agent", online installation and training, 24/7 online support</td></tr>
+<tr><td>Operations Manager — Growth / Scale</td><td>₹20,000 / ₹30,000</td><td>Table Reservation Manager and Kiosk software not in Growth</td></tr>
+<tr><td>Marketing Manager — Core / Growth / Scale</td><td>₹20,000 / ₹30,000 / ₹40,000</td><td>Website/OOW and Digital Display excluded from Core; Meta Ads and influencer features only in Scale</td></tr>
+</tbody></table></div>
+<p><span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/pricing">petpooja.com/poss/pricing</a>. Hardware, SMS packs and per-module fees are separate — <span class="b tp">THIRD-PARTY</span> "mandatory add-ons, hardware, SMS packs and renewal fees" per review summaries; <span class="b unk">UNKNOWN</span> exact fees.</p>
+
+<h2>4. Feature catalog (A–X)</h2>
+
+<h3>A. POS / billing</h3>
+<ul>
+<li><span class="b add">CORE</span> "3-click billing"; KOT with station-wise routing; multi-terminal billing with a "master station"; "multiple billing terminals for a single outlet at no additional price" (QSR page) — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/restaurant-billing-software">billing</a>, <a href="https://www.petpooja.com/poss/quick-service-restaurant-software">QSR</a>.</li>
+<li><span class="b add">CORE</span> Dine-in areas "with their respective menus, service tax rates and customisable seating arrangements"; configurable taxes/discounts "depending on your service types, regional norms" — <span class="b po">PETPOOJA OFFICIAL</span> billing page.</li>
+<li><span class="b add">CORE</span> Bill customisation (logo, bill break-ups, edit customer details, dynamic payment QR); e-bill receipts and e-bill messaging; keyboard + touchscreen; "200+ hardware" — <span class="b po">PETPOOJA OFFICIAL</span> billing page.</li>
+<li><span class="b add">CORE</span> Offline POS — mechanism in §4-Offline. Order types named: dine-in, takeaway, delivery (feedback page) — <span class="b po">PETPOOJA OFFICIAL</span>.</li>
+<li><span class="b unk">UNKNOWN</span> Split bills, table transfer/merge, service charge, refund, cash-drawer detail: <em>cash-drawer operation reports</em> and <em>bill modification reports</em> are named on the reports page (<span class="b po">PETPOOJA OFFICIAL</span>), which implies those functions exist (<span class="b inf">INFERENCE</span>); split/merge/transfer are not described on any official page fetched.</li>
+</ul>
+
+<h3>B. Menu management</h3>
+<ul>
+<li><span class="b add">CORE</span> Item categories, variations and add-ons "with separate pricing for each customisation"; item shortcodes; multiple menus incl. separate menu per dine-in area; pricing control over physical and online menus; edit item/time/price and switch ON/OFF from the POS to aggregators; open/close menu by stock availability — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/restaurant-menu-management-software">menu page</a>.</li>
+<li><span class="b add">CORE</span> Combos, group offers, variations, add-ons — <span class="b po">PETPOOJA OFFICIAL</span> QSR page (not on the menu page itself).</li>
+<li><span class="b unk">UNKNOWN</span> Packaging charges are not stated on the menu page (the online-orders page mentions modifying "packaging" across aggregators); outlet-specific menu variants are not stated; central menu and price management across outlets is stated on the head-office page (see Q).</li>
+<li><span class="b po">PETPOOJA OFFICIAL</span> <a href="https://blog.petpooja.com/industry-business-guides/sync-menu-across-swiggy-zomato-and-pos/">Menu-sync blog</a>: fields synced to aggregators = item names and photos, prices, item on/off, categories and sort order, veg/non-veg mark and calories, taxes and charges, timing (breakfast/lunch); "a separate price tier per channel"; most price/availability changes reach apps "within a few minutes"; new items and photos wait for the aggregator's review; on/off is fastest "in seconds".</li>
+</ul>
+
+<h3>C–E. Tables, kitchen, captain</h3>
+<ul>
+<li><span class="b add">ADD-ON</span> <strong>Scan &amp; Order (QR)</strong> — unique QR per table generated from the Menu module; each table keeps its own bill across ordering rounds; customer receives an OTP and the captain validates it before the KOT fires; browser-based (no app); pay at counter or online (Scan &amp; Pay is a separate add-on); sold-out toggle updates the QR menu instantly; requires internet on both the customer phone and the POS — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/scan-and-order">scan-and-order</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Kitchen Display System</strong> — shows online and dine-in orders; replaces paper KOT; individual KOT view and aggregated item view; mark food ready; kitchen marks items out of stock and captains/billers are notified; multiple cooking stations; Android and Windows, any Android phone. Routing rules, timers and price not stated — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/kitchen-display-system">KDS</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Captain Ordering App</strong> — Android phones/tablets; multiple orders and bill settlement; UPI/wallet, contactless card under ₹5,000, cash, QR; offline architecture with POS sync; AI recommendation engine for upselling; AI voice recognition for item entry; captains assigned to tables/areas from the POS. KOT, modifiers and table transfer/merge are <em>not</em> described on the page — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/captain-ordering-app">captain app</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Token Management</strong> — Android app on an Android TV (with Play Store) showing pickup orders, live status and token numbers; voice alert when food is marked ready; mark ready from POS or KDS; Zomato/Swiggy OTP check-in for delivery executives; works online and offline — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/online-order-token-management">token</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Wireless Calling Device</strong> (hardware) — "LED colours kept on the table, allowing customers to call for the waiter" — <span class="b po">PETPOOJA OFFICIAL</span> marketplace.</li>
+<li><span class="b add">ADD-ON</span> <strong>Table Reservation Manager</strong> (formerly Reservation Manager) — syncs Zomato Dining, District, EazyDiner; own branded booking link (optional refundable deposit; shareable via Instagram/WhatsApp/website); phone bookings and walk-ins in one inbox; queue management (guests order while waiting); auto table assignment by party size and live floor status; cancellation alerts; automated reminders; WhatsApp feedback requests after visits; syncs with POSS — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/table-reservation-manager">reservation manager</a>.</li>
+</ul>
+
+<h3>F–H. Inventory, purchase, central kitchen</h3>
+<ul>
+<li><span class="b add">CORE</span> Low-stock alerts; item availability for dine-in and online; <strong>multi-stage recipe management</strong> with automatic deduction; item-wise recipe upload; day-end inventory reports; stock transfer between outlets (request/supply) from a single dashboard; purchase order tickets raised/accepted with suppliers; "frequently ordered items from each supplier"; e-way bills for purchase orders — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/restaurant-inventory-management-software">inventory</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Purchase Manager</strong> ("purchases, vendors and inventory in one place") — <span class="b po">PETPOOJA OFFICIAL</span> marketplace; note the Base plan lists "purchase manager integrations".</li>
+<li><span class="b add">ADD-ON</span> <strong>Central Kitchen</strong> — central kitchen for single/multiple outlets; supply raw and semi-cooked items across cities; low-stock alerts for any outlet; consolidated route plan when outlets raise purchase orders; return damaged stock to source — <span class="b po">PETPOOJA OFFICIAL</span> inventory page and <a href="https://www.petpooja.com/poss/large-chain-restaurant-pos-software">large-chain page</a>.</li>
+<li><span class="b unk">UNKNOWN</span> FIFO and batch/expiry tracking: explicitly <em>not</em> mentioned on the inventory page. Wastage/damaged-stock: "return the damaged stock" only; "65% reduction in wastage" is a customer-result claim.</li>
+</ul>
+
+<h3>I. Online ordering and aggregators</h3>
+<ul>
+<li><span class="b add">CORE</span> One-screen management of orders from <strong>Swiggy, Zomato, Dineout</strong>, and (on /poss) <strong>Talabat</strong>; "zero commission charged by Petpooja"; menu ON/OFF from inventory; prices/items/packaging updated across aggregators without re-entry; platform-wise reconciled reports (orders, commission rate, surplus charges, profit margins, taxes); Razorpay named as a third-party payment gateway; rider-management apps named "Duzno" [sic — likely Dunzo], Shadowfax, Pidge — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/online-order-management-software">online orders</a>.</li>
+<li><span class="b unk">UNKNOWN</span> <strong>Not specified</strong> by Petpooja on that page: reject-order workflow, order-status callbacks, "food-ready" push to riders/customers, rider assignment/tracking, reconciliation steps. The order flow per the blog: "An order placed on an app travels back to your POS. It prints in the kitchen, the same as a digital KOT" — <span class="b po">PETPOOJA OFFICIAL</span> blog.</li>
+<li><span class="b add">ADD-ON</span> <strong>Online Order Reconciliation</strong> — "Petpooja matches every aggregator order against your POS data" (Zomato, Swiggy) — <span class="b po">PETPOOJA OFFICIAL</span> marketplace.</li>
+<li><span class="b tp">THIRD-PARTY</span> Petpooja exposes an <strong>Online Ordering API</strong> for aggregator/partner platforms: sync menu/catalogue, push orders into the POS (<code>save_order</code> carrying customer, items, taxes, discounts, delivery and packing charges, payment type, prep time, OTP), receive order-status callbacks, toggle item stock — per <a href="https://github.com/api-evangelist/petpooja">api-evangelist/petpooja</a> and a public Apiary doc (<a href="https://onlineorderingapisv210.docs.apiary.io/">onlineorderingapisv210.docs.apiary.io</a>). Not confirmed on petpooja.com.</li>
+</ul>
+
+<h3>J–K. Website, QR</h3>
+<ul>
+<li><span class="b add">ADD-ON</span> <strong>Business Website</strong> — "Accept orders directly from your website to POS system without third-party aggregator or commissions". The dedicated page URL guessed (/poss/restaurant-website-builder) returned 404; features such as custom domain and online payment are <span class="b unk">UNKNOWN</span> — <span class="b po">PETPOOJA OFFICIAL</span> marketplace.</li>
+<li><span class="b add">ADD-ON</span> Digital Display System — TVs turned into digital menu boards — <span class="b po">PETPOOJA OFFICIAL</span> marketplace.</li>
+</ul>
+
+<h3>L–O. CRM, loyalty, feedback, marketing</h3>
+<ul>
+<li><span class="b add">CORE</span> CRM: track customers; consolidate data from online orders, Captain app, website and in-house billing; purchase history, preferences, special notes; labels/segmentation (Petpooja states "100+ customer label types" and "7+ campaign types"); free customer-data download — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/restaurant-customer-management-software">CRM</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>SMS Marketing</strong> — personalised SMS with offers, menu updates, wishes; birthday/anniversary campaigns; per-customer restriction controls. <strong>WhatsApp is not mentioned on the CRM page</strong>; WhatsApp appears only in the reservation page (feedback requests, booking-link sharing) and as a CRM channel in the integrations blog — <span class="b po">PETPOOJA OFFICIAL</span>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Loyalty Wallet</strong> — predefined loyalty and cashback points per bill; owner-set expiry; wallet top-up by cash/card/UPI; OTP-regulated redemption; POS-generated SMS on credit; time-bound reward campaigns; blacklist/blocked customers; one dashboard. Tiers and cashback percentages not documented — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/restaurant-loyalty-program">loyalty</a>.</li>
+<li><span class="b add">ADD-ON</span> <strong>Customer Feedback</strong> — Android app, SMS links, table/counter QR; custom questions; captures birthdays/anniversaries; tracks feedback on third-party orders; negative feedback alerts the biller on the POS. Google-reviews integration, sentiment analytics and complaint categorisation not stated — <span class="b po">PETPOOJA OFFICIAL</span> <a href="https://www.petpooja.com/poss/customer-feedback-management">feedback</a>.</li>
+<li>Marketing Manager tiers include Meta Ads and influencer features (Scale) — <span class="b po">PETPOOJA OFFICIAL</span> pricing page; <span class="b unk">UNKNOWN</span> what they do.</li>
+</ul>
+
+<h3>P. Reports and analytics</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> Named report types on the reports page: day-end, sales, item-wise consumption, online-order, staff scheduling, tax, bill-modification, discount/cancelled-order and cash-drawer-operation reports. Petpooja states different totals (50+/80+/90+/100+, see §2) but does not itemise them; the full list is <strong>UNKNOWN</strong>. <span class="b add">ADD-ON</span> "Dynamic Reports" is a customisable reporting dashboard (marketplace, "40+ reports"); <span class="b add">ADD-ON</span> Order Reconciliation covers aggregator settlement. Multi-outlet reports: outlet-wise sales, inventory, online orders and staff performance — <span class="b po">PETPOOJA OFFICIAL</span> large-chain page. Source: <a href="https://www.petpooja.com/poss/reports-and-analytics">reports</a>.</p>
+
+<h3>Q. Head office / multi-outlet</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> Central management of menu items and pricing "both for offline menus and online aggregators"; head-office dashboard; "configure zones and group your outlets by region, state, city, brands or channels"; outlet-wise staff rights; central kitchen (above); assigned support team for multi-outlet chains — <a href="https://www.petpooja.com/poss/large-chain-restaurant-pos-software">large-chain page</a>, <a href="https://www.petpooja.com/poss/support">support</a>.</p>
+
+<h3>R. ERP / accounting</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> "Push all your sales, inventory and customer data directly to your ERP"; named ERPs: <strong>Dynamics NAV, Tally, SAP</strong>; "a data lake enabling integration with any ERP" (large-chain page). Blog: accounting integration sends "sales, taxes and purchase data into tools like Tally" (POS → accounting). A search summary adds "one-time ledger mapping… real-time sync or daily batches" — <span class="b tp">THIRD-PARTY</span>; <span class="b unk">UNKNOWN</span> on official pages. Petpooja's separate Invoice product handles e-invoicing/e-way bills.</p>
+
+<h3>S. Payments</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> "Multiple UPI &amp; EDC integrations for quick payment" (integrations page); dynamic payment QR on the bill; Razorpay named on the online-orders page; captain app UPI/wallet/contactless card. <span class="b tp">THIRD-PARTY</span> Petpooja collaborated with Paytm on "Petpooja GO" (POS + Paytm device integration) and "Petpooja PAY" (Paytm device) — <span class="b unk">UNKNOWN</span> official details, settlement model, fees.</p>
+
+<h3>T. Hardware (kept separate from software)</h3>
+<ul>
+<li><span class="b po">PETPOOJA OFFICIAL</span> Runs on iOS, Windows, Android. Printers: A4/A5, WiFi, LAN, USB, dot-matrix, laser, label, Bluetooth; "assign a unique printer to every station" — pricing and billing pages, <span class="b po">PETPOOJA OFFICIAL</span> blog.</li>
+<li><span class="b po">PETPOOJA OFFICIAL</span> Self-service kiosk hardware: wall-mount or floor-mount, 22"/27"/32", built-in thermal printer, WiFi + Bluetooth, offline-capable, UPI/card, multi-language, real-time POS/KDS sync, 1-year onsite warranty; claims "+28% average order value", "99% order accuracy" — <a href="https://www.petpooja.com/poss/food-ordering-kiosk">kiosk</a> <span class="b add">ADD-ON</span>.</li>
+<li><span class="b po">PETPOOJA OFFICIAL</span> Token display: any Android TV with Play Store. KDS: Android or Windows. Wireless calling device: table-top LED unit. Biometric attendance hardware belongs to Attendo.</li>
+</ul>
+
+<h3>U–W. Reservation, token, kiosk</h3>
+<p>Covered in C–E and T above. Kiosk: touchscreen + voice-recognition ordering, photo-forward menu, upsell prompts, pay by UPI/card/counter, multi-brand food-court auto-routing — <span class="b po">PETPOOJA OFFICIAL</span> marketplace + kiosk page.</p>
+
+<h3>X. Support (publicly documented only)</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> Phone and email; "24-hour free support, even on holidays and weekends"; "free on-call and in-person POS training"; on-ground expert visits; an assigned team for multi-outlet chains; multilingual support; automated ticket tracking with IDs. <strong>Not stated:</strong> SLAs/response times, live chat, knowledge base, premium tiers — <span class="b unk">UNKNOWN</span>. Source: <a href="https://www.petpooja.com/poss/support">support</a>.</p>
+
+<h3>Offline and architecture (Phase 12 input)</h3>
+<p><span class="b po">PETPOOJA OFFICIAL</span> <a href="https://blog.petpooja.com/industry-business-guides/bridge-server-works-inside-pos-local/">POS Local</a>: a <strong>Bridge Server</strong> runs on a Windows computer at the restaurant and holds a local database with every bill, order and report. Counters read/write it directly; one device is the <em>Master Billing Station</em> and secondary counters, kitchen displays and captain devices connect through it. If the Bridge Server and POS are on the same machine billing runs fully offline; if on separate machines it "continues for up to <strong>5 days</strong> offline". Menu/price updates, settings and aggregator orders sync down from Petpooja's cloud when the connection returns; pending online orders "catch up on their own". Scheduled local backups (daily/weekly/monthly) go to a separate drive. The <em>cloud</em> POS variant also works through drops and syncs bills when connectivity returns. Conflict-resolution rules are <span class="b unk">UNKNOWN</span>.</p>
+
+<h2>5. Petpooja integration inventory (verified names only)</h2>
+<div class="tblw"><table><thead><tr><th>Category</th><th>Named partners</th><th>Verification</th></tr></thead><tbody>
+<tr><td>Food aggregators</td><td>Zomato, Swiggy, Dineout, Talabat (Middle East)</td><td><span class="b po">PETPOOJA OFFICIAL</span> online-orders + /poss pages</td></tr>
+<tr><td>Dining / reservations</td><td>Zomato Dining, District, EazyDiner</td><td><span class="b po">PETPOOJA OFFICIAL</span> marketplace + reservation page</td></tr>
+<tr><td>Rider / delivery</td><td>Dunzo (spelled "Duzno" on the page), Shadowfax, Pidge; "B2B delivery agents"</td><td><span class="b po">PETPOOJA OFFICIAL</span> online-orders page; direction/sync <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Payments</td><td>Razorpay; "multiple UPI and EDC integrations"; Paytm (Petpooja GO/PAY)</td><td><span class="b po">PETPOOJA OFFICIAL</span> (Razorpay, UPI/EDC) · <span class="b tp">THIRD-PARTY</span> (Paytm)</td></tr>
+<tr><td>Accounting / ERP</td><td>Tally, SAP, Microsoft Dynamics NAV, data lake</td><td><span class="b po">PETPOOJA OFFICIAL</span> large-chain page</td></tr>
+<tr><td>CRM / messaging</td><td>SMS (own add-on); WhatsApp (as CRM channel and in reservations)</td><td><span class="b po">PETPOOJA OFFICIAL</span> blog / reservation page; provider <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Procurement</td><td>Supplier PO exchange (no partners named)</td><td><span class="b po">PETPOOJA OFFICIAL</span> blog</td></tr>
+<tr><td>Partner API</td><td>Online Ordering API (menu, order push, status, stock)</td><td><span class="b tp">THIRD-PARTY</span> third-party docs</td></tr>
+<tr><td>Automation</td><td>Zapier</td><td><span class="b tp">THIRD-PARTY</span></td></tr>
+</tbody></table></div>
+
+<h2>6. Petpooja source list</h2>
+<ul>
+<li><a href="https://www.petpooja.com">petpooja.com</a> · <a href="https://www.petpooja.com/poss">/poss</a> · <a href="https://www.petpooja.com/poss/pricing">/poss/pricing</a> · <a href="https://www.petpooja.com/poss/restaurant-app-marketplace">/poss/restaurant-app-marketplace</a></li>
+<li><a href="https://www.petpooja.com/poss/restaurant-billing-software">billing</a> · <a href="https://www.petpooja.com/poss/restaurant-inventory-management-software">inventory</a> · <a href="https://www.petpooja.com/poss/online-order-management-software">online orders</a> · <a href="https://www.petpooja.com/poss/restaurant-menu-management-software">menu</a> · <a href="https://www.petpooja.com/poss/restaurant-customer-management-software">CRM</a> · <a href="https://www.petpooja.com/poss/reports-and-analytics">reports</a> · <a href="https://www.petpooja.com/poss/restaurant-integrations">integrations</a> · <a href="https://www.petpooja.com/poss/support">support</a></li>
+<li><a href="https://www.petpooja.com/poss/kitchen-display-system">KDS</a> · <a href="https://www.petpooja.com/poss/captain-ordering-app">captain</a> · <a href="https://www.petpooja.com/poss/scan-and-order">scan &amp; order</a> · <a href="https://www.petpooja.com/poss/table-reservation-manager">reservations</a> · <a href="https://www.petpooja.com/poss/restaurant-loyalty-program">loyalty</a> · <a href="https://www.petpooja.com/poss/customer-feedback-management">feedback</a> · <a href="https://www.petpooja.com/poss/online-order-token-management">token</a> · <a href="https://www.petpooja.com/poss/food-ordering-kiosk">kiosk</a> · <a href="https://www.petpooja.com/poss/quick-service-restaurant-software">QSR</a> · <a href="https://www.petpooja.com/poss/large-chain-restaurant-pos-software">large chain</a></li>
+<li>Blog: <a href="https://blog.petpooja.com/operations-workflows/must-have-integrations-for-managing-your-restaurant/">integrations</a> · <a href="https://blog.petpooja.com/industry-business-guides/sync-menu-across-swiggy-zomato-and-pos/">menu sync</a> · <a href="https://blog.petpooja.com/industry-business-guides/bridge-server-works-inside-pos-local/">Bridge Server</a></li>
+<li>Third-party: <a href="https://github.com/api-evangelist/petpooja">api-evangelist/petpooja</a> · <a href="https://www.g2.com/products/petpooja-poss/pricing">G2</a> · <a href="https://www.capterra.com/p/172163/Petpooja-Restaurant-Management-Platform/">Capterra</a> · <a href="https://www.softwaresuggest.com/petpooja/pricing">SoftwareSuggest</a> · <a href="https://www.dineopen.com/blog/petpooja-pricing-plans-2026.html">DineOpen</a></li>
+</ul>
+<footer>AppZetBilling vs Petpooja gap analysis - generated 2026-09-18 - analysis only, no production changes were made.</footer></div></body></html>

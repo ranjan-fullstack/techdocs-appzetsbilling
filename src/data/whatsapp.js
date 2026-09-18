@@ -62,7 +62,7 @@ export const API_CONVENTIONS = [
 ];
 
 export const VPS_FACTS = [
-  { k: 'Server', v: 'Hostinger VPS srv1772946, 203.0.113.10, CloudPanel' },
+  { k: 'Server', v: 'Hostinger VPS srv-example, 203.0.113.10, CloudPanel' },
   { k: 'OS', v: 'Ubuntu 24.04.4 LTS' },
   { k: 'CPU / RAM', v: '2 vCPU · 7.8GB RAM (5.7GB available)' },
   { k: 'Disk', v: '96GB total, 87GB free (10% used)' },

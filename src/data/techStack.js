@@ -119,7 +119,7 @@ export const STACK = [
     k: 'deploy',
     title: 'Source control & deployment',
     items: [
-      { name: 'Git', ver: 'single main branch', note: 'remote: github.com/ranjan-fullstack/appzetbilling — real history, not a fresh scaffold' },
+      { name: 'Git', ver: 'single main branch', note: 'remote: github.com/your-org/your-repo — real history, not a fresh scaffold' },
       { name: 'Deployment model', ver: 'single VPS, no containers', note: 'no CI/CD pipeline found; the app itself runs under nginx+php-fpm with no dedicated systemd service of its own' },
     ],
   },

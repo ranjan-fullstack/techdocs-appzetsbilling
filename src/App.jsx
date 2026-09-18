@@ -7,6 +7,7 @@ import BackupMigration from './pages/BackupMigration.jsx';
 import Deployment from './pages/Deployment.jsx';
 import WhatsAppModule from './pages/WhatsAppModule.jsx';
 import PetpoojaComparison from './pages/PetpoojaComparison.jsx';
+import GapAnalysis from './pages/GapAnalysis.jsx';
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
       <Route path="/deployment" element={<Deployment />} />
       <Route path="/whatsapp-module" element={<WhatsAppModule />} />
       <Route path="/petpooja-comparison" element={<PetpoojaComparison />} />
+      <Route path="/gap-analysis" element={<GapAnalysis />} />
+      <Route path="/gap-analysis/:part" element={<GapAnalysis />} />
     </Routes>
   );
 }

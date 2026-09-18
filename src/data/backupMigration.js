@@ -19,7 +19,7 @@ export const ARCH_FACTS = [
   { k: 'Hosting', v: 'Hostinger VPS, Ubuntu 24.04.4 LTS, CloudPanel control panel (clpctl)' },
   { k: 'Queue / scheduler', v: 'Queue driver = database, but no worker process runs; no cron calls schedule:run anywhere on the server' },
   { k: 'Backups (existing)', v: 'CloudPanel: daily gzipped mysqldump (03:15, clpctl db:backup), 7-day local retention. Hostinger: weekly whole-VM snapshot via Proxmox Backup Server. Offsite copy to Cloudflare R2 added 2026-09-17 — see §16' },
-  { k: 'Source control', v: 'github.com/ranjan-fullstack/appzetbilling, single branch, no CI/CD' },
+  { k: 'Source control', v: 'github.com/your-org/your-repo, single branch, no CI/CD' },
 ];
 
 export const DB_STATS = [
@@ -370,16 +370,16 @@ export const OPEN_QUESTIONS = [
 // production VPS on 2026-09-17.
 
 export const IMPLEMENTATION_STATS = [
-  { k: 'Offsite copy', v: 'Live', u: 'Cloudflare R2 · appzetsbilling-backup · since 2026-09-17' },
+  { k: 'Offsite copy', v: 'Live', u: 'Cloudflare R2 · example-backup-bucket · since 2026-09-17' },
   { k: 'Push schedule', v: '03:20 daily', u: '5 min after the existing 03:15 local dump' },
   { k: 'Cost impact', v: '₹0', u: "current DB size stays inside R2's free tier — §12" },
   { k: 'Verification', v: 'End-to-end', u: "today's real dump pushed, then confirmed present in the bucket" },
 ];
 
 export const IMPLEMENTATION_STEPS = [
-  { t: 'Connect & re-verify the environment', d: 'SSHed into the production VPS (srv1772946 / 203.0.113.10) with the existing key and confirmed the actual backup mechanics, which differ slightly from the generic description in §01: clpctl db:backup runs at 03:15 via /etc/cron.d/clp, and dumps land at /home/appzetsbilling-app/backups/databases/appzetsbilling/YYYY-MM-DD/*.sql.gz.' },
-  { t: 'Create the R2 bucket and a scoped access token', d: 'Created the appzetsbilling-backup bucket (Standard storage class, Automatic/Asia-Pacific location) and an Account API Token restricted to Object Read & Write on that one bucket only — not account-wide, per the least-privilege note in §15.' },
+  { t: 'Connect & re-verify the environment', d: 'SSHed into the production VPS (srv-example / 203.0.113.10) with the existing key and confirmed the actual backup mechanics, which differ slightly from the generic description in §01: clpctl db:backup runs at 03:15 via /etc/cron.d/clp, and dumps land at /home/SITE_USER/backups/databases/appzetsbilling/YYYY-MM-DD/*.sql.gz.' },
+  { t: 'Create the R2 bucket and a scoped access token', d: 'Created the example-backup-bucket bucket (Standard storage class, Automatic/Asia-Pacific location) and an Account API Token restricted to Object Read & Write on that one bucket only — not account-wide, per the least-privilege note in §15.' },
   { t: 'Configure and debug the S3 client', d: "rclone was already installed on the VPS but at an old version (1.60.1) with no R2 remote configured. Writes initially failed with 403 Access Denied despite correct credentials — traced to that old version issuing a CreateBucket preflight check the scoped token isn't permitted to make. Fixed by upgrading to rclone 1.75.1 (official .deb, not a piped install script) and setting no_check_bucket=true." },
-  { t: 'Deploy the push script and cron job', d: "/usr/local/bin/push-backup-to-r2.sh finds each day's dump and copies it to r2:appzetsbilling-backup/YYYY-MM-DD/, logging outcome to syslog. Scheduled via a new /etc/cron.d/r2-backup-push at 03:20 — kept as a separate file from CloudPanel's own cron.d/clp so a panel update can't silently remove it." },
+  { t: 'Deploy the push script and cron job', d: "/usr/local/bin/push-backup-to-r2.sh finds each day's dump and copies it to r2:example-backup-bucket/YYYY-MM-DD/, logging outcome to syslog. Scheduled via a new /etc/cron.d/r2-backup-push at 03:20 — kept as a separate file from CloudPanel's own cron.d/clp so a panel update can't silently remove it." },
   { t: 'Verify, not just deploy', d: "Ran the script manually against the real 2026-09-16 dump, then confirmed independently — via rclone tree and rclone ls against the live bucket, not just a clean exit code — that the file actually landed in R2." },
 ];

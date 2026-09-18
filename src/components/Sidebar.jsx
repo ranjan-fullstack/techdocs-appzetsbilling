@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { GAP_COMBINED, GAP_PARTS } from '../data/gapAnalysis.js';
 
 const PAGES = [
   { to: '/db-architecture', ico: '🗄', label: 'DB Architecture' },
@@ -10,10 +11,12 @@ const PAGES = [
   { to: '/deployment', ico: '🚀', label: 'Deployment & Source Mgmt' },
   { to: '/whatsapp-module', ico: '💬', label: 'WhatsApp Module' },
   { to: '/petpooja-comparison', ico: '🆚', label: 'Petpooja Comparison' },
+  { to: '/gap-analysis', ico: '📊', label: 'Gap Analysis' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
   const [open, setOpen] = useState(false);
+  const onGap = useLocation().pathname.startsWith('/gap-analysis');
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -37,6 +40,19 @@ export default function Sidebar({ toc, activeSection, meta }) {
           </NavLink>
         ))}
       </nav>
+      {onGap && (
+        <nav className="site-nav gap-nav" aria-label="Gap Analysis">
+          <div className="nav-label">Gap Analysis parts</div>
+          {GAP_PARTS.map((p) => (
+            <NavLink key={p.id} to={`/gap-analysis/${p.id}`} onClick={close} className={({ isActive }) => (isActive ? 'active' : undefined)}>
+              <span className="ico num">{p.num}</span> {p.label}
+            </NavLink>
+          ))}
+          <a href={GAP_COMBINED} target="_blank" rel="noreferrer" onClick={close}>
+            <span className="ico">📄</span> Combined report ↗
+          </a>
+        </nav>
+      )}
       {toc && (
         <nav className="toc">
           {toc.map((item) => (

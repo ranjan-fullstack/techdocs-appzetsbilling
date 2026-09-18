@@ -1,0 +1,155 @@
+<!--TITLE:03 AppZetBilling Feature Inventory — Phase 3 (capability level)-->
+<p class="sub">Every row was checked against source code, named routes or database columns on the production server. Status vocabulary: <strong class="s-ex">EXISTING</strong> (working code found) · <strong class="s-pa">PARTIAL</strong> (some of the capability exists) · <strong class="s-nf">NOT FOUND</strong> (searched, no code/schema) · <strong class="s-unk">UNKNOWN</strong> (cannot be determined from this server). "Found in code" does not mean "used in production" — see Part 02 usage counts.</p>
+
+<h2>A. Billing / POS</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Dine-in billing</td><td class="s-ex">EXISTING</td><td>[[V]] <code>sales.sales_type='dine_in'</code>; 70 rows in production</td></tr>
+<tr><td>Takeaway / pick-up</td><td class="s-ex">EXISTING</td><td>[[V]] <code>pick_up</code> (4 rows) and <code>takeaway</code> values in code</td></tr>
+<tr><td>Delivery orders (with delivery address, delivery charge)</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>delivery</code> type (3 rows), <code>delivery_addresses</code>, Delivery Charge settings controller; no delivery-person model, no dispatch, no zones (see Part 08)</td></tr>
+<tr><td>Counter billing (no table)</td><td class="s-pa">PARTIAL</td><td>[[INF]] <code>sales.table_id</code> is nullable and pick-up/takeaway flows exist; a dedicated counter mode was not separately verified</td></tr>
+<tr><td>Table billing; area-wise tables</td><td class="s-ex">EXISTING</td><td>[[V]] <code>tables</code>, <code>areas</code>, <code>tables.open-sale</code> route, <code>is_booked</code></td></tr>
+<tr><td>Table transfer (move a running bill)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>AcnooTableSaleController::moveTable</code> updates sale, KOT tickets and both tables' <code>is_booked</code></td></tr>
+<tr><td>Table merge</td><td class="s-nf">NOT FOUND</td><td>[[V]] only a modal file named <code>table-move-marge-modal.blade.php</code>; no server-side merge method found</td></tr>
+<tr><td>Split bills (by item / by guest)</td><td class="s-nf">NOT FOUND</td><td>[[V]] no split logic in sale controllers</td></tr>
+<tr><td>Multiple payments on one bill</td><td class="s-nf">NOT FOUND</td><td>[[V]] <code>sales.payment_type_id</code> is a single FK; <code>transactions</code> rows are per sale but the UI/API is single-payment [[INF]]</td></tr>
+<tr><td>Partial payment / due / credit sale</td><td class="s-ex">EXISTING</td><td>[[V]] <code>paidAmount</code>, <code>dueAmount</code>, <code>due_collects</code>, dues + walk-in dues routes, due reports</td></tr>
+<tr><td>Customer ledger</td><td class="s-ex">EXISTING</td><td>[[V]] <code>GET /api/v1/parties/view-ledger/{id}</code>; <code>parties.due</code>, <code>opening_balance</code></td></tr>
+<tr><td>Payment modes: cash, card, bank, COD, custom</td><td class="s-ex">EXISTING</td><td>[[V]] <code>payment_types</code> (per-tenant, 27 rows), seeds Cash/Card/Bank/Bkash/Nagad/COD</td></tr>
+<tr><td>UPI / QR payment on bill</td><td class="s-pa">PARTIAL</td><td>[[V]] no seeded UPI type and no dynamic UPI-QR generation code; tenants can add a "UPI" payment type manually</td></tr>
+<tr><td>Payment gateway (online)</td><td class="s-pa">PARTIAL</td><td>[[V]] gateways (Razorpay, Stripe, Mollie, Paystack, Flutterwave, Instamojo, Toyyibpay, Thawani, Tap, Manual) are used for <em>SaaS subscription</em> and <em>online-store checkout</em> (<code>business_gateways</code>), <strong>not</strong> for in-restaurant POS card/UPI terminals</td></tr>
+<tr><td>Item discount / bill discount (amount or %)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>discountAmount</code>, <code>discountPercentage</code>, <code>discount_type</code>; Discount settings controller</td></tr>
+<tr><td>Coupons</td><td class="s-ex">EXISTING</td><td>[[V]] <code>coupons</code>, <code>sales.getSaleCoupon</code>, <code>coupon_amount</code>, <code>coupon_percentage</code>, <code>cashback_amount</code>; <strong>code is globally unique</strong></td></tr>
+<tr><td>Taxes / GST</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>taxes</code> (name, rate, <code>sub_tax</code>, <code>vat_on_sale</code>), <strong>one <code>tax_id</code> per sale</strong>, <code>tax_amount</code>; seeds VAT/GST/CGST/"VAT + GST"; <code>businesses.vat_name/vat_no</code>. No HSN/SAC, no per-line tax, no CGST/SGST/IGST split on the invoice, no GSTIN validation, no GSTR export</td></tr>
+<tr><td>Service charge</td><td class="s-nf">NOT FOUND</td><td>[[V]] no column or setting</td></tr>
+<tr><td>Packaging / container charges</td><td class="s-nf">NOT FOUND</td><td>[[V]] no column or setting</td></tr>
+<tr><td>Round-off</td><td class="s-ex">EXISTING</td><td>[[V]] <code>sale_rounding_option</code> business setting (default <code>none</code>)</td></tr>
+<tr><td>Tips</td><td class="s-nf">NOT FOUND</td><td>[[V]] no tip field found by grep</td></tr>
+<tr><td>Cancellation with reason</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>cancel_reasons</code> (29 rows) used on KOT cancellation; bill-level cancel/void audit not verified</td></tr>
+<tr><td>Refund / credit note</td><td class="s-nf">NOT FOUND</td><td>[[V]] no refund controller/table</td></tr>
+<tr><td>Bill modification</td><td class="s-ex">EXISTING</td><td>[[V]] <code>sales</code> update (PUT) and <code>sales/kot-pay/{id}</code>; no modification log [[V]]</td></tr>
+<tr><td>Invoice view / reprint</td><td class="s-ex">EXISTING</td><td>[[V]] <code>sales.invoice</code>, <code>sales.pdf</code>, <code>collect.dues.invoice</code></td></tr>
+<tr><td>Quotation → sale</td><td class="s-ex">EXISTING</td><td>[[V]] <code>quotations.convert-sale</code></td></tr>
+<tr><td>E-bill / WhatsApp bill / SMS bill</td><td class="s-nf">NOT FOUND</td><td>[[V]] no WhatsApp/SMS code; invoices are on-screen/PDF only</td></tr>
+<tr><td>Email bill</td><td class="s-nf">NOT FOUND</td><td>[[V]] mail classes exist only for auth/registration</td></tr>
+<tr><td>Thermal printer / multiple printers / kitchen printer routing</td><td class="s-pa">PARTIAL</td><td>[[V]] browser print of HTML; one <code>80mm</code> width reference found; no ESC/POS, no network-printer routing, no per-station printer mapping</td></tr>
+<tr><td>A4 invoice PDF</td><td class="s-ex">EXISTING</td><td>[[V]] dompdf, <code>sales.pdf</code></td></tr>
+<tr><td>Cash register (open/close shift, denominations, approvals)</td><td class="s-ex">EXISTING</td><td>[[V]] CashRegisterAddon (20 routes; shift/ledger/difference reports per earlier audit)</td></tr>
+<tr><td>Barcode scanning / SKU</td><td class="s-nf">NOT FOUND</td><td>[[V]] grep "barcode" → 0</td></tr>
+<tr><td>Invoice numbering</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>sales.invoiceNumber</code>; <code>GET new-invoice</code>; per-tenant sequence/series rules not verified</td></tr>
+</tbody></table></div>
+
+<h2>B. Menu management</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Menus → categories → items</td><td class="s-ex">EXISTING</td><td>[[V]] <code>menus</code> (22), <code>categories</code> (75), <code>products</code> (327)</td></tr>
+<tr><td>Sub-categories</td><td class="s-nf">NOT FOUND</td><td>[[V]] no parent_id on categories</td></tr>
+<tr><td>Variants / sizes</td><td class="s-ex">EXISTING</td><td>[[V]] <code>product_variations</code>, <code>price_type</code></td></tr>
+<tr><td>Modifiers / add-ons (groups, options)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>modifier_groups</code>, <code>modifiers</code>, <code>modifier_group_options</code>, <code>sale_detail_options</code></td></tr>
+<tr><td>Combos / bundles</td><td class="s-nf">NOT FOUND</td><td>[[V]] no combo table</td></tr>
+<tr><td>Veg / non-veg, preparation time</td><td class="s-ex">EXISTING</td><td>[[V]] <code>products.food_type</code>, <code>preparation_time</code></td></tr>
+<tr><td>Recipe mapping</td><td class="s-ex">EXISTING</td><td>[[V]] <code>recipes</code> (30) / <code>recipe_ingredients</code> (90)</td></tr>
+<tr><td>Kitchen routing per item</td><td class="s-ex">EXISTING</td><td>[[V]] <code>kitchen_product</code> (300)</td></tr>
+<tr><td>Multiple menus (per branch / per order channel)</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>products.branch_id</code>, <code>menus</code>; no per-channel price tiers or time-of-day menus</td></tr>
+<tr><td>Online menu</td><td class="s-ex">EXISTING</td><td>[[V]] RestaurantOnlineStore <code>AcnooOnlineMenuController</code></td></tr>
+<tr><td>Stock-based item availability</td><td class="s-nf">NOT FOUND</td><td>[[INF]] no stock→availability coupling found</td></tr>
+<tr><td>Central menu push to outlets</td><td class="s-nf">NOT FOUND</td><td>[[V]] none</td></tr>
+<tr><td>Bulk upload (Excel)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>ProductImport</code>, <code>bulk-products-upload.xlsx</code></td></tr>
+</tbody></table></div>
+
+<h2>C. Tables, reservations, QR</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Table layout, areas, capacity, occupancy flag</td><td class="s-ex">EXISTING</td><td>[[V]] <code>tables</code> (44), <code>areas</code> (19)</td></tr>
+<tr><td>Graphical floor plan</td><td class="s-unk">UNKNOWN</td><td>[[UNK]] a tables view exists; drag-and-drop layout not verified</td></tr>
+<tr><td>Table QR codes (generate / download / regenerate)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>tables.qr.index/filter/download/regenerate</code>, <code>tables.qr_code</code>; <code>simple-qrcode</code></td></tr>
+<tr><td>QR → customer orders from phone at table</td><td class="s-unk">UNKNOWN</td><td>[[UNK]] online store exists; whether a scanned table QR opens a dine-in cart bound to that table was not verified</td></tr>
+<tr><td>Reservations (date, guests, type, time slots, assign tables, status)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>reservations</code> (8), <code>time_slots</code> (147), <code>reservation_tables</code>, settings, booked-tables report, customer-side booking in the online store</td></tr>
+<tr><td>Reservation channel sync (Zomato Dining / District / EazyDiner)</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Waitlist / queue</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Captain / waiter app</td><td class="s-unk">UNKNOWN</td><td>[[UNK]] Sanctum API + staff roles exist; a dedicated captain workflow in the mobile app cannot be verified from the server</td></tr>
+</tbody></table></div>
+
+<h2>D. Kitchen</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>KOT generation grouped by kitchen</td><td class="s-ex">EXISTING</td><td>[[V]] <code>kot_tickets</code> (27), <code>kitchens</code> (18), <code>kot_number</code></td></tr>
+<tr><td>KOT status / cooking status workflow</td><td class="s-ex">EXISTING</td><td>[[V]] <code>kots-cooking-status</code>, <code>kots-kot-status</code>, <code>sale_details.cooking_status</code></td></tr>
+<tr><td>KOT cancellation with reason</td><td class="s-ex">EXISTING</td><td>[[V]] <code>cancel_reason_id</code>, status <code>cancelled</code></td></tr>
+<tr><td>KOT modification after firing</td><td class="s-unk">UNKNOWN</td><td>[[UNK]] not traced</td></tr>
+<tr><td>Kitchen screen (KDS-like web UI)</td><td class="s-pa">PARTIAL</td><td>[[V]] dedicated <code>kitchen.php</code> routes (15), <code>KitchenMiddleware</code>, <code>chef</code>/<code>kitchen</code> roles; timers, station views, bump/recall not verified</td></tr>
+<tr><td>Kitchen printer routing</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Token / order-ready display</td><td class="s-nf">NOT FOUND</td><td>[[V]] grep token_no → 0</td></tr>
+<tr><td>Kitchen performance report</td><td class="s-pa">PARTIAL</td><td>[[V]] KOT report (pdf/excel/csv); no prep-time analytics</td></tr>
+</tbody></table></div>
+
+<h2>E. Inventory &amp; purchase</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Raw materials (ingredients), categories, units + conversion</td><td class="s-ex">EXISTING</td><td>[[V]] <code>ingredients</code> (73), <code>inventory_categories</code>, <code>units</code> (84); <code>StockService</code></td></tr>
+<tr><td>Stock in / out / adjustment / damage</td><td class="s-ex">EXISTING</td><td>[[V]] <code>stock_movements</code> (type, quantity, unit_price, reference)</td></tr>
+<tr><td>Recipe-based auto deduction on sale</td><td class="s-ex">EXISTING</td><td>[[V]] <code>Modules/InventoryAddon/App/Observers/SaleObserver</code></td></tr>
+<tr><td>Consumption report</td><td class="s-ex">EXISTING</td><td>[[V]] <code>IngredientConsumptionReportService</code></td></tr>
+<tr><td>Low-stock alert</td><td class="s-pa">PARTIAL</td><td>[[V]] command exists; <strong>scheduler cron missing → never runs</strong></td></tr>
+<tr><td>Multi-stage recipes (semi-finished items)</td><td class="s-nf">NOT FOUND</td><td>[[INF]] recipes reference ingredients only</td></tr>
+<tr><td>FIFO / batch / expiry</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Stock transfer between outlets</td><td class="s-nf">NOT FOUND</td><td>[[V]] only <code>branch-wise-stocks</code> report</td></tr>
+<tr><td>Stock reconciliation / physical count</td><td class="s-pa">PARTIAL</td><td>[[INF]] "adjust" movement exists; a count-sheet workflow was not found</td></tr>
+<tr><td>Inventory valuation / food-cost report</td><td class="s-pa">PARTIAL</td><td>[[INF]] unit_price on movements; no valuation/food-cost % report found</td></tr>
+<tr><td>Purchases with suppliers</td><td class="s-ex">EXISTING</td><td>[[V]] <code>purchases</code> (10), <code>purchase_details</code>, supplier due report, supplier quick-add</td></tr>
+<tr><td>Purchase order → GRN → invoice → payment</td><td class="s-nf">NOT FOUND</td><td>[[V]] direct purchase entry only; no PO/GRN states</td></tr>
+<tr><td>Purchase returns, vendor rate comparison, approvals</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Central kitchen / material request / issue</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+</tbody></table></div>
+
+<h2>F. Customers, loyalty, marketing, feedback</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Customer profiles (name, phone, email, address, notes, image)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>parties</code> (type = customer/supplier), <code>delivery_addresses</code></td></tr>
+<tr><td>Customer purchase history / segmentation / labels</td><td class="s-pa">PARTIAL</td><td>[[V]] ledger and dues; no labels, RFM or segments</td></tr>
+<tr><td>Birthday / anniversary capture</td><td class="s-nf">NOT FOUND</td><td>[[V]] grep → 0</td></tr>
+<tr><td>Loyalty</td><td class="s-pa">PARTIAL</td><td>[[V]] "buy N of product X → reward" (<code>loyalty_items</code>, <code>loyalty_item_customers.purchase_count</code>, <code>loyalty-settings</code> API). No points ledger, wallet, tiers, expiry or redemption OTP</td></tr>
+<tr><td>Wallet / stored value</td><td class="s-nf">NOT FOUND</td><td>[[V]]</td></tr>
+<tr><td>Feedback / ratings</td><td class="s-pa">PARTIAL</td><td>[[V]] <code>reviews</code> table (0 rows) + online-store review controller; no QR/SMS feedback, no alerts</td></tr>
+<tr><td>SMS / WhatsApp / email campaigns</td><td class="s-nf">NOT FOUND</td><td>[[V]] only a newsletter subscribe form (<code>news_letters</code>)</td></tr>
+<tr><td>Offers engine (time-bound campaigns)</td><td class="s-nf">NOT FOUND</td><td>[[V]] coupons only</td></tr>
+</tbody></table></div>
+
+<h2>G. Online ordering, website, delivery</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Restaurant online store (menu, cart, checkout, order history)</td><td class="s-ex">EXISTING</td><td>[[V]] RestaurantOnlineStore v1.4, 54 routes; 1 production order</td></tr>
+<tr><td>Custom domain + SSL flag</td><td class="s-ex">EXISTING</td><td>[[V]] CustomDomainAddon, <code>domains</code>, nginx <code>custom-domain.conf</code></td></tr>
+<tr><td>Online payment at checkout</td><td class="s-ex">EXISTING</td><td>[[V]] <code>business_gateways</code>, manual/COD supported</td></tr>
+<tr><td>Store schedule (open hours)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>online-store-schedule</code></td></tr>
+<tr><td>Website content (blog, testimonials, about, terms, privacy)</td><td class="s-ex">EXISTING</td><td>[[V]]</td></tr>
+<tr><td>Online order status (pending → confirmed → processing → delivered)</td><td class="s-ex">EXISTING</td><td>[[V]] <code>Sale::ORDER_STATUSES</code></td></tr>
+<tr><td>Zomato / Swiggy / any aggregator integration</td><td class="s-nf">NOT FOUND</td><td>[[V]] grep zomato/swiggy → 0</td></tr>
+<tr><td>Delivery boy, assignment, tracking, zones, distance charge</td><td class="s-nf">NOT FOUND</td><td>[[V]] only a fillable <code>deliveryman_id</code> with no column; flat delivery-charge setting</td></tr>
+<tr><td>Google Maps / geocoding</td><td class="s-nf">NOT FOUND</td><td>[[V]] one option-key reference only</td></tr>
+</tbody></table></div>
+
+<h2>H. Reports</h2>
+<p>[[V]] Report families found (each generally with filter + PDF + Excel + CSV):</p>
+<ul>
+<li><strong>Sales:</strong> sale report, quotation report, VAT/tax report, KOT report, dashboard (sales summary, money-flow, loss/profit).</li>
+<li><strong>Purchases &amp; suppliers:</strong> purchase report, supplier-due report.</li>
+<li><strong>Customers / dues:</strong> due report, due-collection report, walk-in dues.</li>
+<li><strong>Finance:</strong> income report, expense report, transaction report, cash-register shift / ledger / difference / open / closed reports, subscription report (SaaS).</li>
+<li><strong>Inventory:</strong> ingredient-consumption report.</li>
+<li><strong>Multi-branch:</strong> branch-wise stocks, employees, sales, purchases, income-expense, revenue statistics.</li>
+<li><strong>HRM:</strong> attendance, leave, payroll reports.</li>
+<li><strong>Super-admin:</strong> active-business, expired-business, manual-payment, subscription reports.</li>
+</ul>
+<p>[[V]] Counted individual report endpoints ≈ 25–30. <strong>Not found:</strong> hourly sales, item/category-wise sales ranking, discount report, cancellation/void report, bill-modification report, staff performance, food-cost, wastage, stock valuation, payment-mode summary, customer frequency/value, online-platform reports.</p>
+
+<h2>I. Multi-outlet, staff, platform</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Multiple branches, branch switching, branch-scoped data</td><td class="s-ex">EXISTING</td><td>[[V]] MultiBranchAddon; BranchScope (0 branches in production)</td></tr>
+<tr><td>Head-office consolidated dashboard, zones/regions/brands</td><td class="s-pa">PARTIAL</td><td>[[V]] branch-wise reports; no zone/brand hierarchy</td></tr>
+<tr><td>Roles &amp; permissions (module × action), view-all-data</td><td class="s-ex">EXISTING</td><td>[[V]] Spatie + <code>staff_permissions.php</code> (≈70 permission groups)</td></tr>
+<tr><td>Staff with designation, HRM, attendance, payroll, shifts</td><td class="s-ex">EXISTING</td><td>[[V]] HrmAddon (Petpooja sells this separately as Attendo)</td></tr>
+<tr><td>Expense &amp; income tracking with categories</td><td class="s-ex">EXISTING</td><td>[[V]]</td></tr>
+<tr><td>Subscription plans with limits, module gating, manual + online payment</td><td class="s-ex">EXISTING</td><td>[[V]] <code>plans</code>, <code>plan_subscribes</code>, <code>PlanLimitService</code></td></tr>
+<tr><td>Super-admin panel (tenants, plans, gateways, languages, CMS)</td><td class="s-ex">EXISTING</td><td>[[V]] 109 admin routes</td></tr>
+<tr><td>Multi-language UI (102 language rows) + Odia</td><td class="s-ex">EXISTING</td><td>[[V]] <code>lang/or.json</code> — 2090 keys vs 2166 English (≈96%); commit "odia language added" 2026-07-11</td></tr>
+<tr><td>Multi-currency</td><td class="s-ex">EXISTING</td><td>[[V]] 151 currencies</td></tr>
+<tr><td>Push notifications (FCM), realtime (Pusher), in-app</td><td class="s-ex">EXISTING</td><td>[[V]]</td></tr>
+<tr><td>Audit log (who changed what)</td><td class="s-nf">NOT FOUND</td><td>[[V]] no activity-log package/table</td></tr>
+<tr><td>Public API keys / partner API / webhooks</td><td class="s-nf">NOT FOUND</td><td>[[V]] Sanctum tokens for the app only</td></tr>
+<tr><td>Offline billing</td><td class="s-nf">NOT FOUND</td><td>[[V]] no local DB / sync (Part 08)</td></tr>
+<tr><td>ERP / accounting export (Tally etc.)</td><td class="s-nf">NOT FOUND</td><td>[[V]] only Excel/PDF/CSV per list</td></tr>
+</tbody></table></div>

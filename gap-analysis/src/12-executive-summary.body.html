@@ -1,0 +1,148 @@
+<!--TITLE:12 Executive Report &amp; Odisha #1 Roadmap — Phases 24 and 25.17-->
+<p class="sub">Synthesis of Parts 01–11. Facts are tagged; recommendations are marked. Nothing in production was changed to produce this report.</p>
+
+<div class="grid">
+<div class="card"><b>Matrix rows compared</b><span class="v">111</span>Part 06</div>
+<div class="card"><b>AppZet status</b><span class="v">24 / 19 / 65 / 3</span>existing / partial / not found / unknown</div>
+<div class="card"><b>Gap levels</b><span class="v">2 / 32 / 36</span>critical / major / moderate (23 minor, 18 none)</div>
+<div class="card"><b>Urgent safety items</b><span class="v">5</span>Priority 0, before any feature work</div>
+</div>
+
+<div class="callout bad"><b>Do these first (Priority 0)</b> 1) Renew the wildcard TLS certificate — it expires <strong>2026-09-24</strong> and auto-renew is broken (manual DNS-01, no hook). 2) Turn on the Laravel scheduler cron and a supervised queue worker (neither exists). 3) Encrypt gateway credentials (currently plain JSON) and the R2 backups; delete <code>.env.bak</code>, <code>public/assets.zip</code>. 4) Fix invoice numbering (sales count + KOT count + 1; reusable after deletes). 5) Key-only SSH; Secure session cookie.</div>
+
+<h2>1. Current AppZetBilling architecture [[V]]</h2>
+<p>Laravel 10 modular monolith (7 nwidart add-on modules) on one Hostinger 2 vCPU / 7.8 GiB Ubuntu 24.04 VPS managed by CloudPanel; nginx → Varnish → PHP-FPM 8.2; Percona MySQL (97 tables, shared schema, <code>business_id</code> tenancy); Redis for cache only; database queue with no worker; no scheduler cron; Sanctum REST API at <code>/api/v1</code> for a separate mobile app; Blade + jQuery/Bootstrap UI; local file storage; daily DB backup + unencrypted R2 copy; manual deployment from a git repo on the server; no CI/CD, no uptime monitoring. Details: Parts 01–02.</p>
+
+<h2>2. Current feature inventory [[V]]</h2>
+<p>Strong: dine-in/takeaway/delivery billing, tables/areas/QR codes, table transfer, KOT by kitchen, variants/modifiers, recipe-based inventory with automatic deduction, purchases/suppliers, dues and customer ledger, coupons/discounts, cash register, reservations, online store with gateways and custom domains, multi-branch (unused), HRM, roles/permissions, plans with limits, Odia UI (96%), 102 languages. Details: Part 03.</p>
+
+<h2>3. Petpooja capability inventory</h2>
+<p>[[PO]] Core POS with 3-click billing, offline POS (local Bridge Server), multi-terminal, inventory with multi-stage recipes and stock transfer, menu, aggregator integrations (Swiggy, Zomato, Dineout, Talabat), CRM, purchase manager, reports (50+/80+/90+/100+ claimed), head-office features, plus paid add-ons: captain app, KDS, Scan &amp; Order, kiosk, token, calling device, reservation manager, loyalty wallet, feedback, SMS, website, digital display, reconciliation, dynamic reports, central kitchen. Separate products: Attendo (HR), Invoice (GST retail), Tasks. Details, sources and discrepancies: Part 04.</p>
+
+<h2>4. Feature-by-feature comparison</h2>
+<p>Part 06 (111 rows, filterable). Highest-impact facts: AppZet has no aggregator integration, no offline mode, no split/multi-payment, no service/packaging charges, no CGST/SGST invoice split, no audit log, no printer routing, no WhatsApp/SMS, no points/wallet loyalty, no PO/GRN, no Tally export, no central menu/transfers. AppZet <em>already exceeds or matches</em> Petpooja's public description in: recipe deduction, cash register, HRM bundled in, reservations (own), custom domains, Odia UI, plan gating.</p>
+
+<h2>5. Integration comparison</h2>
+<p>Part 05. AppZet: payment gateways (for subscriptions and store checkout), FCM, Pusher, SMTP. Petpooja: aggregators, reservation platforms, rider apps, UPI/EDC, Tally/SAP/NAV/data lake, SMS/WhatsApp, procurement, partner API, hardware. Aggregators require partner approval (calendar-time item).</p>
+
+<h2>6. Missing AppZetBilling capabilities</h2>
+<p>Critical: offline billing; Zomato/Swiggy integration. Major (32): see the matrix filter "MAJOR" — billing (8), reports (4), CRM (3), loyalty (2), menu (2), online orders (2), platform (2), plus captain, central kitchen, delivery, ERP export, inventory transfers, marketing, payments, purchase orders, table ordering.</p>
+
+<h2>7. Database gaps</h2>
+<p>Part 07 §4: 49 proposed new tables plus column additions (sale_payments, bill_charges, tax_components, audit_logs, WhatsApp/consent/campaign/loyalty ledger tables, integration configs/credentials/logs, aggregator tables, delivery tables, PO/GRN/transfers, brands/regions, usage meters, sync tables). Plus fixes: composite unique keys for <code>parties.phone</code> and <code>coupons.code</code>; missing <code>sales.deliveryman_id</code>; <code>business_id</code> on child tables.</p>
+
+<h2>8. API gaps</h2>
+<p>Part 07 §5: payments/split/merge/credit notes, reports, audit, printing, integrations hub, WhatsApp, campaigns, loyalty, aggregators, delivery, QR/KDS, purchasing, exports, partner API + webhooks, offline sync, AI — all under <code>/api/v1</code> using existing conventions.</p>
+
+<h2>9. Infrastructure gaps</h2>
+<p>Scheduler cron, queue worker (Redis + Horizon), webhook receiver, object storage for files/PDF, log rotation, uptime and cert monitoring, offsite file backup, staging environment, CI/CD, second node for workers as load grows. Part 01 and Part 10 §4.</p>
+
+<h2>10. Security gaps</h2>
+<p>Part 09: 17 findings — TLS renewal (critical, time-bound), plaintext gateway credentials, SSH root+password, no global tenant scope, global unique keys, non-expiring tokens, loose auth throttling, session cookie without Secure, CORS *, secret/bulk files in app tree, no audit log, no webhooks, single-server blast radius.</p>
+
+<h2>11. Multi-tenant SaaS considerations</h2>
+<p>Add a business global scope and cross-tenant test suite; tenant-scoped roles; per-tenant integration credentials (vault), per-tenant WhatsApp numbers, usage meters and plan-level limits for messages/orders/AI; per-outlet aggregator config; per-tenant consent records. Part 07 §2.</p>
+
+<h2>12–18. Opportunities</h2>
+<div class="tblw"><table><thead><tr><th>Area</th><th>Opportunity (recommendation)</th></tr></thead><tbody>
+<tr><td>12 WhatsApp</td><td>WhatsApp-first: bills, order status, reminders (utility) then campaigns (marketing); EN + Odia templates; tenant-owned numbers; usage metering (Part 08 §1)</td></tr>
+<tr><td>13 Online ordering</td><td>Improve own store (UPI checkout, WhatsApp order updates); aggregator integration via partner programs; partner API</td></tr>
+<tr><td>14 Delivery</td><td>Staged D1–D3 own-delivery module (Part 08 §2)</td></tr>
+<tr><td>15 Payments</td><td>UPI QR on bill now; gateway payment links with webhooks; Scan &amp; Pay later; verify current UPI charge rules</td></tr>
+<tr><td>16 CRM / loyalty</td><td>Fix customer identity; loyalty ledger + wallet; segments; feedback; festival campaign engine</td></tr>
+<tr><td>17 Inventory / purchase</td><td>Alerts working, day-end and food-cost reports, PO/GRN, then transfers and central kitchen</td></tr>
+<tr><td>18 Multi-outlet</td><td>Validate demand, then brands/regions, central menu, transfers, head-office dashboard</td></tr>
+</tbody></table></div>
+
+<h2>19. Recommended implementation phases</h2>
+<p>P0 reliability → P1 POS foundation → P2 customer engagement → P3 ecosystem → P4 multi-outlet → P5 enterprise + AI (Part 10 §5).</p>
+
+<h2>20. Estimated complexity</h2>
+<p>From the matrix: 111 rows sized S/M/L/XL. XL items: offline (full), aggregator integration, central kitchen, kiosk. L: printer agent, WhatsApp, loyalty, campaign engine, delivery, UPI/webhooks, central menu, purchase orders. Team size unknown, so no calendar estimate is given.</p>
+
+<h2>21. Cost implications</h2>
+<p>Part 10 §7: fixed (server, Redis, storage, monitoring), variable (WhatsApp per message by category, SMS, gateway fees, maps, LLM tokens), tenant-driven (onboarding, support, integration upkeep). Current spend and Meta rates need confirmation.</p>
+
+<h2>22. Monetisation</h2>
+<p>Part 10 §6: core plan per outlet; add-ons (WhatsApp base + usage, loyalty/campaigns, QR ordering, KDS, aggregators, delivery, online store, multi-outlet); usage meters for messages/AI; enterprise for API and head-office.</p>
+
+<h2>23. Final product architecture</h2>
+<p>Part 10 §3–4: modular monolith with new Engagement, Messaging, Integrations hub, Delivery, Printing, Audit, Offline-sync modules; Redis queues + Horizon; credential vault; webhook gateway; outbox + retry + dead-letter; no Kafka or microservices until volume demands.</p>
+
+<hr>
+
+<h1>APPZETBILLING 2026 PRODUCT GAP SUMMARY</h1>
+<div class="tblw"><table><thead><tr><th></th><th>Summary</th></tr></thead><tbody>
+<tr><td><strong>Existing capabilities</strong></td><td>Dine-in/takeaway/delivery POS; tables + QR; KOT by kitchen; recipe-based inventory; purchases and dues; cash register; reservations; online store + custom domains; HRM; multi-branch (unused); plans and limits; Odia UI</td></tr>
+<tr><td><strong>Major missing capabilities</strong></td><td>Offline mode; GST-correct invoices (split, HSN, service/packaging); split/merge/multi-payment; audit + voids; printer routing; WhatsApp/SMS; loyalty ledger/wallet; campaigns; PO/GRN; Tally/GST export; KDS depth; token display; own-delivery; central menu/kitchen</td></tr>
+<tr><td><strong>Major integration gaps</strong></td><td>Zomato/Swiggy (critical); payment webhooks and UPI/EDC; WhatsApp; Tally; reservation platforms; rider partners; public API</td></tr>
+<tr><td><strong>Architecture gaps</strong></td><td>No queue worker/scheduler, no webhooks, no credential vault, no global tenant scope, no audit trail, no offline sync, no observability/CI</td></tr>
+<tr><td><strong>Highest implementation dependencies</strong></td><td>Queue + scheduler → all async features · Charges/GST model → invoices, reports, exports · Customer-identity fix (unique phone per tenant) + consent → CRM/WhatsApp/loyalty · Audit log → void/discount reports · Webhook gateway → payments/WhatsApp/aggregators · Partner approvals → aggregators</td></tr>
+<tr><td><strong>Suggested Phase 1</strong></td><td>Priority 0 fixes + POS foundation: GST/charges, split/multi-payment/merge/refund, audit log, printing, day-end and control reports, UPI QR, offline Level 0–1, onboarding wizard, Odia completion; file aggregator partner applications</td></tr>
+<tr><td><strong>Suggested Phase 2</strong></td><td>WhatsApp bills and utility messages, CRM segments, loyalty ledger/wallet, campaigns, feedback, UPI/webhooks, Tally + GST exports, QR table ordering, PO/GRN</td></tr>
+<tr><td><strong>Suggested Phase 3</strong></td><td>Aggregator integration + reconciliation, own delivery D1–D3, KDS/token, captain mode, partner API, channel price lists</td></tr>
+<tr><td><strong>Suggested Phase 4</strong></td><td>Brand/region hierarchy, central menu, transfers, central kitchen, consolidated HO dashboard</td></tr>
+<tr><td><strong>Suggested Phase 5</strong></td><td>AI assistant/insights, ERP connectors, e-way bill, custom reports, kiosk/digital display if demanded</td></tr>
+</tbody></table></div>
+
+<hr>
+
+<h1>APPZETBILLING — ODISHA #1 ROADMAP</h1>
+<h2>25.17 The strategic question, answered</h2>
+<p><strong>What must AppZetBilling build, improve and integrate to become a credible Odisha-first restaurant SaaS able to compete with platforms such as Petpooja?</strong></p>
+
+<h3>Facts the answer rests on</h3>
+<ul>
+<li>[[V]] AppZet already has a broad module base and an Odia UI, but is early in real usage (39 business rows, 77 sales rows) and lacks several features restaurants treat as baseline (GST split, split bills, printers, offline, audit).</li>
+<li>[[V]] AppZet has no scheduler/worker, no webhooks, and a broken certificate-renewal path — so reliability, not features, is the first credibility risk.</li>
+<li>[[PO]] Petpooja publicly bundles unlimited users/terminals, aggregator integrations, offline POS and 24/7 support, and sells engagement, KDS, QR, reservations and central kitchen as add-ons; it does not name Odia among its languages.</li>
+<li>[[TP]] Local competitors exist in Bhubaneswar (e.g. Restrofi with a ₹699/outlet/month page and "local onboarding support"); UPI dominates payments; an NRAI Odisha chapter launched in Dec 2025.</li>
+</ul>
+
+<h3>Recommendations (in order)</h3>
+<ol>
+<li><strong>Be trustworthy first:</strong> Priority 0 reliability and security; publish uptime; make backups/restore drills routine.</li>
+<li><strong>Be correct for Indian restaurants:</strong> GST invoice model, UPI QR, split/multi-payment/merge, audit + voids, printer support, offline Level 1.</li>
+<li><strong>Be the easy, local, Odia-first choice:</strong> onboarding wizard + menu import + assisted setup; finish Odia; local support and content; simple transparent per-outlet pricing.</li>
+<li><strong>Be WhatsApp-first:</strong> bills, order/reservation/delivery updates, loyalty and festival campaigns in Odia and English, with consent and metering.</li>
+<li><strong>Close the ecosystem gap where demand is proven:</strong> start aggregator partner applications now; own delivery for local practice; Tally/GST exports for the CA channel.</li>
+<li><strong>Prove it with metrics:</strong> define "active restaurant", measure time-to-first-bill, conversion, churn, support times; publish case studies.</li>
+</ol>
+
+<h3>CURRENT STATE</h3>
+<p>See sections 1–2 above and Parts 01–03.</p>
+<h3>PETPOOJA GAP</h3>
+<p>Part 06 (2 critical, 32 major gaps of 111 rows).</p>
+<h3>ODISHA GAP</h3>
+<p>Odia completion (76 keys) and Odia invoice/message support; UPI-first defaults; local delivery rules; local onboarding and content; market evidence from interviews (25.1).</p>
+<h3>TECHNICAL GAP</h3>
+<p>Queue worker, scheduler, webhook gateway, credential vault, tenant scope, audit log, offline sync, print agent, observability, CI/CD (Parts 01, 07, 09).</p>
+<h3>PRODUCT GAP</h3>
+<p>Billing correctness, loyalty/wallet, KDS depth, token, delivery, PO/GRN, central kitchen, reports (Part 06).</p>
+<h3>CUSTOMER EXPERIENCE GAP</h3>
+<p>No onboarding wizard, no guided printer setup, no in-app help, unknown support model; Odia customer messaging absent (Part 11 §25.3, 25.13).</p>
+<h3>BUSINESS GAP</h3>
+<p>Packaging and pricing not yet tuned for Odisha segments; no partner channel (CA, dealers, NRAI Odisha); unmeasured funnel (Part 11 §25.4, 25.14, 25.16).</p>
+<h3>INTEGRATION GAP</h3>
+<p>Payments (UPI/EDC/webhooks), aggregators, accounting (Tally/GST), ERP/API, delivery partners, WhatsApp, CRM channels, hardware (printers/KDS), reservation platforms (Part 05).</p>
+<h3>AI OPPORTUNITY</h3>
+<p>Read-only owner Q&amp;A and Odia/English marketing copy are feasible now; forecasting and anomaly detection need data volume first (Part 11 §25.10).</p>
+<h3>PHASED ROADMAP</h3>
+<div class="tblw"><table><thead><tr><th>Phase</th><th>Theme</th><th>Headline deliverables</th></tr></thead><tbody>
+<tr><td>Phase 1</td><td>Foundation (after P0)</td><td>GST/charges, split/multi-payment/merge/refund, audit, printing, UPI QR, offline L1, onboarding, Odia complete</td></tr>
+<tr><td>Phase 2</td><td>Customer engagement</td><td>WhatsApp, loyalty, campaigns, feedback, CRM segments, Tally/GST export, QR ordering</td></tr>
+<tr><td>Phase 3</td><td>Restaurant ecosystem</td><td>Aggregators, delivery, KDS/token, captain, partner API, reservations extensions</td></tr>
+<tr><td>Phase 4</td><td>Multi-outlet</td><td>Brands/regions, central menu, transfers, central kitchen, HO reports</td></tr>
+<tr><td>Phase 5</td><td>Enterprise + AI</td><td>AI assistant, ERP connectors, advanced analytics, security hardening for enterprise</td></tr>
+</tbody></table></div>
+<h3>SUCCESS METRICS</h3>
+<p>Part 11 §25.16 — KPI definitions with placeholders; define "active restaurant" first.</p>
+
+<h2>Limits of this analysis</h2>
+<ul>
+<li>Petpooja pages were read through an automated text extraction; pages that blocked or returned nothing (Swiggy developer portal, TMBill, Aerobill, Zomato developer page) are marked UNKNOWN. Petpooja publishes no full feature list, report list or API reference.</li>
+<li>Mobile app behaviour (captain features, offline behaviour) could not be verified — its source is not on the server.</li>
+<li>Odisha market data is press-level; all segment/persona statements are hypotheses to validate by interviews.</li>
+<li>Costs of the current VPS and revenue figures are unknown. No prices were invented.</li>
+<li>No production system was modified; only read-only commands ran.</li>
+</ul>

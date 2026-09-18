@@ -1,0 +1,186 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>if(window.self!==window.top)document.documentElement.classList.add("embedded")</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>03 AppZetBilling Feature Inventory — Phase 3 (capability level)</title><style>:root{--bg:#fafaf7;--fg:#1c1f24;--mut:#5b6472;--line:#dfe2e6;--card:#fff;--acc:#0b6b5c;--acc2:#e8f3f0;--warn:#b45309;--warn2:#fef3e2;--bad:#b42318;--bad2:#fdecea;--ok:#127a3d;--ok2:#e6f5ec;--info:#1d4ed8;--info2:#e8eefc;--code:#f1f3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171a;--fg:#e6e8eb;--mut:#9aa4b2;--line:#2b3138;--card:#1b1f24;--acc:#4fd1b5;--acc2:#16302b;--warn:#f5b453;--warn2:#3a2c12;--bad:#ff8a80;--bad2:#3b1a18;--ok:#63d68e;--ok2:#142e1f;--info:#8fb0ff;--info2:#1a2646;--code:#242a31}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 80px}
+header.top{border-bottom:1px solid var(--line);padding:22px 0 14px;margin-bottom:18px}
+header.top .k,.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 6px}h2{font-size:21px;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}h3{font-size:16.5px;margin:22px 0 6px}h4{font-size:13px;margin:16px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:8px 0}li{margin:3px 0}
+a{color:var(--info)}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px;word-break:break-word}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.45}
+.sub{color:var(--mut);margin:0}
+nav.parts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}nav.parts a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--fg);background:var(--card)}nav.parts a.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--acc2);font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}td.n{white-space:nowrap}
+.callout{border-left:4px solid var(--info);background:var(--info2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}.callout.warn{border-color:var(--warn);background:var(--warn2)}.callout.bad{border-color:var(--bad);background:var(--bad2)}.callout.ok{border-color:var(--ok);background:var(--ok2)}.callout>b:first-child{display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}.card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 13px}.card b{display:block}.card .v{font-size:22px;font-weight:700;color:var(--acc)}
+.b{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:99px;white-space:nowrap;border:1px solid transparent;vertical-align:1px}
+.b.v{background:var(--ok2);color:var(--ok);border-color:var(--ok)}.b.po{background:var(--info2);color:var(--info);border-color:var(--info)}.b.tp{background:var(--warn2);color:var(--warn);border-color:var(--warn)}.b.inf{background:var(--code);color:var(--mut);border-color:var(--line)}.b.unk{background:var(--bad2);color:var(--bad);border-color:var(--bad)}.b.add{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+.s-ex,.g-none{color:var(--ok);font-weight:700}.s-pa,.g-minor,.g-moderate{color:var(--warn);font-weight:700}.s-nf,.g-major,.g-critical{color:var(--bad);font-weight:700}.s-unk{color:var(--mut);font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}.toolbar input,.toolbar select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.part-sep{margin-top:60px;border-top:3px solid var(--acc);padding-top:14px}
+footer{margin-top:50px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:640px){h1{font-size:23px}body{font-size:14.5px}}
+@media print{nav.parts,.toolbar{display:none}.part-sep{page-break-before:always}}
+
+/* when shown inside the docs site iframe, the site sidebar does the navigation */
+.embedded nav.parts,.embedded header.top .k{display:none}
+.embedded header.top{padding-top:6px}
+.embedded .wrap{padding-top:8px}
+</style></head><body><div class="wrap"><header class="top"><div class="k">AppZetBilling gap analysis - part 03 of 12</div><h1>03 AppZetBilling Feature Inventory — Phase 3 (capability level)</h1><nav class="parts"><a class="" href="01-infrastructure.html">01 Infrastructure</a><a class="" href="02-codebase-database.html">02 Codebase &amp; Database</a><a class="cur" href="03-feature-inventory.html">03 AppZetBilling Feature Inventory</a><a class="" href="04-petpooja-catalog.html">04 Petpooja Capability Catalog</a><a class="" href="05-integration-map.html">05 Integration Ecosystem Map</a><a class="" href="06-master-matrix.html">06 Master Comparison Matrix</a><a class="" href="07-blueprint-db-api.html">07 Implementation Blueprint, DB &amp; API Gaps</a><a class="" href="08-whatsapp-delivery-offline.html">08 WhatsApp, Delivery &amp; Offline</a><a class="" href="09-security.html">09 Security Audit</a><a class="" href="10-roadmap-architecture-cost.html">10 Roadmap, Architecture, Monetization &amp; Cost</a><a class="" href="11-odisha-strategy.html">11 Odisha-First Strategy</a><a class="" href="12-executive-summary.html">12 Executive Report &amp; Odisha #1 Roadmap</a></nav></header>
+<p class="sub">Every row was checked against source code, named routes or database columns on the production server. Status vocabulary: <strong class="s-ex">EXISTING</strong> (working code found) · <strong class="s-pa">PARTIAL</strong> (some of the capability exists) · <strong class="s-nf">NOT FOUND</strong> (searched, no code/schema) · <strong class="s-unk">UNKNOWN</strong> (cannot be determined from this server). "Found in code" does not mean "used in production" — see Part 02 usage counts.</p>
+
+<h2>A. Billing / POS</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Dine-in billing</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>sales.sales_type='dine_in'</code>; 70 rows in production</td></tr>
+<tr><td>Takeaway / pick-up</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>pick_up</code> (4 rows) and <code>takeaway</code> values in code</td></tr>
+<tr><td>Delivery orders (with delivery address, delivery charge)</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>delivery</code> type (3 rows), <code>delivery_addresses</code>, Delivery Charge settings controller; no delivery-person model, no dispatch, no zones (see Part 08)</td></tr>
+<tr><td>Counter billing (no table)</td><td class="s-pa">PARTIAL</td><td><span class="b inf">INFERENCE</span> <code>sales.table_id</code> is nullable and pick-up/takeaway flows exist; a dedicated counter mode was not separately verified</td></tr>
+<tr><td>Table billing; area-wise tables</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>tables</code>, <code>areas</code>, <code>tables.open-sale</code> route, <code>is_booked</code></td></tr>
+<tr><td>Table transfer (move a running bill)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>AcnooTableSaleController::moveTable</code> updates sale, KOT tickets and both tables' <code>is_booked</code></td></tr>
+<tr><td>Table merge</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> only a modal file named <code>table-move-marge-modal.blade.php</code>; no server-side merge method found</td></tr>
+<tr><td>Split bills (by item / by guest)</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no split logic in sale controllers</td></tr>
+<tr><td>Multiple payments on one bill</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> <code>sales.payment_type_id</code> is a single FK; <code>transactions</code> rows are per sale but the UI/API is single-payment <span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Partial payment / due / credit sale</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>paidAmount</code>, <code>dueAmount</code>, <code>due_collects</code>, dues + walk-in dues routes, due reports</td></tr>
+<tr><td>Customer ledger</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>GET /api/v1/parties/view-ledger/{id}</code>; <code>parties.due</code>, <code>opening_balance</code></td></tr>
+<tr><td>Payment modes: cash, card, bank, COD, custom</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>payment_types</code> (per-tenant, 27 rows), seeds Cash/Card/Bank/Bkash/Nagad/COD</td></tr>
+<tr><td>UPI / QR payment on bill</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> no seeded UPI type and no dynamic UPI-QR generation code; tenants can add a "UPI" payment type manually</td></tr>
+<tr><td>Payment gateway (online)</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> gateways (Razorpay, Stripe, Mollie, Paystack, Flutterwave, Instamojo, Toyyibpay, Thawani, Tap, Manual) are used for <em>SaaS subscription</em> and <em>online-store checkout</em> (<code>business_gateways</code>), <strong>not</strong> for in-restaurant POS card/UPI terminals</td></tr>
+<tr><td>Item discount / bill discount (amount or %)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>discountAmount</code>, <code>discountPercentage</code>, <code>discount_type</code>; Discount settings controller</td></tr>
+<tr><td>Coupons</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>coupons</code>, <code>sales.getSaleCoupon</code>, <code>coupon_amount</code>, <code>coupon_percentage</code>, <code>cashback_amount</code>; <strong>code is globally unique</strong></td></tr>
+<tr><td>Taxes / GST</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>taxes</code> (name, rate, <code>sub_tax</code>, <code>vat_on_sale</code>), <strong>one <code>tax_id</code> per sale</strong>, <code>tax_amount</code>; seeds VAT/GST/CGST/"VAT + GST"; <code>businesses.vat_name/vat_no</code>. No HSN/SAC, no per-line tax, no CGST/SGST/IGST split on the invoice, no GSTIN validation, no GSTR export</td></tr>
+<tr><td>Service charge</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no column or setting</td></tr>
+<tr><td>Packaging / container charges</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no column or setting</td></tr>
+<tr><td>Round-off</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>sale_rounding_option</code> business setting (default <code>none</code>)</td></tr>
+<tr><td>Tips</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no tip field found by grep</td></tr>
+<tr><td>Cancellation with reason</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>cancel_reasons</code> (29 rows) used on KOT cancellation; bill-level cancel/void audit not verified</td></tr>
+<tr><td>Refund / credit note</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no refund controller/table</td></tr>
+<tr><td>Bill modification</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>sales</code> update (PUT) and <code>sales/kot-pay/{id}</code>; no modification log <span class="b v">VERIFIED</span></td></tr>
+<tr><td>Invoice view / reprint</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>sales.invoice</code>, <code>sales.pdf</code>, <code>collect.dues.invoice</code></td></tr>
+<tr><td>Quotation → sale</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>quotations.convert-sale</code></td></tr>
+<tr><td>E-bill / WhatsApp bill / SMS bill</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no WhatsApp/SMS code; invoices are on-screen/PDF only</td></tr>
+<tr><td>Email bill</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> mail classes exist only for auth/registration</td></tr>
+<tr><td>Thermal printer / multiple printers / kitchen printer routing</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> browser print of HTML; one <code>80mm</code> width reference found; no ESC/POS, no network-printer routing, no per-station printer mapping</td></tr>
+<tr><td>A4 invoice PDF</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> dompdf, <code>sales.pdf</code></td></tr>
+<tr><td>Cash register (open/close shift, denominations, approvals)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> CashRegisterAddon (20 routes; shift/ledger/difference reports per earlier audit)</td></tr>
+<tr><td>Barcode scanning / SKU</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> grep "barcode" → 0</td></tr>
+<tr><td>Invoice numbering</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>sales.invoiceNumber</code>; <code>GET new-invoice</code>; per-tenant sequence/series rules not verified</td></tr>
+</tbody></table></div>
+
+<h2>B. Menu management</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Menus → categories → items</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>menus</code> (22), <code>categories</code> (75), <code>products</code> (327)</td></tr>
+<tr><td>Sub-categories</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no parent_id on categories</td></tr>
+<tr><td>Variants / sizes</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>product_variations</code>, <code>price_type</code></td></tr>
+<tr><td>Modifiers / add-ons (groups, options)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>modifier_groups</code>, <code>modifiers</code>, <code>modifier_group_options</code>, <code>sale_detail_options</code></td></tr>
+<tr><td>Combos / bundles</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no combo table</td></tr>
+<tr><td>Veg / non-veg, preparation time</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>products.food_type</code>, <code>preparation_time</code></td></tr>
+<tr><td>Recipe mapping</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>recipes</code> (30) / <code>recipe_ingredients</code> (90)</td></tr>
+<tr><td>Kitchen routing per item</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>kitchen_product</code> (300)</td></tr>
+<tr><td>Multiple menus (per branch / per order channel)</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>products.branch_id</code>, <code>menus</code>; no per-channel price tiers or time-of-day menus</td></tr>
+<tr><td>Online menu</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> RestaurantOnlineStore <code>AcnooOnlineMenuController</code></td></tr>
+<tr><td>Stock-based item availability</td><td class="s-nf">NOT FOUND</td><td><span class="b inf">INFERENCE</span> no stock→availability coupling found</td></tr>
+<tr><td>Central menu push to outlets</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> none</td></tr>
+<tr><td>Bulk upload (Excel)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>ProductImport</code>, <code>bulk-products-upload.xlsx</code></td></tr>
+</tbody></table></div>
+
+<h2>C. Tables, reservations, QR</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Table layout, areas, capacity, occupancy flag</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>tables</code> (44), <code>areas</code> (19)</td></tr>
+<tr><td>Graphical floor plan</td><td class="s-unk">UNKNOWN</td><td><span class="b unk">UNKNOWN</span> a tables view exists; drag-and-drop layout not verified</td></tr>
+<tr><td>Table QR codes (generate / download / regenerate)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>tables.qr.index/filter/download/regenerate</code>, <code>tables.qr_code</code>; <code>simple-qrcode</code></td></tr>
+<tr><td>QR → customer orders from phone at table</td><td class="s-unk">UNKNOWN</td><td><span class="b unk">UNKNOWN</span> online store exists; whether a scanned table QR opens a dine-in cart bound to that table was not verified</td></tr>
+<tr><td>Reservations (date, guests, type, time slots, assign tables, status)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>reservations</code> (8), <code>time_slots</code> (147), <code>reservation_tables</code>, settings, booked-tables report, customer-side booking in the online store</td></tr>
+<tr><td>Reservation channel sync (Zomato Dining / District / EazyDiner)</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Waitlist / queue</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Captain / waiter app</td><td class="s-unk">UNKNOWN</td><td><span class="b unk">UNKNOWN</span> Sanctum API + staff roles exist; a dedicated captain workflow in the mobile app cannot be verified from the server</td></tr>
+</tbody></table></div>
+
+<h2>D. Kitchen</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>KOT generation grouped by kitchen</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>kot_tickets</code> (27), <code>kitchens</code> (18), <code>kot_number</code></td></tr>
+<tr><td>KOT status / cooking status workflow</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>kots-cooking-status</code>, <code>kots-kot-status</code>, <code>sale_details.cooking_status</code></td></tr>
+<tr><td>KOT cancellation with reason</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>cancel_reason_id</code>, status <code>cancelled</code></td></tr>
+<tr><td>KOT modification after firing</td><td class="s-unk">UNKNOWN</td><td><span class="b unk">UNKNOWN</span> not traced</td></tr>
+<tr><td>Kitchen screen (KDS-like web UI)</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> dedicated <code>kitchen.php</code> routes (15), <code>KitchenMiddleware</code>, <code>chef</code>/<code>kitchen</code> roles; timers, station views, bump/recall not verified</td></tr>
+<tr><td>Kitchen printer routing</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Token / order-ready display</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> grep token_no → 0</td></tr>
+<tr><td>Kitchen performance report</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> KOT report (pdf/excel/csv); no prep-time analytics</td></tr>
+</tbody></table></div>
+
+<h2>E. Inventory &amp; purchase</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Raw materials (ingredients), categories, units + conversion</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>ingredients</code> (73), <code>inventory_categories</code>, <code>units</code> (84); <code>StockService</code></td></tr>
+<tr><td>Stock in / out / adjustment / damage</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>stock_movements</code> (type, quantity, unit_price, reference)</td></tr>
+<tr><td>Recipe-based auto deduction on sale</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>Modules/InventoryAddon/App/Observers/SaleObserver</code></td></tr>
+<tr><td>Consumption report</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>IngredientConsumptionReportService</code></td></tr>
+<tr><td>Low-stock alert</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> command exists; <strong>scheduler cron missing → never runs</strong></td></tr>
+<tr><td>Multi-stage recipes (semi-finished items)</td><td class="s-nf">NOT FOUND</td><td><span class="b inf">INFERENCE</span> recipes reference ingredients only</td></tr>
+<tr><td>FIFO / batch / expiry</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Stock transfer between outlets</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> only <code>branch-wise-stocks</code> report</td></tr>
+<tr><td>Stock reconciliation / physical count</td><td class="s-pa">PARTIAL</td><td><span class="b inf">INFERENCE</span> "adjust" movement exists; a count-sheet workflow was not found</td></tr>
+<tr><td>Inventory valuation / food-cost report</td><td class="s-pa">PARTIAL</td><td><span class="b inf">INFERENCE</span> unit_price on movements; no valuation/food-cost % report found</td></tr>
+<tr><td>Purchases with suppliers</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>purchases</code> (10), <code>purchase_details</code>, supplier due report, supplier quick-add</td></tr>
+<tr><td>Purchase order → GRN → invoice → payment</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> direct purchase entry only; no PO/GRN states</td></tr>
+<tr><td>Purchase returns, vendor rate comparison, approvals</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Central kitchen / material request / issue</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+</tbody></table></div>
+
+<h2>F. Customers, loyalty, marketing, feedback</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Customer profiles (name, phone, email, address, notes, image)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>parties</code> (type = customer/supplier), <code>delivery_addresses</code></td></tr>
+<tr><td>Customer purchase history / segmentation / labels</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> ledger and dues; no labels, RFM or segments</td></tr>
+<tr><td>Birthday / anniversary capture</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> grep → 0</td></tr>
+<tr><td>Loyalty</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> "buy N of product X → reward" (<code>loyalty_items</code>, <code>loyalty_item_customers.purchase_count</code>, <code>loyalty-settings</code> API). No points ledger, wallet, tiers, expiry or redemption OTP</td></tr>
+<tr><td>Wallet / stored value</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Feedback / ratings</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> <code>reviews</code> table (0 rows) + online-store review controller; no QR/SMS feedback, no alerts</td></tr>
+<tr><td>SMS / WhatsApp / email campaigns</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> only a newsletter subscribe form (<code>news_letters</code>)</td></tr>
+<tr><td>Offers engine (time-bound campaigns)</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> coupons only</td></tr>
+</tbody></table></div>
+
+<h2>G. Online ordering, website, delivery</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Restaurant online store (menu, cart, checkout, order history)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> RestaurantOnlineStore v1.4, 54 routes; 1 production order</td></tr>
+<tr><td>Custom domain + SSL flag</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> CustomDomainAddon, <code>domains</code>, nginx <code>custom-domain.conf</code></td></tr>
+<tr><td>Online payment at checkout</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>business_gateways</code>, manual/COD supported</td></tr>
+<tr><td>Store schedule (open hours)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>online-store-schedule</code></td></tr>
+<tr><td>Website content (blog, testimonials, about, terms, privacy)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Online order status (pending → confirmed → processing → delivered)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>Sale::ORDER_STATUSES</code></td></tr>
+<tr><td>Zomato / Swiggy / any aggregator integration</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> grep zomato/swiggy → 0</td></tr>
+<tr><td>Delivery boy, assignment, tracking, zones, distance charge</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> only a fillable <code>deliveryman_id</code> with no column; flat delivery-charge setting</td></tr>
+<tr><td>Google Maps / geocoding</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> one option-key reference only</td></tr>
+</tbody></table></div>
+
+<h2>H. Reports</h2>
+<p><span class="b v">VERIFIED</span> Report families found (each generally with filter + PDF + Excel + CSV):</p>
+<ul>
+<li><strong>Sales:</strong> sale report, quotation report, VAT/tax report, KOT report, dashboard (sales summary, money-flow, loss/profit).</li>
+<li><strong>Purchases &amp; suppliers:</strong> purchase report, supplier-due report.</li>
+<li><strong>Customers / dues:</strong> due report, due-collection report, walk-in dues.</li>
+<li><strong>Finance:</strong> income report, expense report, transaction report, cash-register shift / ledger / difference / open / closed reports, subscription report (SaaS).</li>
+<li><strong>Inventory:</strong> ingredient-consumption report.</li>
+<li><strong>Multi-branch:</strong> branch-wise stocks, employees, sales, purchases, income-expense, revenue statistics.</li>
+<li><strong>HRM:</strong> attendance, leave, payroll reports.</li>
+<li><strong>Super-admin:</strong> active-business, expired-business, manual-payment, subscription reports.</li>
+</ul>
+<p><span class="b v">VERIFIED</span> Counted individual report endpoints ≈ 25–30. <strong>Not found:</strong> hourly sales, item/category-wise sales ranking, discount report, cancellation/void report, bill-modification report, staff performance, food-cost, wastage, stock valuation, payment-mode summary, customer frequency/value, online-platform reports.</p>
+
+<h2>I. Multi-outlet, staff, platform</h2>
+<div class="tblw"><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Multiple branches, branch switching, branch-scoped data</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> MultiBranchAddon; BranchScope (0 branches in production)</td></tr>
+<tr><td>Head-office consolidated dashboard, zones/regions/brands</td><td class="s-pa">PARTIAL</td><td><span class="b v">VERIFIED</span> branch-wise reports; no zone/brand hierarchy</td></tr>
+<tr><td>Roles &amp; permissions (module × action), view-all-data</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> Spatie + <code>staff_permissions.php</code> (≈70 permission groups)</td></tr>
+<tr><td>Staff with designation, HRM, attendance, payroll, shifts</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> HrmAddon (Petpooja sells this separately as Attendo)</td></tr>
+<tr><td>Expense &amp; income tracking with categories</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Subscription plans with limits, module gating, manual + online payment</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>plans</code>, <code>plan_subscribes</code>, <code>PlanLimitService</code></td></tr>
+<tr><td>Super-admin panel (tenants, plans, gateways, languages, CMS)</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> 109 admin routes</td></tr>
+<tr><td>Multi-language UI (102 language rows) + Odia</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> <code>lang/or.json</code> — 2090 keys vs 2166 English (≈96%); commit "odia language added" 2026-07-11</td></tr>
+<tr><td>Multi-currency</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span> 151 currencies</td></tr>
+<tr><td>Push notifications (FCM), realtime (Pusher), in-app</td><td class="s-ex">EXISTING</td><td><span class="b v">VERIFIED</span></td></tr>
+<tr><td>Audit log (who changed what)</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no activity-log package/table</td></tr>
+<tr><td>Public API keys / partner API / webhooks</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> Sanctum tokens for the app only</td></tr>
+<tr><td>Offline billing</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> no local DB / sync (Part 08)</td></tr>
+<tr><td>ERP / accounting export (Tally etc.)</td><td class="s-nf">NOT FOUND</td><td><span class="b v">VERIFIED</span> only Excel/PDF/CSV per list</td></tr>
+</tbody></table></div>
+<footer>AppZetBilling vs Petpooja gap analysis - generated 2026-09-18 - analysis only, no production changes were made.</footer></div></body></html>

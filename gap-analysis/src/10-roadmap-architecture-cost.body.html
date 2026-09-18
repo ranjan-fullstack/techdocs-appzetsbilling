@@ -1,0 +1,137 @@
+<!--TITLE:10 Roadmap, Architecture, Monetization &amp; Cost — Phases 14–16, 19, 20-->
+<p class="sub">All content here is [[REC]] — recommendation derived from the verified facts in Parts 01–09. Petpooja is <strong>not ranked</strong>; only AppZetBilling implementation priorities are ranked, using the criteria below. No prices are invented; cost figures are drivers or formulas with placeholders unless a public unit rate is cited with its source.</p>
+
+<h2>1. Prioritisation criteria (Phase 14)</h2>
+<div class="tblw"><table><thead><tr><th>Criterion</th><th>Question asked of each item</th></tr></thead><tbody>
+<tr><td>Customer dependency</td><td>Would a typical restaurant refuse to switch, or churn, without it?</td></tr>
+<tr><td>Revenue impact</td><td>Does it unlock a paid plan/add-on or reduce churn measurably?</td></tr>
+<tr><td>Implementation dependency</td><td>Do other features need it first? (charges model → GST invoices → Tally export; queue worker → everything asynchronous)</td></tr>
+<tr><td>Technical complexity</td><td>S/M/L/XL from the matrix; prefer cheaper items when other criteria tie</td></tr>
+<tr><td>Operational importance</td><td>Does its absence risk money, compliance or trust (fraud, tax, data loss)?</td></tr>
+</tbody></table></div>
+
+<h2>2. Priority tiers (Phase 14)</h2>
+<div class="callout bad"><b>Priority 0 — before anything else (reliability and safety, days not months)</b>
+<ol><li>Renew the wildcard TLS certificate and automate renewal (S1, expires 2026-09-24).</li><li>Enable the Laravel scheduler cron and a supervised queue worker (Part 01).</li><li>Encrypt gateway credentials and R2 backups; remove <code>.env.bak</code> and public zips (S2, S10).</li><li>Fix invoice numbering (count-based, reusable after deletes) with a per-outlet locked sequence (Part 08 §3.2).</li><li>Key-only SSH (S3), session <code>Secure</code> cookie (S8).</li></ol></div>
+
+<div class="tblw"><table><thead><tr><th>Tier</th><th>Items (matrix module → feature)</th><th>Why (criteria)</th></tr></thead><tbody>
+<tr><td><strong>PRIORITY 1 — MUST HAVE</strong><br>= Phase P1 Foundation</td><td>Charges + GST model (service, packaging, CGST/SGST, HSN); multi-payment and split bill; table merge; refund/credit note; audit log + void reasons; discount/void/day-end/item-sales reports; UPI QR on bill; printer routing (print agent); combos; item shortcodes; coupon/phone uniqueness fix; tenant global scope; offline Level 0–1; onboarding checklist + menu import</td><td>Customer dependency and operational importance (tax, cash leakage, printing) are high; several are prerequisites for later modules (charges → exports; audit → reports; unique-key fix → CRM/WhatsApp)</td></tr>
+<tr><td><strong>PRIORITY 2 — HIGH VALUE</strong><br>= P2 Engagement</td><td>WhatsApp bills and utility messages; CRM segments, birthday/anniversary; loyalty ledger + wallet; feedback; campaign engine (festival); UPI/gateway payments with webhooks; Tally + GST register export; PO/GRN; day-end and food-cost reports; QR table ordering; reservation reminders/deposit; stock-based item ON/OFF</td><td>Revenue impact (add-ons, retention) and dependency on Priority 1 data (customer phone integrity, consent)</td></tr>
+<tr><td><strong>PRIORITY 3 — DIFFERENTIATORS AND ECOSYSTEM</strong><br>= P3 Ecosystem</td><td>Zomato/Swiggy integration + menu/stock sync + reconciliation (start partner applications in Phase 1); own delivery D1–D3; KDS hardening + token display; captain/waiter mode; public partner API + webhooks; reservation platform sync; channel price lists; time-based menus; Scan &amp; Pay</td><td>High customer dependency for delivery-heavy outlets but long lead time (partner approval) and high complexity; differentiator is doing WhatsApp-first ordering updates</td></tr>
+<tr><td><strong>PRIORITY 4 — ENTERPRISE</strong><br>= P4 Multi-outlet</td><td>Brand/region hierarchy; central menu; stock transfers; central kitchen; multi-stage recipes; tenant-scoped roles per outlet; consolidated head-office dashboard</td><td>Only valuable once chains exist; MultiBranch has 0 branches in production, so validate demand first</td></tr>
+<tr><td><strong>PRIORITY 5 — FUTURE</strong><br>= P5 Enterprise + AI</td><td>AI assistant and insights; ERP/data-lake; e-way bill; kiosk; digital menu boards; wireless calling device; FIFO/batch; custom report builder; Meta-ads/influencer tools; AI voice/upsell</td><td>Low customer dependency relative to cost, or need data volume that does not exist yet</td></tr>
+</tbody></table></div>
+
+<h2>3. Product module architecture (Phase 15)</h2>
+<p>Modified from the requested template to reflect what exists (★ = existing module or code in production, ◇ = new). New modules follow the current nwidart pattern so plan gating (<code>available_modules</code>) keeps working.</p>
+<pre>AppZetBilling (Laravel 10 modular monolith)
+├── Platform / Administration ★   super-admin, plans, gateways, languages, CMS, business categories
+│   ├── Subscription &amp; limits ★     plans, plan_subscribes, PlanLimitService   (+ ◇ usage meters)
+│   └── ◇ Onboarding &amp; Support      setup checklist, import assistants, help centre, ticket links
+├── Core POS (RestaurantWebAddon ★)
+│   ├── Billing ★ (+◇ charges/GST model, split, multi-payment, credit notes)
+│   ├── Menu ★ (+◇ combos, price lists, schedules)   Tables ★   Reservations ★ (+◇ waitlist, deposits)
+│   ├── KOT ★ / Kitchen screen ◐ (+◇ KDS hardening, token display)
+│   ├── Customers &amp; Suppliers ★ (parties)   Coupons ★   Cash Register ★ (module)
+│   └── ◇ Audit log   ◇ Printing (agent + device routing)   ◇ Offline sync
+├── Inventory ★ (InventoryAddon) → ◇ Purchasing (PO/GRN) → ◇ Central kitchen / transfers
+├── Multi-outlet ★ (MultiBranchAddon) → ◇ Brands/regions, head-office, central menu
+├── Online ordering ★ (RestaurantOnlineStore) + Custom domain ★ → ◇ QR table ordering, ◇ Delivery
+├── HRM ★ (HrmAddon)
+├── ◇ Engagement:  CRM &amp; segments · Loyalty &amp; wallet · Feedback · Campaign engine
+├── ◇ Messaging:   WhatsApp (Cloud API) · SMS (fallback) · templates EN/OD · consents
+├── ◇ Integrations hub: Aggregators · Payments (UPI/gateway webhooks) · Accounting/Tally/GST exports
+│                      · Reservation platforms · Public API &amp; webhooks
+├── Reports ★ (+◇ analytics)   ◇ AI assistant
+└── Mobile app ★ (separate codebase; API-driven)</pre>
+
+<h2>4. Integration architecture (Phase 16)</h2>
+<h3>4.1 Recommended design</h3>
+<pre>Restaurant tenant  (business_id, branch_id)
+        |
+   AppZetBilling  (Laravel monolith)  -- domain events: sale.closed, order.created, stock.low ...
+        |
+   Integrations module  (one place, provider-agnostic)
+   ├── Adapter per provider (interface: connect, pushMenu, pushStock, fetchOrders,
+   │                          acknowledge, send, refund ...)
+   ├── Credential vault        (integration_credentials, envelope-encrypted)
+   ├── Tenant integration config (integration_configs per business / outlet)
+   ├── Outbox + Queue          (Redis queue, Horizon supervised workers, priorities)
+   ├── Retry + backoff + dead-letter table + manual replay
+   ├── Idempotency             (unique keys on inbound events and outbound operations)
+   ├── Inbound webhook gateway (/api/v1/webhooks/{provider}: verify signature -> store raw
+   │                            -> 200 fast -> process async)
+   ├── Rate limiter            (per tenant and per provider quota)
+   ├── Sync log + dashboard    (status, last success, errors, replay button)
+   └── Reconciliation jobs     (nightly diff of external vs local state)
+        |
+   ┌───────────────┬─────────────┬────────────┬───────────┬──────────┬─────────────┐
+   │ Zomato/Swiggy │ WhatsApp    │ UPI/Razor- │ Tally /   │ Delivery │ Reservation │
+   │ (partner API) │ Cloud API   │ pay etc.   │ GST files │ partners │ platforms   │
+   └───────────────┴─────────────┴────────────┴───────────┴──────────┴─────────────┘</pre>
+<div class="tblw"><table><thead><tr><th>Component</th><th>Decision</th><th>Reason</th></tr></thead><tbody>
+<tr><td>Integration service</td><td>In-process <strong>module</strong> now; extractable later</td><td>Team and traffic size do not justify microservices; a clean adapter boundary keeps extraction possible</td></tr>
+<tr><td>API gateway</td><td>Not a separate product yet; nginx + named Laravel rate limiters + API-key middleware</td><td>A gateway product adds ops load with no present benefit</td></tr>
+<tr><td>Event bus / Kafka</td><td><strong>Not needed.</strong> Use Laravel events + Redis queues (Horizon)</td><td>Volumes are small (77 sales rows today); Kafka would be pure overhead</td></tr>
+<tr><td>Queue / retry / DLQ</td><td>Required: Redis queue, exponential backoff, <code>failed_jobs</code> + integration dead-letter with replay</td><td>Current queue is the empty DB driver with no worker</td></tr>
+<tr><td>Webhook service</td><td>Required (inbound verified + outbound signed with retries)</td><td>None exists; needed by payments, WhatsApp, aggregators</td></tr>
+<tr><td>Credential vault</td><td>Table with envelope encryption; keys in app key/KMS later</td><td>Gateway creds are plain JSON today (S2)</td></tr>
+<tr><td>Integration dashboard + logs</td><td>Required for support: owners see "connected / last sync / errors"</td><td>Integration support is otherwise the largest hidden cost</td></tr>
+<tr><td>Sync engine</td><td>Per-integration state machine with idempotency keys; nightly reconciliation</td><td>Aggregator menus/orders drift without it</td></tr>
+</tbody></table></div>
+
+<h2>5. Phased delivery map</h2>
+<div class="tblw"><table><thead><tr><th>Phase</th><th>Theme</th><th>Exit criteria</th></tr></thead><tbody>
+<tr><td>P0 (now)</td><td>Reliability and safety</td><td>Cert renewing automatically; scheduler + worker supervised; credentials/backups encrypted; invoice sequence fixed</td></tr>
+<tr><td>P1</td><td>POS foundation</td><td>GST-correct invoices with split/multi-payment; audit log; printers via agent; offline Level 1 pilot; tenant scope tests green</td></tr>
+<tr><td>P2</td><td>Customer engagement</td><td>WhatsApp bills live for pilot tenants; loyalty ledger; campaigns; Tally export; QR ordering</td></tr>
+<tr><td>P3</td><td>Restaurant ecosystem</td><td>First aggregator live for a pilot outlet; delivery D1–D2; partner API v1</td></tr>
+<tr><td>P4</td><td>Multi-outlet</td><td>A real 3+ outlet customer running central menu/transfers</td></tr>
+<tr><td>P5</td><td>Enterprise + AI</td><td>AI assistant answering owner questions from real data; ERP connector via public API</td></tr>
+</tbody></table></div>
+<p>Durations are deliberately not stated: team size is unknown. Use the complexity column in Part 06 to plan once capacity is known.</p>
+
+<h2>6. Subscription and monetisation model (Phase 19)</h2>
+<p>[[V]] Today: plans carry limits (users, products, customers, suppliers, branches, add-on domain/subdomain) and a JSON module list; plans seen: Free (7 days), Standard (30 days), Premium (180 days) plus others (5 plan rows; 76 subscriptions). Gateways for manual/online subscription payment exist. This is a solid base for packaging. [[REC]] Models below; no prices.</p>
+<div class="tblw"><table><thead><tr><th>Module</th><th>Suggested packaging</th><th>Meter / unit</th><th>Notes</th></tr></thead><tbody>
+<tr><td>POS, billing, menu, tables, KOT, reports</td><td>Core plan</td><td>Per outlet per month/year</td><td>Petpooja publicly lists "unlimited users and terminals" in its base plan [[PO]]; limiting users may be a competitive disadvantage — consider per-outlet pricing instead</td></tr>
+<tr><td>Inventory + purchasing</td><td>Core (basic) / add-on (PO/GRN, transfers)</td><td>Per outlet</td><td>Recipe deduction exists today</td></tr>
+<tr><td>WhatsApp</td><td>Base add-on + message usage</td><td>Per message by category (utility vs marketing) with plan allowance</td><td>Pass through Meta cost + margin; requires a usage meter and prepaid balance option</td></tr>
+<tr><td>SMS</td><td>Usage-based</td><td>Per SMS</td><td>DLT registration effort is per tenant [[INF]]</td></tr>
+<tr><td>Loyalty / CRM / campaigns</td><td>Monthly add-on</td><td>Per outlet + campaign message usage</td><td>Loyalty enables retention; bundle with WhatsApp</td></tr>
+<tr><td>Feedback</td><td>Core lite or bundled with CRM</td><td>—</td><td>Cheap to run</td></tr>
+<tr><td>Online store + custom domain</td><td>Monthly add-on (exists as module)</td><td>Per outlet; optional per-order fee</td><td>Avoid per-order commission — Petpooja advertises zero commission [[PO]]</td></tr>
+<tr><td>QR table ordering</td><td>Add-on</td><td>Per outlet</td><td>Petpooja sells Scan &amp; Order as an add-on [[PO]]</td></tr>
+<tr><td>KDS / token display</td><td>Add-on</td><td>Per screen/kitchen</td><td>Petpooja: add-ons [[PO]]</td></tr>
+<tr><td>Captain / waiter mode</td><td>Add-on or core</td><td>Per outlet</td><td>Depends on existing mobile app</td></tr>
+<tr><td>Aggregator integration</td><td>Add-on</td><td>Per outlet per platform</td><td>Support-heavy → not free; Petpooja includes aggregator integrations in its base plan [[PO]]</td></tr>
+<tr><td>Own delivery</td><td>Add-on</td><td>Per outlet (+ maps usage)</td><td>—</td></tr>
+<tr><td>Reservations</td><td>Core (own) / add-on (deposit, waitlist, platform sync)</td><td>Per outlet</td><td>—</td></tr>
+<tr><td>Multi-outlet / head office / central kitchen</td><td>Enterprise plan</td><td>Per outlet + head-office fee</td><td>Petpooja: central kitchen is an add-on [[PO]]</td></tr>
+<tr><td>Tally / GST exports</td><td>Core or paid tier</td><td>—</td><td>High perceived value for CA-driven customers [[INF]]</td></tr>
+<tr><td>Public API / webhooks</td><td>Enterprise</td><td>Per key or per request tier</td><td>—</td></tr>
+<tr><td>AI assistant</td><td>Add-on or plan-included quota</td><td>Questions per month</td><td>Variable LLM cost</td></tr>
+<tr><td>HRM, cash register</td><td>Existing add-ons</td><td>Per outlet / per employee</td><td>Petpooja sells HR separately (Attendo) [[PO]]</td></tr>
+</tbody></table></div>
+
+<h2>7. Cost analysis (Phase 20)</h2>
+<div class="callout warn"><b>Data gaps</b> The current VPS plan price and current monthly spend are [[UNK]] (not available from the server). Meta rates below are from BSP blogs [[TP]] and must be re-read from Meta's INR rate card before pricing. Every figure needs the 18% GST treatment applied by the business, not assumed here.</div>
+<div class="tblw"><table><thead><tr><th>Cost type</th><th>Item</th><th>Driver / formula</th><th>Which features</th></tr></thead><tbody>
+<tr><td rowspan="6"><strong>Fixed</strong> (platform)</td><td>Server(s) VPS</td><td>Current single 2 vCPU / 7.8 GiB host; add a second app/worker node and a managed or replicated DB when aggregators and WhatsApp queues go live. Amount [[UNK]]</td><td>Everything</td></tr>
+<tr><td>Redis (queue/cache)</td><td>Already installed; memory grows with queue depth</td><td>Queues, realtime</td></tr>
+<tr><td>Object storage + backups</td><td>Cloudflare R2 already used; add uploads, invoices PDFs, exports</td><td>Backups, PDFs</td></tr>
+<tr><td>Monitoring / error tracking / uptime</td><td>Small monthly SaaS or self-hosted</td><td>Reliability</td></tr>
+<tr><td>Meta app / BSP platform fee</td><td>Only if a BSP is used instead of direct Cloud API</td><td>WhatsApp</td></tr>
+<tr><td>Domain/SSL</td><td>Wildcard DNS-API automation is free with most DNS providers</td><td>Tenant subdomains</td></tr>
+<tr><td rowspan="6"><strong>Variable</strong> (per use)</td><td>WhatsApp messages</td><td>Messages × category rate (Meta INR rate card) + GST + BSP fee. Indicative marketing ≈ ₹0.86–0.88, utility ≈ ₹0.115–0.13 [[TP]]</td><td>Bills, campaigns, reminders</td></tr>
+<tr><td>SMS</td><td>Messages × provider rate</td><td>OTP, fallback</td></tr>
+<tr><td>Payment gateway</td><td>Percentage/flat per transaction, usually paid by merchant</td><td>UPI/cards</td></tr>
+<tr><td>Maps / geocoding</td><td>Calls × provider rate</td><td>Delivery D3</td></tr>
+<tr><td>LLM API</td><td>Tokens per question × questions</td><td>AI assistant</td></tr>
+<tr><td>Bandwidth / storage growth</td><td>Images, PDFs, logs</td><td>Menus, invoices</td></tr>
+<tr><td rowspan="4"><strong>Tenant-driven</strong> (people)</td><td>Onboarding and menu setup</td><td>Hours per new restaurant (major for small restaurants)</td><td>Growth</td></tr>
+<tr><td>Support</td><td>Tickets per tenant per month, rising with each integration</td><td>Aggregators, printers</td></tr>
+<tr><td>Hardware guidance/resale</td><td>Optional partner margin</td><td>Printers</td></tr>
+<tr><td>Integration maintenance</td><td>Aggregator/Meta API changes</td><td>Ecosystem</td></tr>
+</tbody></table></div>
+<p><strong>Cost formulas (fill with real numbers):</strong> WhatsApp monthly cost per tenant = (utility msgs × U) + (marketing msgs × M) + BSP fee; contribution per tenant = plan revenue − (server share + messaging + gateway share + support hours × hourly cost). Track these in the KPIs in Part 11 §10.</p>

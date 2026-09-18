@@ -1,0 +1,113 @@
+# Module | Feature | Petpooja capability (source) | AppZet status | AppZet evidence | Gap | Dependency | Business importance | Complexity | Phase | Recommended approach
+# Status: EXISTING/PARTIAL/NOT FOUND/UNKNOWN. Gap: NONE/MINOR/MODERATE/MAJOR/CRITICAL. Phases: P1 Foundation, P2 Engagement, P3 Ecosystem, P4 Multi-outlet, P5 Enterprise+AI. Complexity: S<1wk, M 1-4wk, L 1-3mo, XL >3mo (rough, one team).
+Billing | Dine-in / takeaway / delivery order types | Stated: billing and QSR pages [[PO]] | EXISTING | sales_type dine_in 70, pick_up 4, delivery 3 [[V]] | NONE | - | High | S | P1 | Keep; add an explicit counter-billing mode
+Billing | Table transfer | Not described on official pages [[UNK]] | EXISTING | AcnooTableSaleController::moveTable [[V]] | NONE | - | Medium | S | P1 | Keep
+Billing | Table merge | Not described on official pages [[UNK]] | NOT FOUND | Only a modal file named marge; no server method [[V]] | MODERATE | Sale/KOT re-parenting | Medium | M | P1 | Merge sale_details and KOT tickets into the target sale in one transaction; free source table
+Billing | Split bill | Not described on official pages [[UNK]] | NOT FOUND | No split logic in sale controllers [[V]] | MAJOR | sale_payments + child-bill model | High | M | P1 | Split by item or guest into linked child sales; totals must reconcile to parent
+Billing | Multiple payment modes on one bill | Payment modes and UPI/EDC stated [[PO]]; multi-tender per bill not stated | NOT FOUND | sales.payment_type_id is a single FK [[V]] | MAJOR | New sale_payments table | High | M | P1 | Add sale_payments (sale_id, payment_type_id, amount, reference); keep legacy column for reports
+Billing | Discounts and coupons | Stated: discounts by service type [[PO]] | EXISTING | discountAmount/Percentage, coupons [[V]] | MINOR | Coupon code is globally unique [[V]] | Medium | S | P1 | Make coupon code unique per business_id
+Billing | GST split (CGST/SGST/IGST), HSN, GSTIN on invoice | Taxes configurable by region stated [[PO]]; GST specifics [[UNK]] | PARTIAL | One tax_id per sale; vat_name/vat_no only; no HSN [[V]] | MAJOR | Tax model, invoice template | High | M | P1 | Per-line tax with tax-group components; store GSTIN on business/outlet; print split on invoice
+Billing | Service charge | Service tax rates per dine-in area stated [[PO]] | NOT FOUND | No column or setting [[V]] | MAJOR | Charges model | High | S | P1 | Add bill_charges (service, packaging, delivery, tip) as first-class rows with tax treatment
+Billing | Packaging / container charge | Aggregator packaging updates stated [[PO]] | NOT FOUND | No column or setting [[V]] | MODERATE | Charges model | Medium | S | P1 | Same charges table; per-item and per-order modes
+Billing | Round-off | Not stated [[UNK]] | EXISTING | sale_rounding_option setting [[V]] | NONE | - | Low | S | P1 | Keep
+Billing | Refund / credit note | Not stated [[UNK]] | NOT FOUND | No refund controller or table [[V]] | MODERATE | Payments + audit | Medium | M | P1 | Credit-note document linked to sale; reverse stock and payment entries
+Billing | Bill modification and cancellation with audit trail | Bill-modification and cancelled-order reports named [[PO]] | NOT FOUND | No audit log package or table [[V]] | MAJOR | Audit log | High | M | P1 | Append-only audit_logs; mandatory reason for post-KOT edits and voids; permission gated
+Billing | E-bill sent to customer (message) | E-bill messaging stated [[PO]] | NOT FOUND | No SMS or WhatsApp code [[V]] | MAJOR | WhatsApp/SMS service | High | M | P2 | WhatsApp utility-template bill with PDF/link; email as fallback
+Billing | Dynamic payment QR on bill | Stated [[PO]] | NOT FOUND | No UPI QR generation [[V]] | MODERATE | UPI VPA per business | High | S | P1 | Generate UPI intent QR (amount + bill ref) from tenant VPA; no gateway needed
+Billing | Bill customisation (logo, breakups, edit customer) | Stated [[PO]] | PARTIAL | Plan lists custom invoice branding; template flexibility not verified [[UNK]] | MINOR | - | Medium | S | P1 | Template settings: logo, footer, language, GST layout
+Billing | Thermal / kitchen printer routing (per station) | Unique printer per station; A4/A5/LAN/USB/BT stated [[PO]] | PARTIAL | Browser print of HTML; one 80mm reference [[V]] | MAJOR | Print agent or ESC/POS bridge | High | L | P1 | Local print agent (or WebUSB/network ESC-POS) with per-kitchen printer mapping
+Billing | Broad hardware compatibility | "200+ hardware" claim [[PO]] | NOT FOUND | No device layer [[V]] | MAJOR | Print agent, scanner support | Medium | L | P1 | Publish a tested-hardware list; standardise on ESC/POS thermal + one scanner class
+Billing | Cash register / shift / denominations | Cash-drawer operation report named [[PO]] | EXISTING | CashRegisterAddon [[V]] | NONE | - | Medium | S | P1 | Keep
+Billing | Credit sales and customer ledger | Not stated [[UNK]] | EXISTING | dues, due_collects, view-ledger API [[V]] | NONE | - | Medium | S | P1 | Keep
+Billing | Quotation to sale | Not stated [[UNK]] | EXISTING | quotations.convert-sale [[V]] | NONE | - | Low | S | P1 | Keep
+Billing | Barcode scanning | Not stated [[UNK]] | NOT FOUND | No barcode field [[V]] | MINOR | products.barcode | Low | S | P3 | Add barcode column and scan input for bakery/sweet-shop retail
+Billing | Offline billing | Core: Bridge Server local DB, up to 5 days offline on separate machines [[PO]] | NOT FOUND | No local store or sync [[V]] | CRITICAL | Local queue + sync engine | High | XL | P1 | Phase it: PWA read cache and offline bill queue first, full local server later (Part 08)
+Billing | Multi-terminal with master station | Stated [[PO]] | PARTIAL | Cloud multi-login works; no master-station concept [[INF]] | MINOR | - | Low | S | P4 | Not needed for cloud model; revisit with offline server
+Billing | Unlimited users and terminals | Base plan states unlimited [[PO]] | EXISTING | plans.user_limit configurable, -1 = unlimited [[V]] | NONE | - | Medium | S | P1 | Package accordingly
+Menu | Categories, variations, add-ons with own pricing | Stated [[PO]] | EXISTING | categories, product_variations, modifiers [[V]] | NONE | - | High | S | P1 | Keep
+Menu | Sub-categories | Not stated [[UNK]] | NOT FOUND | No parent_id on categories [[V]] | MINOR | - | Low | S | P3 | Add parent_id when menus grow large
+Menu | Combos / group offers | Stated on QSR page [[PO]] | NOT FOUND | No combo tables [[V]] | MAJOR | Combo model + inventory deduction | High | M | P1 | combo_items table; deduct child recipes on sale
+Menu | Multiple menus and per-channel price tiers | Menu per dine-in area; "separate price tier per channel" [[PO]] | PARTIAL | products.branch_id and menus; no channel price [[V]] | MODERATE | Price-list model | Medium | M | P3 | price_lists (dine-in, delivery, aggregator) with overrides
+Menu | Item shortcodes for fast billing | Stated [[PO]] | NOT FOUND | No shortcode field [[V]] | MINOR | - | Medium | S | P1 | products.short_code + keyboard search
+Menu | Time-based menus (breakfast/lunch) | Stated in menu-sync blog [[PO]] | NOT FOUND | No schedule on products/menus [[V]] | MODERATE | Menu schedule | Medium | M | P3 | menu_schedules (days, from, to)
+Menu | Stock-based item ON/OFF | Stated [[PO]] | NOT FOUND | No stock-to-availability coupling [[INF]] | MODERATE | Inventory + realtime | Medium | M | P2 | Auto-disable when recipe ingredient below zero; manual override
+Menu | Central menu across outlets | Stated on large-chain page [[PO]] | NOT FOUND | Products are per branch [[V]] | MAJOR | Brand/menu master | High | L | P4 | Brand-level master menu with outlet overrides
+Menu | Bulk menu import | Not stated [[UNK]] | EXISTING | ProductImport, xlsx template [[V]] | NONE | - | High | S | P1 | Extend to CSV from other POS (see migration tool plan)
+Menu | Recipe mapping | Multi-stage recipe management [[PO]] | PARTIAL | Single-stage recipes, 30 rows [[V]] | MODERATE | Semi-finished items | Medium | M | P4 | Allow ingredients that are themselves recipes
+Tables | Areas, table layout, occupancy | Stated [[PO]] | EXISTING | tables (44), areas (19) [[V]] | NONE | - | High | S | P1 | Keep
+Tables | QR table ordering with OTP confirmation (Scan and Order) | Add-on; per-table QR, OTP, multi-round bill [[PO]] | UNKNOWN | Table QR exists; table-bound ordering not verified [[V]]/[[UNK]] | MAJOR | Online store + table binding | High | M | P2 | Bind QR to table, run rounds on one open sale, staff confirm (OTP optional)
+Tables | Own reservations | Add-on Table Reservation Manager [[PO]] | EXISTING | reservations, time_slots, settings [[V]] | MINOR | - | Medium | S | P2 | Add reminders and optional deposit
+Tables | Reservation platform sync | Zomato Dining, District, EazyDiner [[PO]] | NOT FOUND | None [[V]] | MODERATE | Partner access | Low | L | P3 | Defer; own booking link first
+Tables | Queue / waitlist | Stated [[PO]] | NOT FOUND | None [[V]] | MODERATE | Reservations + WhatsApp | Medium | M | P3 | Waitlist with WhatsApp "your table is ready"
+Tables | Reservation reminders and deposit | Stated [[PO]] | NOT FOUND | None [[V]] | MINOR | WhatsApp, payments | Medium | S | P2 | Reminder job plus optional payment link
+Captain | Captain ordering app | Add-on; offline, UPI, contactless, assignment [[PO]] | UNKNOWN | Mobile app source not on server [[UNK]] | MAJOR | Mobile app | High | L | P3 | Confirm what the existing app does; build waiter mode (table, KOT, pay)
+Captain | AI upsell and voice entry | Stated [[PO]] | NOT FOUND | None [[V]] | MINOR | AI provider | Low | M | P5 | Later; rules-based combo suggestions first
+Kitchen | KOT grouped by kitchen | Stated station-wise KOT [[PO]] | EXISTING | kot_tickets, kitchens, kitchen_product [[V]] | NONE | - | High | S | P1 | Keep
+Kitchen | Kitchen display system | Add-on; dual view, station, ready [[PO]] | PARTIAL | Kitchen routes and roles; timers and bump not verified [[V]] | MODERATE | Realtime | High | M | P3 | Harden kitchen screen: timers, bump, recall, station filter
+Kitchen | Item out-of-stock from kitchen | Stated on KDS page [[PO]] | NOT FOUND | None [[V]] | MODERATE | Menu availability | Medium | S | P2 | One-tap 86 item from kitchen screen
+Kitchen | Token / order-ready display | Add-on, voice alert [[PO]] | NOT FOUND | No token numbers [[V]] | MODERATE | Realtime screen | Medium | M | P3 | token_no on sale + public display URL for a TV browser
+Kitchen | Wireless calling device | Hardware add-on [[PO]] | NOT FOUND | None [[V]] | MINOR | Hardware | Low | M | P5 | Skip; QR "call waiter" button instead
+Inventory | Ingredients, units and conversion, stock in/out/adjust/damage | Stated [[PO]] | EXISTING | InventoryAddon, stock_movements [[V]] | NONE | - | High | S | P1 | Keep
+Inventory | Recipe-based auto deduction | Stated [[PO]] | EXISTING | SaleObserver [[V]] | NONE | - | High | S | P1 | Keep
+Inventory | Low-stock alerts | Stated [[PO]] | PARTIAL | Command exists; scheduler cron missing [[V]] | MODERATE | Scheduler | High | S | P1 | Add schedule:run cron; route alerts to WhatsApp/push
+Inventory | Day-end inventory report | Stated [[PO]] | NOT FOUND | Consumption report only [[V]] | MODERATE | - | Medium | M | P2 | Opening, purchases, consumption, wastage, closing per day
+Inventory | Stock transfer between outlets | Stated [[PO]] | NOT FOUND | Branch-wise stock report only [[V]] | MAJOR | Multi-branch | High | M | P4 | stock_transfers with request, dispatch, receive states
+Inventory | Wastage tracking | Damaged-stock return only [[PO]] | PARTIAL | Damage movement type [[V]] | MINOR | - | Medium | S | P2 | Wastage reasons and report
+Inventory | FIFO and batch/expiry | Not mentioned by Petpooja [[UNK]] | NOT FOUND | None [[V]] | MINOR | Batch model | Low | L | P5 | Only if bakery/sweets customers need expiry
+Inventory | Inventory valuation and food-cost report | Item-wise consumption report named [[PO]] | PARTIAL | unit_price on movements [[V]] | MODERATE | - | High | M | P2 | Food cost percent per item and per day
+Purchase | Purchase orders and supplier order exchange | PO tickets raised and accepted [[PO]] | NOT FOUND | Direct purchase entry only [[V]] | MAJOR | PO/GRN states | High | M | P2 | PO to GRN to purchase invoice; share PO by WhatsApp
+Purchase | Supplier ledger and payments | Not stated [[UNK]] | EXISTING | supplier due report, parties [[V]] | NONE | - | Medium | S | P1 | Keep
+Purchase | E-way bill for purchase orders | Stated [[PO]] | NOT FOUND | None [[V]] | MINOR | GST portal API | Low | L | P5 | Defer
+Central kitchen | Central kitchen supply and route plan | Add-on; raw and semi-cooked supply, consolidated route plan [[PO]] | NOT FOUND | None [[V]] | MAJOR | Multi-branch, PO, transfer | Medium | XL | P4 | Requisition, issue, receive between a hub outlet and outlets
+Online orders | Zomato and Swiggy order integration | Core: orders on one screen, zero Petpooja commission [[PO]] | NOT FOUND | No aggregator code [[V]] | CRITICAL | Partner approval, webhooks, queue worker | High | XL | P3 | Apply for partner access now; build integration service (Part 10)
+Online orders | Aggregator menu and stock ON/OFF sync | Stated [[PO]] | NOT FOUND | None [[V]] | MAJOR | Aggregator integration | High | L | P3 | Outbound sync jobs with retry and idempotency
+Online orders | Aggregator reconciliation | Add-on Order Reconciliation [[PO]] | NOT FOUND | None [[V]] | MAJOR | Settlement data | Medium | L | P3 | Import settlement files; match by order id
+Online orders | Commission and platform-wise reports | Stated [[PO]] | NOT FOUND | None [[V]] | MODERATE | Aggregator data | Medium | M | P3 | After reconciliation
+Online orders | Own online store | Add-on Business Website [[PO]] | EXISTING | RestaurantOnlineStore v1.4, 1 online order [[V]] | MINOR | - | High | M | P2 | Improve conversion (WhatsApp order updates, UPI at checkout)
+Online orders | Custom domain | Not stated [[UNK]] | EXISTING | CustomDomainAddon [[V]] | NONE | Cert renewal | Medium | S | P1 | Keep; automate SSL
+Online orders | Partner ordering API | Online Ordering API [[TP]] | NOT FOUND | No third-party API [[V]] | MODERATE | API keys, webhooks | Medium | L | P3 | Versioned public API with per-tenant keys
+Delivery | Rider management and dispatch | Rider apps named; Dispatch product [[PO]]/[[TP]] | NOT FOUND | deliveryman_id fillable but no column [[V]] | MAJOR | Delivery model | Medium | L | P3 | Own-delivery module (Part 08)
+Delivery | Delivery charge | Not stated [[UNK]] | PARTIAL | Flat delivery-charge setting [[V]] | MINOR | Charges model | Medium | S | P1 | Move into charges model
+Delivery | Zones and distance-based charge | Not stated [[UNK]] | NOT FOUND | No zone or maps code [[V]] | MODERATE | Maps API | Medium | M | P3 | Pincode or polygon zones first; maps later
+CRM | Customer profiles and history | Stated [[PO]] | EXISTING | parties, ledger [[V]] | MINOR | parties.phone globally unique [[V]] | High | S | P1 | Make phone unique per business_id
+CRM | Segmentation and labels | Claims 100+ label types [[PO]] | NOT FOUND | None [[V]] | MAJOR | Order history | High | M | P2 | Rule-based segments (new, regular, lapsed, high value)
+CRM | Birthday and anniversary capture and campaigns | Stated [[PO]] | NOT FOUND | No fields [[V]] | MODERATE | WhatsApp/SMS | Medium | S | P2 | Add fields; scheduled greeting campaign
+CRM | SMS marketing | Add-on [[PO]] | NOT FOUND | None [[V]] | MAJOR | SMS provider, DLT registration [[INF]] | Medium | M | P2 | WhatsApp first; SMS as fallback
+CRM | WhatsApp messaging | Limited mention (feedback, booking link, CRM channel) [[PO]] | NOT FOUND | None [[V]] | MAJOR | Meta Cloud API/BSP | High | L | P2 | See WhatsApp Business Module page and Part 08
+Loyalty | Points/cashback and wallet with expiry, OTP redeem | Add-on Loyalty Wallet [[PO]] | PARTIAL | Per-product purchase count only [[V]] | MAJOR | Ledger tables | High | L | P2 | loyalty_accounts + append-only loyalty_transactions
+Loyalty | Wallet top-up (cash/card/UPI) | Stated [[PO]] | NOT FOUND | None [[V]] | MAJOR | Payments, ledger | Medium | M | P2 | Prepaid wallet after points ledger exists
+Feedback | QR, SMS and app feedback with negative alerts | Add-on [[PO]] | PARTIAL | reviews table (0 rows), store review page [[V]] | MODERATE | WhatsApp | Medium | M | P2 | Post-bill WhatsApp rating link; alert manager on low rating
+Marketing | Time-bound campaign engine | Time-regulated reward campaigns; 7+ campaign types [[PO]] | NOT FOUND | Coupons only [[V]] | MAJOR | Segments, WhatsApp | High | L | P2 | Campaign engine (Part 11, festival campaigns)
+Marketing | Meta ads and influencer tools | Scale tier only [[PO]] | NOT FOUND | None [[V]] | MINOR | Third parties | Low | L | P5 | Out of scope
+Reports | Day-end report | Named [[PO]] | PARTIAL | Dashboard summary; no printable day-end [[V]] | MODERATE | - | High | S | P1 | Day-end (Z) report with payment-mode and tax totals
+Reports | Item-wise and category-wise sales | Sales reports [[PO]] | NOT FOUND | No route found [[V]] | MAJOR | - | High | S | P1 | Ranking, hourly, and contribution reports
+Reports | Tax report | Named [[PO]] | EXISTING | vat-reports [[V]] | MINOR | Tax model | High | S | P1 | Extend to CGST/SGST columns
+Reports | Discount and cancelled-order report | Named [[PO]] | NOT FOUND | No route found [[V]] | MAJOR | Audit log | High | S | P1 | Needs void/discount reason capture
+Reports | Bill-modification report | Named [[PO]] | NOT FOUND | No audit log [[V]] | MAJOR | Audit log | High | S | P1 | From audit_logs
+Reports | Staff performance and scheduling | Staff scheduling named [[PO]] | PARTIAL | HRM shifts and attendance [[V]] | MODERATE | - | Medium | M | P2 | Sales per waiter/cashier
+Reports | Payment-mode summary | Not stated [[UNK]] | NOT FOUND | No route found [[V]] | MODERATE | sale_payments | High | S | P1 | After multi-payment table
+Reports | Consumption and food cost | Item-wise consumption named [[PO]] | PARTIAL | Ingredient consumption report [[V]] | MODERATE | - | High | M | P2 | Add cost columns
+Reports | Online-order and commission reports | Named [[PO]] | NOT FOUND | None [[V]] | MAJOR | Aggregator integration | Medium | M | P3 | After integration
+Reports | Customer reports (frequency, value) | CRM data stated [[PO]] | NOT FOUND | None [[V]] | MODERATE | CRM | Medium | M | P2 | RFM-style
+Reports | Custom report builder | Add-on Dynamic Reports [[PO]] | NOT FOUND | None [[V]] | MINOR | - | Low | L | P5 | Saved filters and scheduled email first
+Multi-outlet | Multiple branches with switching | Stated [[PO]] | EXISTING | MultiBranchAddon; 0 branches in production [[V]] | MINOR | - | Medium | S | P4 | Dogfood before selling
+Multi-outlet | Zones, regions, brands hierarchy | Stated [[PO]] | NOT FOUND | Flat branches only [[V]] | MODERATE | Org model | Medium | M | P4 | brand and region tables above branch
+Multi-outlet | Outlet-wise staff rights | Stated [[PO]] | PARTIAL | users.branch_id; roles global [[V]] | MODERATE | Per-tenant roles | Medium | M | P4 | Tenant-scoped roles
+Multi-outlet | Consolidated head-office dashboard | Stated [[PO]] | PARTIAL | Branch-wise reports [[V]] | MODERATE | - | Medium | M | P4 | Comparison and rollup views
+ERP | Tally export | Tally named [[PO]] | NOT FOUND | Only per-list Excel/PDF/CSV [[V]] | MAJOR | Ledger mapping | High | M | P2 | Tally XML voucher export (sales, purchases, receipts)
+ERP | GST return data export | Petpooja Invoice separate product [[PO]] | NOT FOUND | None [[V]] | MODERATE | GST split | High | M | P2 | GSTR-1 style sales register export
+ERP | SAP, Dynamics NAV, data lake | Named [[PO]] | NOT FOUND | None [[V]] | MINOR | Public API | Low | L | P5 | Public API first
+Payments | UPI and EDC terminal integration | Stated as integrations [[PO]] | NOT FOUND | Not used at POS [[V]] | MAJOR | Gateway/terminal partner | High | L | P2 | Gateway UPI QR with webhook confirmation
+Payments | Payment gateway for bills | Razorpay named [[PO]] | PARTIAL | Razorpay lib exists for subscription and store [[V]] | MODERATE | Webhooks | High | M | P2 | Add signed webhook receiver and payment links
+Payments | Paytm device (GO/PAY) | Reported [[TP]] | NOT FOUND | None [[V]] | MODERATE | Partner | Low | L | P3 | Defer
+Payments | Scan and Pay | Add-on [[PO]] | NOT FOUND | None [[V]] | MODERATE | UPI gateway | Medium | M | P3 | Extends table QR
+Kiosk | Self-service kiosk | Add-on hardware+software [[PO]] | NOT FOUND | None [[V]] | MINOR | Hardware | Low | XL | P5 | Skip; QSR customers can use table/counter QR
+Display | Digital menu boards | Add-on [[PO]] | NOT FOUND | None [[V]] | MINOR | - | Low | M | P5 | Browser URL for TV is cheap if requested
+Platform | Audit log | Not stated [[UNK]] | NOT FOUND | None [[V]] | MAJOR | - | High | M | P1 | See Part 09
+Platform | Public API and webhooks | Partner API [[TP]] | NOT FOUND | None [[V]] | MAJOR | API gateway | Medium | L | P3 | Versioned API, HMAC webhooks
+Platform | HRM, attendance, payroll | Attendo separate product [[PO]] | EXISTING | HrmAddon [[V]] | NONE | - | Medium | S | P1 | Keep; AppZet bundles it
+Platform | Multi-language UI | 15+/18+ Indian languages; Odia not named [[PO]] | EXISTING | 102 language rows; Odia 2090/2166 keys [[V]] | NONE | - | High | S | P1 | Finish the remaining 76 Odia keys; localise invoices and messages
+Platform | Plan gating and limits | Plans and add-ons [[PO]] | EXISTING | plans.available_modules, PlanLimitService [[V]] | NONE | - | High | S | P1 | Add usage meters (messages, orders)
+Platform | AI assistant | Base plan lists an AI agent; detail not stated [[PO]] | NOT FOUND | None [[V]] | MODERATE | Data + LLM API | Medium | L | P5 | Read-only owner Q and A (Part 11)
+Support | 24/7 support, in-person training, assigned team for chains | Stated [[PO]] | UNKNOWN | Not determinable from the server [[UNK]] | MODERATE | Business operations | High | L | P1 | Local onboarding and WhatsApp support (Part 11)
+Support | Guided onboarding | Online installation and training [[PO]] | NOT FOUND | No onboarding wizard found [[V]] | MODERATE | Product | High | M | P1 | Setup checklist and menu import assistant
