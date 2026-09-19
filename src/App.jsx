@@ -5,6 +5,7 @@ import TechStack from './pages/TechStack.jsx';
 import KnownIssues from './pages/KnownIssues.jsx';
 import BackupMigration from './pages/BackupMigration.jsx';
 import Deployment from './pages/Deployment.jsx';
+import TlsCertificate from './pages/TlsCertificate.jsx';
 import WhatsAppModule from './pages/WhatsAppModule.jsx';
 import PetpoojaComparison from './pages/PetpoojaComparison.jsx';
 import GapAnalysis from './pages/GapAnalysis.jsx';
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/known-issues" element={<KnownIssues />} />
       <Route path="/backup-migration" element={<BackupMigration />} />
       <Route path="/deployment" element={<Deployment />} />
+      <Route path="/tls-certificate" element={<TlsCertificate />} />
       <Route path="/whatsapp-module" element={<WhatsAppModule />} />
       <Route path="/petpooja-comparison" element={<PetpoojaComparison />} />
       <Route path="/gap-analysis" element={<GapAnalysis />} />

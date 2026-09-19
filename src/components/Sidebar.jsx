@@ -9,6 +9,7 @@ const PAGES = [
   { to: '/known-issues', ico: '🐞', label: 'Known Issues' },
   { to: '/backup-migration', ico: '🗃', label: 'Backup & Migration' },
   { to: '/deployment', ico: '🚀', label: 'Deployment & Source Mgmt' },
+  { to: '/tls-certificate', ico: '🔒', label: 'TLS Certificate' },
   { to: '/whatsapp-module', ico: '💬', label: 'WhatsApp Module' },
   { to: '/petpooja-comparison', ico: '🆚', label: 'Petpooja Comparison' },
   { to: '/gap-analysis', ico: '📊', label: 'Gap Analysis' },

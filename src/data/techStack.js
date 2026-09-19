@@ -101,7 +101,7 @@ export const STACK = [
       { name: 'fail2ban', ver: 'active', note: 'one jail: sshd' },
       { name: 'SSH root login', ver: 'PermitRootLogin yes + PasswordAuthentication yes', note: 'password-guessable, not keys-only — see Known Issues' },
       { name: 'TLS', ver: "Let's Encrypt ECDSA, appzetsbilling.com + *.appzetsbilling.com", note: 'wildcard cert backs every tenant custom subdomain; HTTP/3 (QUIC) enabled' },
-      { name: 'Certificate renewal', ver: 'automated, verified working', note: 'both a systemd certbot.timer and a CloudPanel cron entry trigger it independently' },
+      { name: 'Certificate renewal', ver: 'manual — not automated', note: 'certbot uses the manual DNS-01 authenticator with no hook, so the timer and CloudPanel cron cannot complete a renewal; renewed by hand 2026-09-19, next expiry 2026-12-18 (see TLS Certificate page)' },
     ],
   },
   {
