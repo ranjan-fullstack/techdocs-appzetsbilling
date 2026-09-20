@@ -15,6 +15,7 @@ const PAGES = [
   { to: '/petpooja-comparison', ico: '🆚', label: 'Petpooja Comparison' },
   { to: '/gap-analysis', ico: '📊', label: 'Gap Analysis' },
   { to: '/salepro-analysis', ico: '🧾', label: 'SalePro Due Diligence' },
+  { to: '/printer-analysis', ico: '🖨', label: 'Printer Analysis' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {

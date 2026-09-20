@@ -10,6 +10,7 @@ import WhatsAppModule from './pages/WhatsAppModule.jsx';
 import PetpoojaComparison from './pages/PetpoojaComparison.jsx';
 import GapAnalysis from './pages/GapAnalysis.jsx';
 import SaleProAnalysis from './pages/SaleProAnalysis.jsx';
+import PrinterAnalysis from './pages/PrinterAnalysis.jsx';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/petpooja-comparison" element={<PetpoojaComparison />} />
       <Route path="/gap-analysis" element={<GapAnalysis />} />
       <Route path="/gap-analysis/:part" element={<GapAnalysis />} />
+      <Route path="/printer-analysis" element={<PrinterAnalysis />} />
       <Route path="/salepro-analysis" element={<SaleProAnalysis />} />
       <Route path="/salepro-analysis/:part" element={<SaleProAnalysis />} />
     </Routes>

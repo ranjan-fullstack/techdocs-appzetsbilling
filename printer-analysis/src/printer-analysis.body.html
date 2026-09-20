@@ -1,0 +1,125 @@
+<!--TITLE:Printer Analysis — plan-wise printers, web vs Flutter, KOT-->
+<p class="sub">How AppZetBilling prints today (web and Flutter app), which printers fit each subscription plan, and which printer to use for KOT. Evidence tags: [[V]] read in the code or database this session · [[TP]] third-party listing or article · [[EST]] estimate · [[INF]] inference · [[UNK]] not verified · [[REC]] recommendation. Prices come from IndiaMART/Flipkart-type listings and vary by seller.</p>
+
+<div class="callout ok"><b>Summary</b>
+<ul>
+<li><b>Basic (₹3,999/yr):</b> 58 mm Bluetooth printer for the phone app (≈ ₹2,500–5,000). No KOT in this plan.</li>
+<li><b>Standard (₹5,999/yr):</b> 80 mm USB thermal at the counter (Xprinter XP-80C class) and one at the kitchen PC.</li>
+<li><b>Premium (₹9,999/yr):</b> Epson TM-T82 series or TVS RP 3160 Gold at counter and kitchen.</li>
+<li><b>KOT:</b> same kind of 80 mm thermal printer on a separate kitchen PC that runs the kitchen login. The phone app cannot print to a kitchen printer.</li>
+<li><b>Fix the marketing line</b> "All Type of Printer Support" — it is not accurate.</li>
+</ul></div>
+
+<h2>1. Subscription plans (from the database)</h2>
+<p>Read-only query of the <code>plans</code> table on the VPS. Prices are per year. [[V]]</p>
+<div class="tblw"><table>
+<thead><tr><th>Plan</th><th>Offer price</th><th>List price</th><th>Users / products / customers</th><th>Kitchen (KOT)</th><th>Inventory</th><th>Cash register</th><th>Reservation</th><th>Online store</th><th>HRM / branches</th></tr></thead><tbody>
+<tr><td><b>Free Demo</b></td><td>₹0 (30 days)</td><td>—</td><td>10 / 500 / 500</td><td>On</td><td>n/s</td><td>n/s</td><td>n/s</td><td>n/s</td><td>1 branch</td></tr>
+<tr><td><b>Basic</b></td><td>₹3,999</td><td>₹6,999</td><td>10 / 100 / 500</td><td>Off</td><td>Off</td><td>Off</td><td>Off</td><td>Off</td><td>Off</td></tr>
+<tr><td><b>Standard</b></td><td>₹5,999</td><td>₹10,000</td><td>20 / 200 / 1,000</td><td>On</td><td>On</td><td>Off</td><td>Off</td><td>Off</td><td>Off</td></tr>
+<tr><td><b>Premium</b></td><td>₹9,999</td><td>₹15,000</td><td>unlimited</td><td>On</td><td>On</td><td>On</td><td>On</td><td>On</td><td>On</td></tr>
+</tbody></table></div>
+<p>All three paid plans list the feature "All Type of Printer Support" [[V]]. n/s = not shown in the fields read.</p>
+
+<h2>2. How printing works today</h2>
+<div class="tblw"><table>
+<thead><tr><th></th><th>Web application</th><th>Flutter app</th></tr></thead><tbody>
+<tr><td>Mechanism</td><td>Browser <code>window.print()</code> from receipt and KOT pages (<code>onloadPrint.js</code>, <code>print.js</code>) [[V]]</td><td>Raw ESC/POS bytes over Bluetooth using <code>print_bluetooth_thermal</code> and <code>esc_pos_utils_plus</code> [[V]]</td></tr>
+<tr><td>Printers that work</td><td>Anything with an operating-system driver: USB thermal, A4 laser/inkjet, shared LAN printers</td><td>Bluetooth 58 mm and 80 mm ESC/POS thermal printers only. No Wi-Fi/LAN or USB printing code was found [[V]]</td></tr>
+<tr><td>Paper size handling</td><td>None specific: <code>@page</code> rule is commented out; receipt wrapper is <code>max-width: 400px</code>; table cells use <code>white-space: nowrap</code> [[V]]</td><td>Settings for 58 mm / 80 mm (default 80), auto-print, DPI, margin, bottom margin [[V]]</td></tr>
+<tr><td>Print method</td><td>Driver renders graphics</td><td><b>Default</b> (ESC/POS text) or <b>Image</b> (bill drawn as a bitmap) [[V]]</td></tr>
+<tr><td>Odia text</td><td>Should print through the driver [[INF]]</td><td>Default mode: likely fails on Odia (printer code page). Image mode: works if the phone font has Odia; the app bundles only Poppins [[INF]]</td></tr>
+<tr><td>Number of printers</td><td>One per PC; each PC prints to its own default printer</td><td><b>One Bluetooth connection at a time</b>, shared by sale bills and KOTs [[V]]</td></tr>
+<tr><td>A4 / PDF</td><td>PDF invoices via DomPDF [[V]]</td><td><code>pdf</code> + <code>printing</code> packages for A4 / share [[V]]</td></tr>
+<tr><td>Platform notes</td><td>Chrome popups must be allowed for <code>print.js</code></td><td>Android Bluetooth permissions declared; no Bluetooth entry found in iOS <code>Info.plist</code>, so iPhone printing is probably not set up [[INF]]</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>"All Type of Printer Support" is not accurate.</b> Web supports any driver-based printer; the Flutter app supports Bluetooth ESC/POS thermal only. Suggested wording: "58/80 mm ESC/POS Bluetooth printers on mobile; any Windows-driver printer on web."</div>
+
+<h2>3. Printers on the market (India)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Printer</th><th>Paper / connection</th><th>Price seen</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Generic 58 mm Bluetooth (many brands)</td><td>58 mm, Bluetooth (+USB on some)</td><td>≈ ₹2,350–3,000 [[TP]]</td><td>Cheapest; quality varies by seller</td></tr>
+<tr><td>Xprinter XP-58IIH / XP-58IIH-BT</td><td>58 mm, USB + Bluetooth, 90 mm/s</td><td>Listed on Flipkart and Amazon.in; price not captured [[UNK]]</td><td>Common budget brand</td></tr>
+<tr><td>80 mm portable Bluetooth + USB (generic seller)</td><td>80 mm</td><td>≈ ₹4,950 (listed down from ₹5,500) [[TP]]</td><td>Battery model; no cutter noted</td></tr>
+<tr><td>Xprinter XP-80C</td><td>80 mm, USB (or USB + LAN variant), up to 260 mm/s, 203 dpi</td><td>India price not found [[UNK]]</td><td>Fast; test the driver and cutter</td></tr>
+<tr><td>Epson TM-T82 series</td><td>80 mm, 203 dpi, ≈ 150 mm/s; USB with Serial or LAN by model</td><td>≈ ₹9,350–11,800 [[TP]]</td><td>Official Epson Windows driver</td></tr>
+<tr><td>TVS RP 3160 Gold</td><td>80 mm, 203 dpi, 160 mm/s; USB, Serial or Ethernet by model</td><td>≈ ₹10,100–15,000 [[TP]]</td><td>Indian brand, local service</td></tr>
+<tr><td>PosBox 80 mm USB + Bluetooth desktop (auto cutter)</td><td>80 mm</td><td>≈ ₹9,999 [[TP]]</td><td>Bluetooth + cutter in one unit</td></tr>
+<tr><td>Epson TM-m30II</td><td>80 mm, Bluetooth / USB / Ethernet, 250 mm/s</td><td>India price not verified [[UNK]]</td><td>Suited to handheld or tablet use</td></tr>
+<tr><td>TVS RP 45 Shoppe (dot matrix; BT variant exists)</td><td>Impact printing</td><td>≈ ₹7,900–10,900 [[TP]]</td><td>Ribbon, noisy; phone-app compatibility unverified [[UNK]]</td></tr>
+</tbody></table></div>
+
+<h2>4. Recommendation by plan [[REC]]</h2>
+<div class="tblw"><table>
+<thead><tr><th>Plan</th><th>Customer profile</th><th>Suggested printer</th><th>Budget</th></tr></thead><tbody>
+<tr><td><b>Basic ₹3,999</b></td><td>Counter, no KOT; one phone or PC</td><td>58 mm Bluetooth (Xprinter XP-58IIH-BT class) for the app; on a PC, any 58 or 80 mm USB thermal with a driver</td><td>₹2,500–5,000</td></tr>
+<tr><td><b>Standard ₹5,999</b></td><td>Small restaurant with KOT</td><td>80 mm USB thermal at the counter (Xprinter XP-80C class) plus a second one on the kitchen PC</td><td>₹5,000–11,000</td></tr>
+<tr><td><b>Premium ₹9,999</b></td><td>Multi-user restaurant, online store, reservation, cash register</td><td>Epson TM-T82 series or TVS RP 3160 Gold at counter and kitchen; an A4 printer for GST invoices; for handhelds, Epson TM-m30II</td><td>₹10,000–25,000</td></tr>
+</tbody></table></div>
+<p>A ₹3,999 customer will not buy a ₹10,000 printer, so on Basic the honest promise is "bring any 58 mm Bluetooth printer". Premium customers can pay for Epson or TVS.</p>
+
+<h2>5. Mobile app and web counter</h2>
+<ul>
+<li><b>Mobile (Flutter):</b> 58 mm Bluetooth printer, Image printing method for Odia, bills only. Pair it in the phone's Bluetooth settings first, then select it in the app.</li>
+<li><b>Web counter:</b> Xprinter XP-80C, TVS RP 3160 Gold or Epson TM-T82 series on a USB port with the vendor driver installed.</li>
+</ul>
+
+<h2>6. KOT — which printer</h2>
+<p>The kitchen role has its own ticket page (<code>kitchen/kots/ticket.blade.php</code>) that prints when it loads [[V]]. So the design is: a kitchen PC or tablet logged in as the kitchen user, with a printer attached to that PC.</p>
+<div class="tblw"><table>
+<thead><tr><th>Rank</th><th>Printer</th><th>Why</th><th>Watch out</th></tr></thead><tbody>
+<tr><td><b>Best value</b></td><td>Xprinter XP-80C, 80 mm USB</td><td>Fast, cutter, KOT is short text so cheap thermal is fine. Fits Standard.</td><td>Test driver and cutter; India price unknown</td></tr>
+<tr><td><b>Most reliable</b></td><td>Epson TM-T82 series</td><td>Best driver and support for all-day use. Fits Premium.</td><td>Higher price</td></tr>
+<tr><td><b>Alternative</b></td><td>TVS RP 3160 Gold</td><td>Indian brand with service network</td><td>Check model variant (USB/Serial/Ethernet)</td></tr>
+<tr><td><b>Only for heat, steam or grease</b></td><td>TVS RP 45 Shoppe dot matrix</td><td>Ribbon printing does not fade</td><td>Noisy, slow; app compatibility unverified</td></tr>
+</tbody></table></div>
+<ul>
+<li>Use the same model at counter and kitchen where possible: one driver and one CSS layout.</li>
+<li>A cutter is required. 58 mm also works for KOT if money is tight; 80 mm has more room for item names.</li>
+<li>Fading thermal paper does not matter for a KOT that is used within minutes.</li>
+<li>The phone app cannot print to a kitchen printer because it holds one Bluetooth connection shared with bills [[V]].</li>
+</ul>
+
+<h2>7. Web set-up steps (80 mm)</h2>
+<p><b>CSS</b> — add to <code>public/assets/css/business-custom.css</code> (not applied yet):</p>
+<pre>@media print {
+  @page { size: 80mm auto; margin: 0; }
+  html, body { width: 80mm; margin: 0; }
+  .invoice-container-sm { padding: 0 !important; min-height: 0 !important; }
+  .invoice-content-size { max-width: 72mm; margin: 0 auto; }
+  .ph-invoice-table th, .ph-invoice-table td { font-size: 10px; padding: 3px 1px; white-space: normal; }
+}</pre>
+<ol>
+<li>Install the vendor's Windows driver. Set paper to the 80 mm roll and enable auto-cut.</li>
+<li>Set the printer as the Windows default; turn off "Let Windows manage my default printer".</li>
+<li>Allow popups for the site in Chrome or Edge.</li>
+<li>Print dialog: Margins None, Scale 100%, Headers and footers off, Background graphics off, paper = 80 mm roll.</li>
+<li>Optional silent printing: start Chrome from a shortcut with <code>--kiosk-printing</code> (close all Chrome windows first) — counter and kitchen PCs only.</li>
+</ol>
+
+<h2>8. Fixes and improvements</h2>
+<div class="tblw"><table>
+<thead><tr><th>Item</th><th>Why</th><th>Effort</th></tr></thead><tbody>
+<tr><td>Reword "All Type of Printer Support"</td><td>Claim is inaccurate</td><td>Minutes</td></tr>
+<tr><td>Add the 80 mm print CSS</td><td>Current layout is not sized for thermal paper</td><td>Small</td></tr>
+<tr><td>Bundle an Odia font in the Flutter app; default Odia users to Image mode</td><td>Odia bills on thermal printers</td><td>Small</td></tr>
+<tr><td>Check iOS Bluetooth setup</td><td>No Bluetooth entry found in <code>Info.plist</code></td><td>Small</td></tr>
+<tr><td>Publish a tested-printers list</td><td>Reduces support load</td><td>Ongoing</td></tr>
+<tr><td>Network (LAN, port 9100) ESC/POS in the app</td><td>Kitchen printers and a second printer from the phone</td><td>≈ 1–2 weeks [[EST]]</td></tr>
+</tbody></table></div>
+
+<h2>9. Test protocol for each printer</h2>
+<ol>
+<li>Print a sale invoice and a KOT from web and from the app.</li>
+<li>Use a long item name, a modifier list and an Odia item name.</li>
+<li>Check nothing is cut off, no blank paper is fed, and the cutter fires.</li>
+<li>Print 20 bills in a row and confirm no missed prints.</li>
+<li>Repeat with the app in Image mode for the Odia bill.</li>
+</ol>
+<p>Tier A: Epson TM-T82, TVS RP 3160 Gold, Xprinter XP-80C. Tier B: Xprinter XP-58IIH-BT. Everything else: untested until it passes the protocol.</p>
+
+<h2>Sources</h2>
+<ul>
+<li>Code and plans: AppZetBilling production server and the Flutter app source, read-only [[V]].</li>
+<li><a href="https://www.indiamart.com/proddetail/epson-thermal-printer-21607039862.html">Epson TM-T82 listing</a> · <a href="https://store.tvselectronics.in/products/rp3160-gold-thermal-receipt-printer">TVS RP 3160 Gold</a> · <a href="https://techmarketug.com/product/xprinter-xp-80c-80mm-thermal-receipt-printer-usb-lan">Xprinter XP-80C</a> · <a href="https://www.epson.com.my/For-Work/Printers/POS-Printers/Epson-TM-T82X-II-Thermal-Receipt-Printer/p/C31CL45421">Epson TM-T82X-II</a> · <a href="https://www.indiamart.com/proddetail/58mm-bluetooth-thermal-receipt-printer-2850112882712.html">58 mm Bluetooth listing</a> · <a href="https://www.flipkart.com/posbox-80mm-3-inch-usb-bluetooth-desktop-thermal-printer-auto-cutter/p/itmbabd34b5c63b8">PosBox 80 mm</a> · <a href="https://www.flipkart.com/xprinter-xp-58iih-thermal-receipt-printer/p/itm929b5a4b556bf">Xprinter XP-58IIH</a> · <a href="https://www.industrybuying.com/lp/epson-tm-m30ii-bluetooth-receipt-printer--">Epson TM-m30II</a> · <a href="https://indianbarcode.in/tvs-rp-45-shoppe-receipt-printer">TVS RP 45 Shoppe</a>.</li>
+</ul>
