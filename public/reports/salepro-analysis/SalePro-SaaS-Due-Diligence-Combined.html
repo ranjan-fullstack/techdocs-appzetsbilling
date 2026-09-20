@@ -1,0 +1,1298 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>if(window.self!==window.top)document.documentElement.classList.add("embedded")</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>SalePro + SalePro SaaS - Due Diligence</title><style>:root{--bg:#fafaf7;--fg:#1c1f24;--mut:#5b6472;--line:#dfe2e6;--card:#fff;--acc:#0b6b5c;--acc2:#e8f3f0;--warn:#b45309;--warn2:#fef3e2;--bad:#b42318;--bad2:#fdecea;--ok:#127a3d;--ok2:#e6f5ec;--info:#1d4ed8;--info2:#e8eefc;--code:#f1f3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171a;--fg:#e6e8eb;--mut:#9aa4b2;--line:#2b3138;--card:#1b1f24;--acc:#4fd1b5;--acc2:#16302b;--warn:#f5b453;--warn2:#3a2c12;--bad:#ff8a80;--bad2:#3b1a18;--ok:#63d68e;--ok2:#142e1f;--info:#8fb0ff;--info2:#1a2646;--code:#242a31}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 80px}
+header.top{border-bottom:1px solid var(--line);padding:22px 0 14px;margin-bottom:18px}
+header.top .k,.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 6px}h2{font-size:21px;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}h3{font-size:16.5px;margin:22px 0 6px}h4{font-size:13px;margin:16px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:8px 0}li{margin:3px 0}
+a{color:var(--info)}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px;word-break:break-word}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.45}
+.sub{color:var(--mut);margin:0}
+nav.parts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}nav.parts a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--fg);background:var(--card)}nav.parts a.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--acc2);font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}td.n{white-space:nowrap}
+.callout{border-left:4px solid var(--info);background:var(--info2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}.callout.warn{border-color:var(--warn);background:var(--warn2)}.callout.bad{border-color:var(--bad);background:var(--bad2)}.callout.ok{border-color:var(--ok);background:var(--ok2)}.callout>b:first-child{display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}.card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 13px}.card b{display:block}.card .v{font-size:22px;font-weight:700;color:var(--acc)}
+.b{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:99px;white-space:nowrap;border:1px solid transparent;vertical-align:1px}
+.b.v{background:var(--ok2);color:var(--ok);border-color:var(--ok)}.b.po{background:var(--info2);color:var(--info);border-color:var(--info)}.b.tp{background:var(--warn2);color:var(--warn);border-color:var(--warn)}.b.inf{background:var(--code);color:var(--mut);border-color:var(--line)}.b.unk{background:var(--bad2);color:var(--bad);border-color:var(--bad)}.b.add{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+.s-ex,.g-none{color:var(--ok);font-weight:700}.s-pa,.g-minor,.g-moderate{color:var(--warn);font-weight:700}.s-nf,.g-major,.g-critical{color:var(--bad);font-weight:700}.s-unk{color:var(--mut);font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}.toolbar input,.toolbar select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.part-sep{margin-top:60px;border-top:3px solid var(--acc);padding-top:14px}
+footer{margin-top:50px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:640px){h1{font-size:23px}body{font-size:14.5px}}
+@media print{nav.parts,.toolbar{display:none}.part-sep{page-break-before:always}}
+
+/* when shown inside the docs site iframe, the site sidebar does the navigation */
+.embedded nav.parts,.embedded header.top .k{display:none}
+.embedded header.top{padding-top:6px}
+.embedded .wrap{padding-top:8px}
+</style></head><body><div class="wrap"><header class="top"><div class="k">Due diligence</div><h1>SalePro + SalePro SaaS - Business, Technical, Pricing &amp; Market Feasibility</h1><p class="sub">Combined report - 12 parts</p><nav class="parts"><a href="#01-summary-products-license">01 Executive Summary, Products &amp; License</a><a href="#02-features-saas-techstack-admin">02 SalePro &amp; SaaS Feature Matrices, Tech Stack, Admin</a><a href="#03-architecture-infra-cloud">03 Tenant Architecture, Servers &amp; Cloud Cost</a><a href="#04-competitors-restaurant-retail">04 Competitors, Restaurant &amp; Retail Fit</a><a href="#05-gaps-customization">05 Feature Gaps &amp; Customization Effort</a><a href="#06-pricing-unit-economics">06 Pricing Strategy &amp; Unit Economics</a><a href="#07-market-penetration">07 Market Size &amp; Penetration Scenarios</a><a href="#08-security-risks">08 Security, Technical &amp; Business Risks</a><a href="#09-gtm-roadmap-scaling">09 Go-to-Market, Operations, Roadmap &amp; Scaling</a><a href="#10-odisha-branding">10 Odisha Branding, Naming &amp; Positioning</a><a href="#11-decision-checklist">11 Final Decision, Due-Diligence &amp; Purchase Checklist</a><a href="#12-official-docs-reference">12 SalePro Official Documentation Reference</a></nav></header><section id="01-summary-products-license" class=""><div class="k">PART 01</div><h1>01 Executive Summary, Products &amp; License — Sections Exec, 1, 2</h1>
+<p class="sub">Due-diligence only. Nothing was bought, installed or run. Evidence tags: <span class="b v">VERIFIED FACT</span> read on an official page this session · <span class="b tp">THIRD-PARTY</span> third-party page · <span class="b inf">ESTIMATE</span> calculated estimate · <span class="b unk">ASSUMPTION</span> stated assumption · <span class="b add">RECOMMENDATION</span> our recommendation · <span class="b unk">UNKNOWN</span> could not be verified · <span class="b inf">INFERENCE</span> reasoned inference.</p>
+
+<h2>Executive summary</h2>
+
+<div class="callout bad"><b>The pivotal finding: you already own a SaaS product</b>
+Your previous audit (gap-analysis Parts 01–12) shows AppZetBilling is a working multi-tenant Laravel POS/restaurant SaaS (shared schema, <code>business_id</code>, plans with limits, custom domains, KOT, tables, recipe-based stock deduction, Odia UI ~96%). So the real question is not "can SalePro be a foundation?" but <b>"is it better than extending AppZetBilling?"</b> SalePro would mean a second codebase, a second data model, and a migration for any existing customers. Read Part 11 before anything else. <b>Part 12 (official docs, read in full) corrects several "not found" claims in Parts 01–11 — WhatsApp Cloud API, Indian GST invoice format and an activity log do exist.</b></div>
+
+<div class="grid">
+<div class="card"><b>SalePro (core)</b><span class="v">$30 / $120</span>Regular / Extended · 3,165 sales · 4.52★ (217) <span class="b v">VERIFIED FACT</span></div>
+<div class="card"><b>SalePro SaaS add-on</b><span class="v">$39 / $125</span>Regular / Extended · 72 sales · 1 review <span class="b v">VERIFIED FACT</span></div>
+<div class="card"><b>Licence needed to charge tenants</b><span class="v">Extended ×2</span>$245 total on the page prices; author must confirm <span class="b v">VERIFIED FACT</span> <span class="b add">RECOMMENDATION</span></div>
+<div class="card"><b>Break-even (moderate case)</b><span class="v">≈165</span>paying customers at ₹860 ARPU, 3-person team <span class="b inf">ESTIMATE</span></div>
+</div>
+
+<h3>Straight answers</h3>
+<ul>
+<li><b>Can the pair technically run a commercial SaaS?</b> Yes for a first few hundred tenants: it has separate-DB tenants, packages with limits, trials, 15+ gateways including Razorpay, a super-admin dashboard, CMS, affiliates and tickets <span class="b v">VERIFIED FACT</span>. Beyond ~1,000 tenants the database-per-tenant model and per-tenant "Update Client DB" workflow become operational problems that the add-on does not document solutions for <span class="b inf">INFERENCE</span>.</li>
+<li><b>Is it a fit for restaurants?</b> Partly. Floors/tables, waiter, dine-in/takeaway/delivery, KDS and QR menu are advertised <span class="b v">VERIFIED FACT</span>. Ingredient deduction on sale is not automatic in the docs excerpt ("production is manual, not automatic on sale") <span class="b v">VERIFIED FACT</span>, no aggregator integration was found, and KOT printer routing, split/merge bill and captain app are undocumented <span class="b unk">UNKNOWN</span>. Retail/wholesale/pharmacy-lite/electronics is where it is strongest.</li>
+<li><b>Is the licence fee the risk?</b> No: $245 is roughly ₹22,000 <span class="b unk">ASSUMPTION</span> (₹90/USD). The risk is engineering lock-in, the 72-sale add-on maturity, the unresolved licence interpretation, and duplicating a product you already have.</li>
+<li><b>Recommendation</b> <span class="b add">RECOMMENDATION</span>: do not purchase yet. Run the 2–3 week due-diligence in Part 11 (author Q&amp;A in writing, demo walk-through, licence confirmation), then decide between (a) extend AppZetBilling, (b) SalePro SaaS for a retail/wholesale vertical only, (c) both. Our current lean is (a) for restaurants, with SalePro considered only as a retail-vertical accelerator.</li>
+</ul>
+
+<h2>1. Products analysed</h2>
+<div class="tblw"><table>
+<thead><tr><th>Attribute</th><th>SalePro</th><th>SalePro SaaS add-on</th></tr></thead>
+<tbody>
+<tr><td>CodeCanyon title</td><td>SalePro – All-in-One POS, Inventory, ERP &amp; eCommerce</td><td>SalePro SaaS – Multi-Tenant POS Add-on</td></tr>
+<tr><td>Item link</td><td><a href="https://codecanyon.net/item/lims-stock-manager-pro-with-pos/22256829">/22256829</a></td><td><a href="https://codecanyon.net/item/pos-saas-addon-for-salepro-multitenant-inventory-billing-module/58373948">/58373948</a></td></tr>
+<tr><td>Author</td><td>LionCoders (Elite Author) <span class="b v">VERIFIED FACT</span></td><td>LionCoders (Elite Author) <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Published</td><td>~8 years ago <span class="b v">VERIFIED FACT</span></td><td>~1 year ago <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Last update</td><td>25 Aug 2026 <span class="b v">VERIFIED FACT</span></td><td>2 Aug 2026 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Sales / rating</td><td>3,165 sales · 4.52 (217 reviews) <span class="b v">VERIFIED FACT</span></td><td>72 sales · 1 review <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Standalone?</td><td>Yes</td><td><b>No.</b> Requires SalePro; converts a compatible install into multi-tenant <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Framework</td><td>Laravel <span class="b v">VERIFIED FACT</span></td><td>Laravel <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>PHP</td><td>8.3 <span class="b v">VERIFIED FACT</span></td><td>8.3+ (CodeCanyon page and docs); the author's own product page says 8.2+ <span class="b v">VERIFIED FACT</span> — inconsistency, ask author</td></tr>
+<tr><td>Database</td><td>MySQL 5.7+ <span class="b v">VERIFIED FACT</span></td><td>MySQL-compatible, needs root/main access to create tenant DBs <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Files included</td><td>JavaScript, HTML, CSS, PHP, SQL — full Laravel source <span class="b v">VERIFIED FACT</span></td><td>Full source (add-on) <span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Frontend</td><td>Blade/HTML/CSS/JS (framework details such as jQuery vs SPA not stated on the page) <span class="b unk">UNKNOWN</span></td><td>Same + CMS landing site, themes <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Extensions</td><td>OpenSSL, PDO, Fileinfo, Mbstring, Tokenizer, Zip, GD/Imagick, cURL, XML <span class="b v">VERIFIED FACT</span>; 512MB+ PHP memory, URL rewrite, VPS recommended for multi-register <span class="b v">VERIFIED FACT</span></td><td>PDO/PDO MySQL, cURL, Fileinfo, GD, ZIP, Calendar + Laravel base; wildcard DNS + HTTPS; must be installed at the root domain, not a subfolder <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Hosting panels supported for tenant DB automation</td><td>n/a</td><td>cPanel (API token), Plesk (user/password/DB server ID), PlanetHoster, VPS/dedicated <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Support</td><td>6 months included; 12-month extension listed at $9.38; updates included <span class="b v">VERIFIED FACT</span></td><td>6 months included, extendable to 12; updates included <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Related paid add-ons</td><td>eCommerce add-on (separate item), WooCommerce connector add-on, mobile apps (Flutter) <span class="b v">VERIFIED FACT</span></td><td>Tenant mobile app is a separate product; docs say it is "required for each tenant" for mobile use <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Demo</td><td>salepropos.com/demo/login (admin/admin, staff/staff) <span class="b v">VERIFIED FACT</span> — <b>not yet walked through</b></td><td>No SaaS demo found in the sources read <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Major limitations on record</td><td>Docs are 244 sections/32,704 words; no public REST API reference in the sections summarised <span class="b v">VERIFIED FACT</span>; the docs' restaurant, KDS and modifier set-up is not documented (Part 12) <span class="b v">VERIFIED FACT</span></td><td>Tenant restaurant module availability, offline POS in tenants, tenant deletion and upgrade-at-scale are undocumented <span class="b unk">UNKNOWN</span>; 72 sales = thin production track record <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><b>Price discrepancy</b> The author's own site lists the SaaS add-on at <b>$69</b> (<span class="b v">VERIFIED FACT</span> lion-coders.com), while CodeCanyon shows <b>$39</b> Regular / $125 Extended. Also confirm whether the $39/$125 shown excludes Envato's buyer fee and tax <span class="b unk">UNKNOWN</span>. Ask which price and which licence applies if bought directly from LionCoders.</div>
+
+<h2>2. Current price &amp; licence</h2>
+<div class="tblw"><table>
+<thead><tr><th>Item</th><th>Regular</th><th>Extended</th></tr></thead>
+<tbody>
+<tr><td>SalePro</td><td>$30</td><td>$120</td></tr>
+<tr><td>SalePro SaaS add-on</td><td>$39</td><td>$125</td></tr>
+<tr><td><b>Total, both items</b></td><td>$69 (≈ ₹6,200)</td><td><b>$245 (≈ ₹22,000)</b> <span class="b unk">ASSUMPTION</span> ₹90/USD, excl. buyer fee/tax</td></tr>
+<tr><td>Optional</td><td colspan="2">Support extension ≈ $9.38 each item <span class="b v">VERIFIED FACT</span>; author setup help for mobile app builds $100 <span class="b v">VERIFIED FACT</span>; eCommerce add-on / mobile app prices <span class="b unk">UNKNOWN</span></td></tr>
+</tbody></table></div>
+
+<h3>What Envato's terms say <span class="b v">VERIFIED FACT</span></h3>
+<ul>
+<li><b>Regular:</b> one single End Product "for yourself or for one client". "You can't Sell the End Product, except to one client." Free end products may be copied to any number of free users. (<a href="https://codecanyon.net/licenses/terms/regular">Regular terms</a>, clauses 2, 5, 7; <a href="https://codecanyon.net/licenses/standard">licence summary</a>: "Use in an end product that's sold: No".)</li>
+<li><b>Extended:</b> one single End Product which "may be Sold"; "You can Sell and make any number of copies of the single End Product." It is "a 'single application' license and not a 'multi-use' license" — a second unique End Product needs another licence. (<a href="https://codecanyon.net/licenses/terms/extended">Extended terms</a>.)</li>
+<li><b>Prohibited under both:</b> using the item in an application that lets end users customise a product ("on demand", "made to order", "build it yourself"). A POS is not that, but a white-label builder feature could drift into it <span class="b inf">INFERENCE</span>.</li>
+<li>Search-result summaries of Envato's help article "Can I use Envato Market items in a SaaS product?" state that paid-access SaaS needs the Extended licence and that <b>one Extended licence covers all customers of that single SaaS product</b> (<span class="b tp">THIRD-PARTY</span> summary; the help page itself returned HTTP 403 to our fetcher, so we did not read it directly). <a href="https://help.market.envato.com/hc/en-us/articles/42955865046297-Can-I-use-Envato-Market-items-in-a-SaaS-product">Article link</a>.</li>
+</ul>
+
+<h3>Our licence conclusions</h3>
+<div class="tblw"><table>
+<thead><tr><th>Question</th><th>Answer</th><th>Confidence</th></tr></thead>
+<tbody>
+<tr><td>Which licence to charge monthly/yearly subscriptions?</td><td><b>Extended</b>, for each item you modify and sell access to</td><td>High <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Regular or Extended?</td><td>Regular is explicitly not allowed for a sold End Product</td><td>High <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Can one purchased copy operate a SaaS with many tenants?</td><td>Extended terms allow unlimited copies/sales of the single End Product; the Envato SaaS article (per summaries) says one Extended covers all customers. Each tenant is then an end user of one End Product, not a separate End Product</td><td>Medium — read the Envato article directly and get the author's written confirmation <span class="b add">RECOMMENDATION</span></td></tr>
+<tr><td>Is each tenant an "end user"?</td><td>Reasonable reading: yes. Risk: the tenant database is a separate DB copy — an author or Envato reviewer might argue per-tenant copies</td><td>Medium <span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Do SalePro and the add-on together count as one End Product?</td><td>Not stated. Buy Extended for both to be safe, and ask</td><td>Unknown <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>If we also sell a restaurant SaaS and a retail SaaS as separate branded products?</td><td>Each unique End Product likely needs its own Extended licence pair ("not a multi-use license") — matters for the brand-architecture decision in Part 10</td><td>Medium <span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Can we resell/whitelabel the source code itself to other agencies?</td><td>No: Envato forbids letting end users extract the Item (clause 11 of Regular) — we sell access, not code</td><td>High <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Are updates/support tied to licence?</td><td>Updates included per page; support 6 months, extendable. After expiry, updates may still need a valid purchase code <span class="b unk">UNKNOWN</span></td><td>Medium</td></tr>
+</tbody></table></div>
+
+<div class="callout"><b>If AppZetBilling itself is derived from a marketplace script</b> the same Extended-licence question applies to it today. This analysis does not know its provenance <span class="b unk">UNKNOWN</span> — worth checking regardless of the SalePro decision.</div>
+
+<h2>26. Questions we must ask the CodeCanyon author before buying</h2>
+<p>Put these in a written pre-sale ticket at the LionCoders support portal and keep the reply as evidence.</p>
+<h3>Licensing / legal</h3>
+<ol>
+<li>Does one Extended licence of SalePro + one Extended licence of the SaaS add-on cover a hosted subscription service with unlimited tenants and unlimited paying customers, under one brand?</li>
+<li>Is a tenant DB copy treated as a separate "End Product" under any LionCoders policy?</li>
+<li>Is the PHP requirement 8.2+ or 8.3+, and which price is correct ($39 on CodeCanyon vs $69 on lion-coders.com)?</li>
+<li>If we run two brands (restaurant, retail) on the same codebase, is that one End Product or two?</li>
+<li>Will you provide a licence/invoice document naming our company for Indian audit and investor due diligence?</li>
+<li>After the 6/12-month support window, do we keep receiving updates and can we still download new versions?</li>
+<li>Are we allowed to modify source and remove LionCoders branding/credits in the tenant and super-admin UI?</li>
+</ol>
+<h3>Technical</h3>
+<ol start="8">
+<li>How does the add-on create tenant DBs on a plain VPS with no cPanel/Plesk? Does it use MySQL root credentials stored in <code>.env</code>? Can it target multiple DB servers (sharding)?</li>
+<li>What is the largest production SaaS deployment you know (tenant count, DB server size)?</li>
+<li>How are tenant updates applied at scale ("Update Client DB")? Is there a batch/queued migration runner, rollback, and failure reporting? Approx. time per tenant?</li>
+<li>Does the restaurant module (tables, KDS, QR menu, modifiers) work in SaaS tenants and can it be toggled per package? Is offline POS supported in tenants?</li>
+<li>How does offline POS sync work: what data is cached, how are conflicts and duplicate invoice numbers resolved, and what is the maximum offline duration?</li>
+<li>Is there a REST API (for tenants and for the super admin)? Is it documented? Is there a webhook system?</li>
+<li>How is Razorpay integrated in SaaS billing — one-time payments each renewal, or Razorpay Subscriptions/UPI AutoPay mandates? Are failed-payment retries and grace periods supported?</li>
+<li>Does tenant deletion drop the DB? Is there soft-delete/restore? How are backups per tenant scheduled ("Backup Client DB": manual or scheduled)?</li>
+<li>The Activity Log covers create/update/delete of sales, purchases and quotations. Does it cover logins, price changes and super-admin actions? Is there login history, IP/device tracking, 2FA? Is it per tenant in SaaS?</li>
+<li>Which stack parts are encrypted at rest (gateway credentials, API tokens)?</li>
+<li>The docs describe an "Indian GST" invoice format with CGST/SGST/IGST. Please share a sample invoice. Is e-invoicing (IRN) or e-way bill on the roadmap, and where is the consolidated India GST report?</li>
+<li>Is Odia supported as a language, and is a thermal-printer Odia glyph rendering supported (many ESC/POS printers cannot print Odia; image-mode printing needed)?</li>
+<li>What is the roadmap for the next 12 months, and how are breaking changes communicated to SaaS operators with customised code?</li>
+<li>Is the Restaurant module (floors, KDS, modifiers) a separate paid item? Which of Manufacturing, Repair, Tailoring, Social Commerce and Project are included in the $30 licence (the docs list Manufacturing and Repair as add-ons)?</li>
+<li>Do you offer paid customisation, what is your rate/turnaround, and will you accept a code-escrow/continuity agreement?</li>
+<li>Are there known scalability limits (per-tenant table count, session storage, queue usage)? Does the app need a queue worker and cron and which jobs run there?</li>
+<li>Can we see a real SaaS instance (staging login) with a package that enables restaurant + accounting + HRM?</li>
+</ol>
+</section>
+<section id="02-features-saas-techstack-admin" class="part-sep"><div class="k">PART 02</div><h1>02 SalePro &amp; SaaS Feature Matrices, Tech Stack, Admin — Sections 3–6</h1>
+<p class="sub">Evidence limits: the CodeCanyon page, lion-coders.com product pages, the SalePro documentation (244 sections; read through an extraction of the first parts) and the SaaS documentation were read. The live demo was <b>not</b> opened, so anything not stated in those sources is marked UNKNOWN, not assumed absent. "Sold as" = what the vendor says exists; it does not prove quality.</p>
+
+<h2>3. Complete SalePro feature matrix</h2>
+<p>Status key: <b>YES</b> = stated in vendor material <span class="b v">VERIFIED FACT</span> · <b>PARTIAL</b> = stated with limits · <b>UNK</b> = not documented in what we read (test in demo) · <b>NOT FOUND</b> = absent from sources read.</p>
+
+<h3>POS</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Touch-friendly POS, category/brand filter, barcode scan</td><td>YES</td><td>Docs POS section <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Sales list, sale details, invoice print</td><td>YES</td><td>Docs <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Sale returns</td><td>YES</td><td>Dashboard KPIs "Sale Return"; GST support for sales returns <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Discounts (order-level), price override (manager-only permission)</td><td>YES</td><td>Docs permission points <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Coupons</td><td>YES</td><td>Docs 5.10: percentage or fixed, generated codes <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Taxes: unlimited custom rates, exclusive/inclusive, order tax</td><td>YES</td><td>Docs + CodeCanyon page snippet <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>India GST: HSN/SAC, GST snapshots on transactions, consolidated India GST report</td><td>YES (claimed)</td><td>Appears in the CodeCanyon page description via search; the docs excerpt did not detail a GST report <span class="b tp">THIRD-PARTY</span> — verify in demo</td></tr>
+<tr><td>CGST/SGST/IGST split on printed invoice</td><td>YES</td><td>Docs 5.3: Invoice Format "Indian GST" shows CGST/SGST/IGST separately <span class="b v">VERIFIED FACT</span> — test with real invoices</td></tr>
+<tr><td>e-invoice (IRN) / e-way bill</td><td>NOT FOUND</td><td>No mention anywhere read</td></tr>
+<tr><td>Multiple payment methods, split payments</td><td>YES</td><td>salepropos.com: "split payments" <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Payment tenders: gift card, customer deposit, reward points, credit sale</td><td>YES</td><td>Docs <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Installment sales with next-due alerts</td><td>YES</td><td>Docs <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>POS payment gateways: Razorpay (UPI-only in POS), Stripe, M-Pesa, MTN MoMo, PayHere</td><td>YES</td><td>Docs POS section <span class="b v">VERIFIED FACT</span>. Razorpay in POS is UPI-only as documented</td></tr>
+<tr><td>Reward points (manual add + automatic redeem at POS)</td><td>YES</td><td>Docs <span class="b v">VERIFIED FACT</span>; tiers/expiry/campaigns <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Barcode generation; label printing (A4/roll); weight-embedded barcodes (7+5+1)</td><td>YES</td><td>Docs 3.6 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Receipt printing (auto on finalize, "print last receipt"); thermal printers</td><td>YES</td><td>Docs + site "thermal receipts" <span class="b v">VERIFIED FACT</span>; ESC/POS vs browser print, Odia glyphs <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Customer display</td><td>YES</td><td>Docs: uses localStorage for live sync between screens <span class="b v">VERIFIED FACT</span> — same-machine browser only</td></tr>
+<tr><td>Weight scale</td><td>PARTIAL</td><td>Weight-embedded deli-scale barcodes supported; direct serial scale integration <span class="b unk">UNKNOWN</span>. Site says hardware needs on-site testing <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Offline POS</td><td>PARTIAL</td><td>"Offline-first with sync"; cloud icon with pending-sale count <span class="b v">VERIFIED FACT</span>. Mechanics: see below</td></tr>
+<tr><td>WhatsApp receipts</td><td>PARTIAL</td><td>Docs Ch. 18: WhatsApp Cloud API, POS "Send WhatsApp Message" tick-box, send from Customer List; mostly staff-triggered <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Sale agents with commission; billers (multi-branch cashier identity)</td><td>YES</td><td>Docs <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Registers / cash-in-hand / shift close</td><td>YES</td><td>Docs POS settings + report 20.34 <span class="b v">VERIFIED FACT</span></td></tr>
+</tbody></table></div>
+
+<h3>Product &amp; inventory</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Products, categories, brands, units with conversion (box→piece)</td><td>YES</td><td>Docs §3 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Variants (size/colour)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Batch and expiry tracking (optional per product)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Serial number / IMEI</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Multiple warehouses; transactions tied to a warehouse; staff restricted by warehouse</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Stock transfer between warehouses</td><td>YES</td><td>Site: "multi-warehouse stock and transfers" <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Stock adjustment, damage logging, physical stock count</td><td>YES</td><td>Docs §3 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Stock valuation report</td><td>YES</td><td>Site <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Low-stock alerts</td><td>YES</td><td>POS notification icon shows low-stock alerts; Product Quantity Alert report (20.29) <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Expiry alerts</td><td>UNK</td><td>Expiry fields exist; alert mechanism <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>CSV import: products, categories, brands, suppliers, customers, billers, purchases</td><td>YES</td><td>Fixed column order; mismatches error <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Export PDF / Excel / CSV / print from list pages</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Retail vs wholesale pricing</td><td>YES</td><td>salepropos.com: "retail/wholesale pricing" <span class="b v">VERIFIED FACT</span>; price lists per customer group <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Customer groups</td><td>YES</td><td>Docs §2 <span class="b v">VERIFIED FACT</span></td></tr>
+</tbody></table></div>
+
+<h3>Purchase</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Suppliers, supplier due report</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Purchases with status Received/Pending/Ordered (acts as PO-lite)</td><td>PARTIAL</td><td>Formal PO → GRN → invoice matching <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Live tax/discount calc, shipping cost</td><td>YES</td><td>Docs mention tax/discount live calc; shipping <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Purchase returns with supplier refund</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>CSV import of purchases</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Attachments on purchases</td><td>UNK</td><td></td></tr>
+<tr><td>India GST on purchases (ITC-oriented)</td><td>YES (claimed)</td><td>"GST support for purchases, expenses and sales returns" <span class="b tp">THIRD-PARTY</span></td></tr>
+</tbody></table></div>
+
+<h3>Accounting</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Double-entry accounting that posts from sales and purchases; chart of accounts</td><td>YES</td><td>salepropos.com <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Trial balance, balance sheet, P&amp;L, cash flow</td><td>YES</td><td>lion-coders product page <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Bank accounts, transactions, transfers, receivables/payables</td><td>YES</td><td><span class="b v">VERIFIED FACT</span> (transfers UNK in detail)</td></tr>
+<tr><td>Tally/Zoho export, GSTR-1/3B JSON export</td><td>NOT FOUND</td><td>Not in sources read</td></tr>
+<tr><td>Expenses module</td><td>YES</td><td>Dashboard "Expense" KPI <span class="b v">VERIFIED FACT</span></td></tr>
+</tbody></table></div>
+
+<h3>HRM, manufacturing, other modules</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>HRM: employees, payroll (module "included")</td><td>YES</td><td>Depth (attendance, leave, holidays, departments, shifts) documented in docs §11 but not read <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Manufacturing: recipes/BOM, production entries</td><td>PARTIAL</td><td>Production is manual, "not automatic on sale" <span class="b v">VERIFIED FACT</span> — this is the key restaurant gap</td></tr>
+<tr><td>Repair management, booking, projects</td><td>YES</td><td>Listed on product pages <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Roles &amp; permissions (Admin, Manager, Cashier, Staff, Waiter, Sale Agent, Customer)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>; granular matrix <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>18+ languages incl. Arabic RTL</td><td>YES</td><td><span class="b v">VERIFIED FACT</span> — Odia not confirmed <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>AI assistant: fixed library of 10 business questions from your own data (no external API, not a free-form chatbot)</td><td>YES</td><td>Docs Ch. 17 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Tailoring (made-to-measure orders, production board), Social Commerce (catalog, Meta feed), Project management</td><td>YES</td><td>Docs Ch. 14, 16, 19; module enablement per licence <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>"Fresh Business Reset" (wipe demo data)</td><td>YES</td><td>Admin-only <span class="b v">VERIFIED FACT</span>; risk if misused</td></tr>
+</tbody></table></div>
+
+<h3>Restaurant, eCommerce, mobile</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Restaurant mode toggle; dine-in / takeaway / delivery</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Floor plan and table picker; waiter assignment</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Modifiers; Kitchen Display System with order status</td><td>YES</td><td>lion-coders product page <span class="b v">VERIFIED FACT</span>; depth (course firing, item status per station) <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>QR menu with WhatsApp store order</td><td>YES</td><td><span class="b tp">THIRD-PARTY</span> search summary of product pages</td></tr>
+<tr><td>Built-in eCommerce storefront</td><td>YES</td><td>CodeCanyon page: "Full eCommerce storefront (included)" <span class="b v">VERIFIED FACT</span>; a separate eCommerce add-on item also exists (page returned HTTP 410) — clarify what is core vs paid <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>WooCommerce integration</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Mobile app</td><td>ADD-ON</td><td>Flutter; prebuilt Play Store app or source code; needs Firebase/OneSignal/APNs; SaaS tenants need the separate tenant app <span class="b v">VERIFIED FACT</span>; offline in app <span class="b unk">UNKNOWN</span></td></tr>
+</tbody></table></div>
+
+<h3>Reporting (what is confirmed)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Report</th><th>What it shows / who uses</th><th>Business value</th><th>Export / filters</th></tr></thead><tbody>
+<tr><td>Dashboard KPIs: Sale, Sale Due, Sale Return, Expense, Purchase, Purchase Due, Purchase Return, Profit</td><td>Owner morning view <span class="b v">VERIFIED FACT</span></td><td>Daily health</td><td>Role-hideable cards</td></tr>
+<tr><td>Cash-flow chart (6 months), monthly summary donut, yearly trend, recent transactions, best sellers (month/year, qty/value)</td><td>Owner/manager <span class="b v">VERIFIED FACT</span></td><td>Trend &amp; merchandising</td><td>Charts only</td></tr>
+<tr><td>Customer due, supplier due</td><td>Accounts/collections <span class="b v">VERIFIED FACT</span></td><td>Cash recovery</td><td>Export from list pages</td></tr>
+<tr><td>Biller report, sale report, purchase report, product history</td><td>Manager/auditor <span class="b v">VERIFIED FACT</span></td><td>Staff and SKU control</td><td>PDF/Excel/CSV per list page <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Profitability by product, category, brand, customer, location; gross margin; stock value</td><td>Owner/accountant <span class="b v">VERIFIED FACT</span> (site claim)</td><td>Margin visibility</td><td>Filters <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Consolidated India GST report</td><td>Accountant <span class="b tp">THIRD-PARTY</span></td><td>GSTR prep</td><td>Format vs GSTR-1/3B <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Full report catalogue (payment, tax, warehouse, register, user, expiry/low-stock, HRM, accounting statements)</td><td colspan="3">34 reports are documented — see Part 12. Missing: dedicated GST/GSTR report, tax-by-rate, staff/waiter performance, KOT/kitchen and food-cost reports.</td></tr>
+</tbody></table></div>
+
+<h3>How offline POS works (what is known)</h3>
+<ul>
+<li>Vendor says: "Offline first with sync … keep taking POS sales during temporary connectivity loss and sync when the connection returns" <span class="b v">VERIFIED FACT</span>. The UI shows a cloud icon (online/offline) with a pending-sale count badge <span class="b v">VERIFIED FACT</span>.</li>
+<li><b>Documented (Part 12):</b> products are cached in the browser while online; the POS switches to offline automatically and hides online-only options; sales are saved in the same browser, an offline receipt can print, and sales sync one by one on reconnect (failures stay pending). <b>Not documented:</b> storage engine, customer/price/stock caching, invoice numbering while offline, stock conflict rules, maximum offline duration, whether KOT/tables/KDS work offline <span class="b unk">UNKNOWN</span>.</li>
+<li>Limits: the docs themselves warn it is tied to one computer/browser and that clearing browser storage before sync can lose sales <span class="b v">VERIFIED FACT</span>. Inferred <span class="b inf">INFERENCE</span>: stock can oversell on reconnect; gateway payments, QR orders and cross-device KDS cannot work offline; invoice-number collisions are the classic risk.</li>
+<li><b>Indian restaurants/retail:</b> restaurants need KOT→kitchen printer/KDS on the LAN even when internet drops; a browser queue on one device does not give that. Petpooja solves it with a local Bridge Server (see gap-analysis Part 04). SalePro's model is therefore <b>PARTIAL</b> for single-counter retail and <b>NOT proven</b> for multi-terminal restaurants <span class="b inf">INFERENCE</span>.</li>
+</ul>
+
+<h2>4. Complete SaaS feature matrix (add-on)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td rowspan="6">Multi-tenancy</td><td>Separate database per tenant ("true multi-tenant")</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Automatic provisioning: subdomain + DB (needs cPanel API token, Plesk creds, PlanetHoster or VPS/dedicated with MySQL root)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>; multi-DB-server placement <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Wildcard subdomain + wildcard SSL required; custom domains supported, each needing its own certificate</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>; automatic per-domain SSL issuance is <b>not</b> automated by the add-on <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Tenant identification by host name</td><td>YES</td><td><span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Tenant suspension (activate/deactivate)</td><td>YES</td><td>v2.4.2 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Tenant deletion / restore / export</td><td>UNK</td><td>Not documented. "Backup Client DB" exists <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td rowspan="8">Subscription</td><td>Packages with monthly and yearly price</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Free trial (duration in general settings), free packages</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Limits: warehouses, products, invoices, users, employees (0 = unlimited)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>; storage limit and business/outlet limit NOT FOUND</td></tr>
+<tr><td>Module toggles per package (POS &amp; Sales, Inventory &amp; Purchasing, Accounting, HRM, Reports)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>; restaurant/eCommerce toggles <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Change package, renew subscription, sync package changes to existing tenants</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Payment: manual (with verification) + 15+ gateways incl. Stripe, PayPal, <b>Razorpay</b>, Paystack, bKash, SSLCommerz, M-Pesa…</td><td>YES</td><td><span class="b v">VERIFIED FACT</span>. Razorpay is native — no integration work for one-time payments; recurring mandates/UPI AutoPay <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Coupons for subscriptions; affiliate programme with 30-day cookie, commission on first paid subscription, payouts recorded manually</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Dunning (retry, grace period, reminder e-mails), proration on upgrade/downgrade</td><td>UNK</td><td>Not documented; assume absent until shown <span class="b inf">INFERENCE</span></td></tr>
+<tr><td>India GST invoice for the subscription itself</td><td>UNK</td><td>Single currency code setting <span class="b v">VERIFIED FACT</span>; GST invoice generation to tenants <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td rowspan="6">Platform</td><td>CMS: landing page, hero, features, testimonials, FAQ, blog with SEO, legal pages, contact, multi-language</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Themes/branding presets, light/dark, GA/Pixel/chat scripts</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Tenant support tickets in super-admin</td><td>YES</td><td>v2.1.0 <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Migrate a standalone SalePro DB into a tenant (data-only; roles/permissions tables excluded)</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Add-on installer (WooCommerce, eCommerce) with purchase code check</td><td>YES</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Update tenants: "Update Client DB", "Update SuperAdmin DB" buttons</td><td>YES</td><td><span class="b v">VERIFIED FACT</span> — manual per action; batch/queue <span class="b unk">UNKNOWN</span></td></tr>
+</tbody></table></div>
+
+<h2>5. Tech stack</h2>
+<div class="tblw"><table>
+<thead><tr><th>Layer</th><th>Detail</th><th>Tag</th></tr></thead><tbody>
+<tr><td>Backend</td><td>Laravel on PHP 8.3, MySQL 5.7+ (MariaDB compatibility <span class="b unk">UNKNOWN</span>)</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Web server</td><td>Apache, Nginx, LiteSpeed, OpenLiteSpeed; URL rewrite</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Frontend</td><td>HTML/CSS/JS, Blade server-rendered (inferred from "Files: JavaScript, HTML, CSS, PHP, SQL")</td><td><span class="b inf">INFERENCE</span></td></tr>
+<tr><td>Queue / cache / Redis</td><td>Not stated as required; cron optional for scheduled reports</td><td><span class="b v">VERIFIED FACT</span> ("Optional: Cron")</td></tr>
+<tr><td>Mobile</td><td>Flutter, OneSignal push, Firebase (Android), APNs (iOS)</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Packages / dependencies list</td><td>Not published; needs source inspection (composer.lock) after purchase or from author</td><td><span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Code quality, tests, static analysis</td><td>Unknown; 8-year-old codebase with 3,165 buyers suggests real-world use but also legacy debt</td><td><span class="b unk">UNKNOWN</span> <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>Version coupling risk</b> The add-on documents that PHP 8.2 "is no longer sufficient" — upgrades of the base can change the runtime requirement mid-life. Our server image must follow the vendor's PHP, not our own preferred version.</div>
+
+<h2>6. Admin panel (what we get out of the box)</h2>
+<h3>Super admin — confirmed <span class="b v">VERIFIED FACT</span></h3>
+<ul>
+<li>Dashboard: estimated MRR, active paid vs total clients, renewals due in 30 days, revenue/subscription charts.</li>
+<li>Clients: create tenant with subdomain; renew; change package; change tenant password; assign custom domain; activate/deactivate; back up tenant DB; update tenant DB.</li>
+<li>Packages: monthly/yearly price, limits (warehouses, products, invoices, users, employees), module toggles, sync to existing tenants.</li>
+<li>Payments: manual + gateway settings (sandbox/live, keys, callback URLs); failed payment monitoring recommended in docs (manual).</li>
+<li>CMS, blog, SEO, analytics scripts, themes; affiliates; support tickets; mail (SMTP); general settings (title, logo, currency, trial length, disable signup/tickets); add-on installation.</li>
+</ul>
+<h3>Super admin — needed for our business but not found <span class="b unk">UNKNOWN</span>/NOT FOUND</h3>
+<p>Churn and ARR reports, cohort/retention, per-tenant usage metering (DB size, storage, API calls, WhatsApp/SMS usage), system-health page, feature flags beyond packages, audit log of super-admin actions, login-activity/IP/device tracking, 2FA for super admin, impersonation ("login as tenant") with audit, dunning automation, tenant-facing invoices with GST, tenant export/delete tooling, reseller/partner accounts (affiliate is not the same as reseller with tenant management).</p>
+<h3>Tenant admin and staff</h3>
+<p>Tenant admin: everything in the enabled modules — products, purchases, sales, people, warehouses, HRM, accounting, reports, roles and settings, plus a tenant support-ticket UI. Staff roles: cashier, manager, waiter/service staff, sale agent, warehouse-restricted user; granular matrix <span class="b unk">UNKNOWN</span>. Gaps we would still need for Indian operators: owner mobile dashboard, daily WhatsApp summary, cash-drawer shift handover audit.</p>
+</section>
+<section id="03-architecture-infra-cloud" class="part-sep"><div class="k">PART 03</div><h1>03 Tenant Architecture, Servers &amp; Cloud Cost — Sections 7–9</h1>
+<p class="sub">Currency assumptions <span class="b unk">ASSUMPTION</span>: ₹90 = US$1, ₹100 = €1. Provider prices are taken from the pages named; all other line items are estimates. Hetzner prices conflict between sources (see box) — treat every Hetzner figure as a range.</p>
+
+<h2>7. Tenant architecture</h2>
+<h3>What SalePro SaaS actually does <span class="b v">VERIFIED FACT</span></h3>
+<p>One landlord (super-admin) database plus <b>one MySQL database per tenant</b>, created automatically through cPanel/Plesk/PlanetHoster API or, on a VPS, MySQL root access. Tenants are found by subdomain or custom domain. Tenant DB backups and updates are triggered from the client list. Migrating a standalone SalePro into a tenant is a data-only import that excludes roles/permission tables.</p>
+
+<h3>Architecture comparison</h3>
+<div class="tblw"><table>
+<thead><tr><th>Concern</th><th>A. One DB + tenant_id (AppZetBilling today)</th><th>B. DB per tenant (SalePro SaaS)</th><th>C. Hybrid (pooled small tenants + dedicated large)</th></tr></thead><tbody>
+<tr><td>Security / isolation</td><td>Weakest: one missing <code>WHERE business_id</code> leaks data. Your audit found no global business scope and global unique phone/coupon keys <span class="b v">VERIFIED FACT</span></td><td>Strong logical isolation; a bug rarely crosses tenants. But the app holds DB-root or panel-API credentials — compromise gives all tenants <span class="b inf">INFERENCE</span></td><td>Best of both if routed well; most complex</td></tr>
+<tr><td>Backup / restore one tenant</td><td>Hard (extract rows across 97 tables)</td><td>Easy: dump one DB. Fleet-wide backups take longer as N grows</td><td>Easy for dedicated, hard for pooled</td></tr>
+<tr><td>Cost</td><td>Cheapest per tenant</td><td>More RAM/files: each tenant carries the full schema (table count per DB <span class="b unk">UNKNOWN</span>); 1,000 tenants ≈ 1000× schema</td><td>Medium</td></tr>
+<tr><td>Performance</td><td>Large tables, index bloat, noisy neighbour</td><td>Small tables per tenant = fast queries; open-table/file-descriptor pressure at high N</td><td>Balanced</td></tr>
+<tr><td>Schema migration</td><td>One migration</td><td>N migrations; failures leave tenants on mixed versions — the main operating pain</td><td>Mixed</td></tr>
+<tr><td>Scaling</td><td>Vertical, then read replicas, then sharding by business_id</td><td>Horizontal by moving DBs between servers (needs a tenant→DB-host map; add-on support <span class="b unk">UNKNOWN</span>)</td><td>Natural</td></tr>
+<tr><td>Disaster recovery</td><td>One large restore; RPO/RTO same for all</td><td>Per-tenant restore; whole-fleet restore is long</td><td>Tiered SLA possible</td></tr>
+<tr><td>Tenant deletion (DPDP-style erasure)</td><td>Row deletes with FK risk</td><td>Drop DB (clean) — provided you also purge backups</td><td>Mixed</td></tr>
+<tr><td>Data residency / enterprise demand</td><td>Poor</td><td>Good (dedicated DB, even dedicated server)</td><td>Good</td></tr>
+</tbody></table></div>
+
+<div class="callout ok"><b>Recommendation <span class="b add">RECOMMENDATION</span></b> For a ₹500–₹2,000/month SMB product, DB-per-tenant is operationally heavier than the revenue justifies past ~1,000 tenants, but safer for a small team that cannot audit every query. Practical path: <b>start with B</b> if you adopt SalePro (it is what it ships), design the tenant→DB-host map early so DBs can move to more servers, and cap tenants per DB server (≈ 300–500 <span class="b inf">ESTIMATE</span>). If you keep AppZetBilling (option A today), prioritise a global tenant scope and composite unique keys (already recommended in gap-analysis Part 09) instead of re-platforming.</div>
+
+<h2>8. Server requirements</h2>
+<p>Sizing method <span class="b unk">ASSUMPTION</span>: a POS tenant is a light OLTP workload — a single-outlet shop peaks at ~1–3 requests/second per active register, mostly reads plus one write per bill. Only 10–30% of tenants are peak-active concurrently (evening rush overlaps for restaurants). Tenants per DB: average DB size 50–200 MB after year 1 <span class="b unk">ASSUMPTION</span>.</p>
+
+<h3>Minimum viable production (up to ~100 tenants)</h3>
+<ul>
+<li>4 vCPU / 8 GB RAM / 80–160 GB NVMe, Ubuntu LTS, Nginx + PHP-FPM 8.3 (OPcache), MySQL 8 (root access for the add-on), Redis (cache/session/queue — recommended even though not required), Supervisor queue worker, a per-minute cron, Let's Encrypt <b>wildcard</b> cert via DNS-01 <i>with an API hook</i>, daily off-site encrypted backups, uptime + cert-expiry monitoring.</li>
+<li>Wildcard DNS: <code>*.yourdomain</code> A/AAAA record. Custom domains need per-domain certs that the add-on does <b>not</b> auto-issue <span class="b v">VERIFIED FACT</span> → plan Caddy/Traefik/certbot automation or Cloudflare for SaaS.</li>
+<li>Lesson from your own audit: wildcard cert renewal was manual DNS-01 without a hook and would have expired (memory: gap-analysis Priority 0). Automate before onboarding paying customers <span class="b v">VERIFIED FACT</span>.</li>
+</ul>
+
+<h3>Scale table <span class="b inf">ESTIMATE</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Tenants</th><th>App tier</th><th>DB tier</th><th>Redis / queue</th><th>Storage &amp; backup</th><th>Edge / monitoring</th></tr></thead><tbody>
+<tr><td><b>100</b></td><td>1 shared VPS: 4 vCPU / 8 GB</td><td>Same box, MySQL 4 GB buffer pool</td><td>Redis on the same box; 1 queue worker</td><td>160 GB NVMe; R2 backups ~20–50 GB</td><td>Cloudflare free, uptime monitor, log rotation</td></tr>
+<tr><td><b>500</b></td><td>1–2 app: 4 vCPU / 8 GB</td><td>Separate DB server 8 vCPU / 16 GB (~250k tables if ~100 tables/tenant <span class="b unk">UNKNOWN</span>)</td><td>Redis 2 GB dedicated; 2–3 workers</td><td>320 GB; nightly per-tenant dumps; R2 ~100–250 GB</td><td>Cloudflare, Sentry/Log service, Prometheus or paid APM</td></tr>
+<tr><td><b>1,000</b></td><td>2–3 app: 8 vCPU / 16 GB behind a load balancer; sticky sessions or Redis sessions</td><td>2 DB servers × 8 vCPU / 32 GB (≤ 500 tenants each); replica for backups</td><td>Redis 4 GB; queue on its own worker node</td><td>Object storage for uploads; R2 ~0.5–1 TB</td><td>Load balancer, CDN for assets, centralized logs</td></tr>
+<tr><td><b>5,000</b></td><td>4–6 app nodes (8 vCPU/16 GB), autoscaling optional</td><td>8–10 DB shards (16 vCPU/64 GB); tenant→shard map; replicas</td><td>Redis cluster/HA pair; 6–10 workers; Horizon</td><td>Object storage mandatory; R2 ~3–5 TB</td><td>LB pair, CDN, SIEM-style logging, on-call</td></tr>
+<tr><td><b>10,000</b></td><td>8–12 app nodes</td><td>16–20 shards; migration orchestrator; per-shard DR</td><td>Redis HA + separate queue infra</td><td>R2/S3 ~6–10 TB; cross-region backup</td><td>Full observability stack; 24×7 ops</td></tr>
+</tbody></table></div>
+
+<h3>When to move off a single VPS <span class="b add">RECOMMENDATION</span></h3>
+<ul>
+<li>CPU sustained &gt; 60% at evening peak, MySQL buffer-pool hit &lt; 98%, <code>open_tables</code> churn, or backups no longer finish in the nightly window → split DB from app (~150–300 tenants).</li>
+<li>Any single server whose loss would take &gt; 1 hour to restore → add replicas/standby (~500 tenants or first enterprise/SLA customer).</li>
+<li>Above ~1,000 tenants the add-on's "Update Client DB" loop and file-per-table counts (≈ 100k+ tables) become the bottleneck: add sharding and a migration runner (custom work; the add-on does not document one <span class="b unk">UNKNOWN</span>).</li>
+<li>Above ~5,000 tenants a per-tenant-DB-on-one-MySQL design should be considered end-of-life for the core; expect dedicated platform engineering.</li>
+</ul>
+
+<h2>9. Cloud cost estimation (monthly)</h2>
+<div class="callout warn"><b>Source conflict — Hetzner</b> Northflank and others report Hetzner CX/CPX increases in April–June 2026 (e.g. CX33 €25.47, CPX22 €19.49 <span class="b tp">THIRD-PARTY</span>) while CostGoat's September 2026 table lists CX33 at €8.49 and CPX22 at €19.49 <span class="b tp">THIRD-PARTY</span>. We use the CostGoat table below and a ±30% band. Hetzner also has no verified India region in our sources <span class="b unk">UNKNOWN</span>; latency to Odisha via Singapore/Europe must be tested. DigitalOcean has a Bangalore region (not verified this session).</div>
+
+<h3>Provider price points used</h3>
+<div class="tblw"><table>
+<thead><tr><th>Provider</th><th>Instance</th><th>Price</th><th>≈ ₹/month</th><th>Source</th></tr></thead><tbody>
+<tr><td><b>Hostinger (current host)</b></td><td>KVM 2: 2 vCPU / 8 GB / 100 GB NVMe / 8 TB</td><td>₹799/mo promo · ₹1,199/mo renewal</td><td>₹800–1,200</td><td><a href="https://www.hostinger.com/in/vps-hosting">Hostinger India</a> <span class="b v">VERIFIED FACT</span>; matches the server your audit found (2 vCPU / 7.8 GiB)</td></tr>
+<tr><td>Hostinger</td><td>KVM 4: 4 vCPU / 16 GB / 200 GB NVMe / 16 TB</td><td>₹1,099 promo · ₹2,399 renewal</td><td>₹1,100–2,400</td><td>same <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Hostinger</td><td>KVM 8: 8 vCPU / 32 GB / 400 GB NVMe / 32 TB</td><td>₹2,199 promo · ₹4,399 renewal</td><td>₹2,200–4,400</td><td>same <span class="b v">VERIFIED FACT</span>; largest plan. KVM 1 (1 vCPU / 4 GB) is ₹599 / ₹999</td></tr>
+<tr><td>Hetzner</td><td>CX33 4 vCPU / 8 GB / 80 GB</td><td>€8.49</td><td>₹850</td><td><a href="https://costgoat.com/pricing/hetzner">CostGoat</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Hetzner</td><td>CX43 8 vCPU / 16 GB</td><td>€15.99</td><td>₹1,600</td><td>same</td></tr>
+<tr><td>Hetzner</td><td>CCX23 4 vCPU dedicated / 16 GB</td><td>€85.99</td><td>₹8,600</td><td>same</td></tr>
+<tr><td>Hetzner</td><td>CCX33 8 vCPU dedicated / 32 GB</td><td>€138.49</td><td>₹13,850</td><td>same; backups +20%; LB ≈ €5.4–6</td></tr>
+<tr><td>DigitalOcean</td><td>Basic 4 vCPU / 8 GB</td><td>$48</td><td>₹4,320</td><td><a href="https://www.digitalocean.com/pricing/droplets">DO pricing</a> <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>DigitalOcean</td><td>Basic 8 vCPU / 16 GB</td><td>$96</td><td>₹8,640</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>DigitalOcean</td><td>General Purpose 8 vCPU / 32 GB</td><td>$252</td><td>₹22,700</td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>AWS Lightsail (Mumbai)</td><td>from $5; overage $0.13/GB in Mumbai</td><td>—</td><td>—</td><td><a href="https://cloudburn.io/blog/amazon-lightsail-pricing">CloudBurn</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>AWS EC2/RDS Mumbai</td><td>General-purpose instances + managed DB</td><td>—</td><td>see table</td><td>Not re-verified this session — <span class="b inf">ESTIMATE</span> from general knowledge</td></tr>
+<tr><td>Contabo</td><td>VPS tiers</td><td>—</td><td>see table</td><td>Not re-verified this session <span class="b unk">UNKNOWN</span>; typically the cheapest but Singapore/EU regions and noisy shared hosts <span class="b inf">ESTIMATE</span></td></tr>
+<tr><td>Cloudflare R2</td><td>Object storage</td><td>$0.015/GB-mo, free egress</td><td>~₹1.35/GB</td><td><a href="https://filebase.com/blog/cloudflare-r2-pricing-costs-savings-and-alternatives-in-2026/">Filebase</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Backblaze B2</td><td>Object storage</td><td>$6.95/TB-mo</td><td>~₹625/TB</td><td><a href="https://www.backblaze.com/cloud-storage/pricing">Backblaze</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+</tbody></table></div>
+
+<h3>Infrastructure only (servers + DB + Redis + backups + LB), ₹/month <span class="b inf">ESTIMATE</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Tenants</th><th>Hostinger (current)</th><th>Hetzner</th><th>DigitalOcean</th><th>AWS (Mumbai)</th><th>Contabo</th></tr></thead><tbody>
+<tr><td>100</td><td>₹1,200–2,400 (1× KVM 2–4)</td><td>₹1,500–2,500</td><td>₹5,000–6,500</td><td>₹7,000–11,000</td><td>₹1,500–3,000</td></tr>
+<tr><td>500</td><td>₹2,200–4,800 (2× KVM 4)</td><td>₹4,000–8,000</td><td>₹17,000–25,000</td><td>₹25,000–40,000</td><td>₹4,000–8,000</td></tr>
+<tr><td>1,000</td><td>₹7,000–14,000 (2× KVM 4 app + 2× KVM 8 DB)</td><td>₹18,000–30,000</td><td>₹40,000–60,000</td><td>₹55,000–90,000</td><td>₹12,000–25,000</td></tr>
+<tr><td>5,000</td><td>₹30,000–60,000 (about 5 app + 12 DB nodes)</td><td>₹90,000–1,50,000</td><td>₹2,50,000–3,50,000</td><td>₹3,50,000–5,50,000</td><td>Not recommended at this scale</td></tr>
+<tr><td>10,000</td><td>₹70,000–1,40,000 (about 10 app + 24 DB nodes)</td><td>₹1,80,000–3,00,000</td><td>₹5,00,000–7,00,000</td><td>₹8,00,000–12,00,000</td><td>Not recommended</td></tr>
+</tbody></table></div>
+
+<div class="callout"><b>Hostinger notes</b> Ranges run from the promo price (12-month term) to the renewal price, so budget the renewal figure. Hostinger's largest plan is KVM 8 (8 vCPU / 32 GB), so the 5,000 and 10,000 rows use more, smaller database nodes than the other providers. Only VPS plans were checked: a managed database, load balancer, private networking, object storage, a documented India data-centre location and snapshot pricing were not seen <span class="b unk">UNKNOWN</span> — running many DB nodes and a load balancer yourself is extra operations work. "Free weekly backups" are included and daily backups can be enabled <span class="b v">VERIFIED FACT</span>, but they are server-level, not per-tenant; keep the off-site per-tenant dumps. Hostinger prices are shown as monthly equivalents of a prepaid term; GST is added at checkout <span class="b tp">THIRD-PARTY</span> <a href="https://hostadvice.com/hosting-company/hostinger-reviews/vps-pricing/">HostAdvice</a>.</div>
+
+<h3>Other running costs (all providers) <span class="b inf">ESTIMATE</span> unless noted</h3>
+<div class="tblw"><table>
+<thead><tr><th>Line</th><th>100</th><th>500</th><th>1,000</th><th>5,000</th><th>10,000</th><th>Basis</th></tr></thead><tbody>
+<tr><td>Object storage/backups</td><td>₹150</td><td>₹400</td><td>₹1,000</td><td>₹5,000</td><td>₹10,000</td><td>R2 rate above <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>CDN / DNS / WAF</td><td>₹0</td><td>₹0–2,000</td><td>₹2,000</td><td>₹10,000</td><td>₹25,000</td><td>Cloudflare tiers <span class="b unk">ASSUMPTION</span></td></tr>
+<tr><td>Monitoring + logging + error tracking</td><td>₹0–1,500</td><td>₹3,000</td><td>₹8,000</td><td>₹35,000</td><td>₹80,000</td><td>SaaS tools <span class="b unk">ASSUMPTION</span></td></tr>
+<tr><td>Transactional e-mail (SES/Brevo)</td><td>₹500</td><td>₹1,500</td><td>₹3,000</td><td>₹12,000</td><td>₹25,000</td><td><span class="b unk">ASSUMPTION</span></td></tr>
+<tr><td>SMS (DLT registered, OTP + alerts)</td><td>₹500</td><td>₹2,500</td><td>₹5,000</td><td>₹25,000</td><td>₹50,000</td><td>≈ ₹0.15–0.25/SMS <span class="b unk">UNKNOWN</span> verify with a DLT provider; SalePro itself supports only Twilio and Clickatell (Part 12)</td></tr>
+<tr><td>WhatsApp (Meta fees only)</td><td>₹4,000</td><td>₹20,000</td><td>₹40,000</td><td>₹2,00,000</td><td>₹4,00,000</td><td>30% of tenants × ~600 utility msgs × ₹0.115 + BSP margin; Meta list: ₹0.115 utility, ₹0.8631 marketing <span class="b tp">THIRD-PARTY</span> <a href="https://myoperator.com/blog/whatsapp-business-api-pricing-india-2026">MyOperator</a></td></tr>
+<tr><td>Payment gateway fees</td><td>₹2,100</td><td>₹10,300</td><td>₹20,600</td><td>₹1,03,000</td><td>₹2,06,000</td><td>≈ 2.4% of collections: Razorpay platform fee 2% + 18% GST <span class="b tp">THIRD-PARTY</span> <a href="https://razorpay.com/blog/upi-charges-explained-mdr-vs-platform-fees/">Razorpay</a>; UPI MDR is 0% by law but gateways charge platform fees</td></tr>
+<tr><td>Domains/SSL/misc</td><td>₹500</td><td>₹1,000</td><td>₹2,000</td><td>₹5,000</td><td>₹10,000</td><td><span class="b unk">ASSUMPTION</span></td></tr>
+</tbody></table></div>
+<p>Note: Razorpay is offering 0% platform fee for 90 days / ₹5 lakh on new merchant accounts activated on or after 1 July 2026 <span class="b tp">THIRD-PARTY</span> — a launch-period saving, not a steady state. Meta also begins charging service messages from 1 October 2026, with 1,000 free per number <span class="b tp">THIRD-PARTY</span>.</p>
+</section>
+<section id="04-competitors-restaurant-retail" class="part-sep"><div class="k">PART 04</div><h1>04 Competitors, Restaurant &amp; Retail Fit — Sections 10–12</h1>
+<p class="sub">Competitor cells marked <b>n/v</b> were not verified this session; they are left blank of claims rather than filled from memory. Petpooja details come from the earlier gap-analysis Parts 04–06 (official Petpooja pages read on 2026-09-18). Source links are at the bottom of this part.</p>
+
+<h2>10. Competitor comparison</h2>
+<h3>Pricing evidence (India, 2026)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Vendor</th><th>Reported price</th><th>Tag</th></tr></thead><tbody>
+<tr><td>Petpooja</td><td>Not published. Third parties: ≈ ₹10k / ₹20k / ₹40k per outlet per year (three tiers) before 18% GST; real spend ₹15k–30k/yr single outlet; ₹3,000–12,000/month ranges quoted; hardware ₹30k–60k per counter; 1.5–2% transaction fees claimed on some flows</td><td><span class="b tp">THIRD-PARTY</span> <a href="https://www.dineopen.com/blog/petpooja-pricing-plans-2026.html">DineOpen</a>, <a href="https://orderitnow.in/blog/top-10-best-petpooja-alternatives-india-2026/">OrderIt</a></td></tr>
+<tr><td>GoFrugal</td><td>Entry ≈ ₹500/user/month (July 2026); a Starter plan ≈ ₹8,999/yr is mentioned; quoted per outlet/module</td><td><span class="b tp">THIRD-PARTY</span> Techjockey/OrderIt</td></tr>
+<tr><td>Posist / Restroworks</td><td>"Starts above ₹8,000/month for meaningful functionality"; enterprise focus</td><td><span class="b tp">THIRD-PARTY</span> OrderIt</td></tr>
+<tr><td>Vyapar</td><td>From ₹3,399/year (Silver/Gold, 1- and 3-year); billing/accounting rather than restaurant</td><td><span class="b tp">THIRD-PARTY</span> GetApp</td></tr>
+<tr><td>Zoho Books</td><td>Extra users ₹150–180/user/month; plan prices not captured</td><td><span class="b tp">THIRD-PARTY</span> Patron Accounting</td></tr>
+<tr><td>DotPe</td><td>Free to start; commission on online orders</td><td><span class="b tp">THIRD-PARTY</span> OrderIt</td></tr>
+<tr><td>Restrofi (Bhubaneswar-focused)</td><td>₹699/outlet/month, 0% commission</td><td><span class="b tp">THIRD-PARTY</span> gap-analysis Part 11</td></tr>
+<tr><td>OrderIt</td><td>KDS + QR + waiter handhelds included, 0% transaction fees</td><td><span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Loyverse</td><td>Free core POS, paid add-ons; supports GST-inclusive tax</td><td><span class="b tp">THIRD-PARTY</span> Loyverse help</td></tr>
+<tr><td>Square</td><td>Not officially available in India</td><td><span class="b tp">THIRD-PARTY</span> Techjockey/Posible</td></tr>
+<tr><td>Lightspeed, Shopify POS</td><td>India availability/pricing not verified</td><td><span class="b unk">UNKNOWN</span></td></tr>
+</tbody></table></div>
+<p><b>Price bands</b> <span class="b inf">ESTIMATE</span> from the above: lowest ≈ ₹0–700/outlet/month (Loyverse, Restrofi, DotPe); mainstream ≈ ₹800–1,700/outlet/month (Petpooja annual tiers, GoFrugal per user); premium ≈ ₹3,500+/month (Petpooja top with add-ons, Posist).</p>
+
+<h3>Feature-by-feature matrix</h3>
+<p>Legend: ✔ available · ◐ partial/add-on · ✖ not found · n/v not verified.</p>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>SalePro (+SaaS)</th><th>AppZetBilling (today)</th><th>Petpooja</th><th>GoFrugal</th><th>Posist</th><th>Vyapar</th><th>Others</th></tr></thead><tbody>
+<tr><td>Retail POS</td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>✔</td><td>✔ (strong retail)</td><td>n/v</td><td>✔ (billing)</td><td>Loyverse ✔ <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Inventory (batch/expiry/serial)</td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>◐ recipes, no PO/GRN <span class="b v">VERIFIED FACT</span></td><td>✔ (recipe/multi-stage)</td><td>✔ (n/v depth)</td><td>n/v</td><td>◐</td><td>Zoho Inventory n/v</td></tr>
+<tr><td>Restaurant tables/KOT</td><td>◐ tables ✔, KOT routing UNK</td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>✔</td><td>◐ (restaurant product)</td><td>✔</td><td>✖</td><td>OrderIt ✔ <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Kitchen display</td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>◐ <span class="b v">VERIFIED FACT</span> (KOT by kitchen)</td><td>◐ add-on</td><td>n/v</td><td>✔</td><td>✖</td><td>OrderIt ✔ included</td></tr>
+<tr><td>Accounting (double-entry)</td><td>✔ <span class="b v">VERIFIED FACT</span></td><td>✖ (dues/ledger only)</td><td>✖ (Tally export)</td><td>◐</td><td>n/v</td><td>✔ (light)</td><td>Zoho Books ✔</td></tr>
+<tr><td>GST billing</td><td>✔ Indian GST format with CGST/SGST/IGST (Part 12)</td><td>◐ no CGST/SGST split <span class="b v">VERIFIED FACT</span></td><td>✔</td><td>✔</td><td>✔</td><td>✔ (core strength)</td><td>OrderIt CGST/SGST ✔ <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>e-invoice / e-way bill</td><td>✖</td><td>✖</td><td>n/v (Petpooja Invoice product)</td><td>n/v</td><td>n/v</td><td>✔ (n/v this session)</td><td>n/v</td></tr>
+<tr><td>QR ordering</td><td>✔ QR menu + WhatsApp order <span class="b tp">THIRD-PARTY</span></td><td>✔ QR codes <span class="b v">VERIFIED FACT</span></td><td>◐ add-on (Scan &amp; Order)</td><td>n/v</td><td>✔</td><td>✖</td><td>DotPe ✔, OrderIt ✔</td></tr>
+<tr><td>Online ordering / aggregator sync</td><td>✖ aggregator; own storefront ✔</td><td>✖ aggregator; online store ✔</td><td>✔ Swiggy/Zomato etc.</td><td>n/v</td><td>✔</td><td>✖</td><td>DotPe ✔</td></tr>
+<tr><td>WhatsApp/SMS</td><td>◐ Cloud API, staff-triggered; SMS Twilio/Clickatell only</td><td>✖</td><td>✔ (SMS/WA add-ons)</td><td>n/v</td><td>✔</td><td>◐ share PDF</td><td>n/v</td></tr>
+<tr><td>CRM / loyalty</td><td>◐ points, gift card, deposits</td><td>◐ coupons; no points <span class="b v">VERIFIED FACT</span></td><td>✔ CRM + wallet</td><td>n/v</td><td>✔</td><td>◐</td><td>n/v</td></tr>
+<tr><td>Multi-outlet / central kitchen</td><td>◐ warehouses/billers; central-kitchen UNK</td><td>◐ multi-branch unused</td><td>✔ head-office; central kitchen add-on</td><td>✔</td><td>✔</td><td>◐</td><td>—</td></tr>
+<tr><td>eCommerce</td><td>✔ storefront + WooCommerce</td><td>✔ online store</td><td>◐ website add-on</td><td>n/v</td><td>n/v</td><td>◐ online store</td><td>Shopify ✔ (n/v India)</td></tr>
+<tr><td>Mobile app</td><td>◐ separate app (tenant app for SaaS)</td><td>✔ mobile app via API</td><td>✔ captain app</td><td>✔</td><td>✔</td><td>✔</td><td>—</td></tr>
+<tr><td>Reports</td><td>◐ dashboards + core reports; catalogue UNK</td><td>◐</td><td>✔ 50–100+ claimed</td><td>✔</td><td>✔</td><td>✔</td><td>—</td></tr>
+<tr><td>API / integrations</td><td>◐ API not documented in read sections</td><td>◐ Sanctum API</td><td>✔ partner API</td><td>n/v</td><td>✔</td><td>◐</td><td>—</td></tr>
+<tr><td>Payment gateways</td><td>✔ 16+ incl. Razorpay <span class="b v">VERIFIED FACT</span></td><td>✔ (subscription/store)</td><td>UPI/EDC integrations</td><td>n/v</td><td>n/v</td><td>◐</td><td>—</td></tr>
+<tr><td>Delivery mgmt</td><td>◐ delivery service type only</td><td>◐</td><td>✔ rider integrations</td><td>n/v</td><td>✔</td><td>✖</td><td>DotPe/OrderIt ✔</td></tr>
+<tr><td>Employee mgmt</td><td>✔ HRM + payroll <span class="b v">VERIFIED FACT</span></td><td>✔ HRM <span class="b v">VERIFIED FACT</span></td><td>◐ separate Attendo</td><td>n/v</td><td>n/v</td><td>✖</td><td>—</td></tr>
+<tr><td>Subscription (self-run SaaS)</td><td>✔ add-on</td><td>✔ own plans</td><td>vendor-run</td><td>vendor-run</td><td>vendor-run</td><td>vendor-run</td><td>—</td></tr>
+<tr><td>Offline</td><td>◐ browser queue</td><td>✖ <span class="b v">VERIFIED FACT</span></td><td>✔ local Bridge Server</td><td>✔ (desktop heritage, n/v)</td><td>n/v</td><td>✔ (desktop, n/v)</td><td>Loyverse ◐ n/v</td></tr>
+<tr><td>Odia UI</td><td>UNK</td><td>✔ ~96% <span class="b v">VERIFIED FACT</span></td><td>n/v</td><td>n/v</td><td>n/v</td><td>n/v</td><td>Restrofi: none stated</td></tr>
+</tbody></table></div>
+
+<div class="callout"><b>Reading the matrix</b> SalePro out-scores AppZetBilling on accounting, offline (partial), split payment and loyalty tenders. AppZetBilling out-scores SalePro on restaurant depth (recipe deduction, KOT per kitchen, reservations) and Odia localisation. Neither matches Petpooja on aggregators, WhatsApp/CRM, or reliable offline. That is the real gap list for Part 05.</div>
+
+<h2>11. Restaurant market fit</h2>
+<p>Labels: AVAILABLE · PARTIALLY AVAILABLE · REQUIRES CUSTOMIZATION · NOT AVAILABLE. Where we could only infer, the note says "verify".</p>
+<div class="tblw"><table>
+<thead><tr><th>Restaurant function</th><th>SalePro status</th><th>Basis</th></tr></thead><tbody>
+<tr><td>Table management / floor plans</td><td><b>AVAILABLE</b></td><td>Visual floor-plan table picker <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Dine-in / takeaway / delivery</td><td><b>AVAILABLE</b></td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>KOT (printed, per kitchen station)</td><td><b>PARTIALLY AVAILABLE</b></td><td>KDS advertised; printer routing per station not documented <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Kitchen display system</td><td><b>AVAILABLE</b></td><td>Order status tracking <span class="b v">VERIFIED FACT</span>; depth to verify</td></tr>
+<tr><td>Kitchen printer</td><td><b>PARTIALLY AVAILABLE</b></td><td>Direct ESC/POS network/Windows/Linux printers and browser printing are documented (Part 12); per-kitchen-station KOT routing is not</td></tr>
+<tr><td>Waiter management / captain ordering</td><td><b>PARTIALLY AVAILABLE</b></td><td>Waiter dropdown + Waiter role <span class="b v">VERIFIED FACT</span>; no captain handheld ordering app documented</td></tr>
+<tr><td>Modifiers</td><td><b>AVAILABLE</b></td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Recipe / ingredient inventory with auto-deduction</td><td><b>REQUIRES CUSTOMIZATION</b></td><td>Recipes exist under manufacturing, but "production is manual, not automatic on sale" <span class="b v">VERIFIED FACT</span>. AppZetBilling already does this</td></tr>
+<tr><td>Wastage</td><td><b>PARTIALLY AVAILABLE</b></td><td>Damage/adjustment logging <span class="b v">VERIFIED FACT</span>; wastage reasons/reporting not documented</td></tr>
+<tr><td>Food costing</td><td><b>PARTIALLY AVAILABLE</b></td><td>Profit by product/margin reports <span class="b v">VERIFIED FACT</span>; recipe-costed food-cost % <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Combo meals</td><td><b>PARTIALLY AVAILABLE</b></td><td>Combo product type bundles standard products (Part 12); combo choices/modifier groups not documented</td></tr>
+<tr><td>Discounts / coupons / taxes / GST</td><td><b>PARTIALLY AVAILABLE</b></td><td>Discounts, coupons, tax rates, Indian GST invoice format with CGST/SGST/IGST ✔ (Part 12); service and packaging charge not documented</td></tr>
+<tr><td>Customer management</td><td><b>AVAILABLE</b></td><td>Groups, dues, deposits <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>QR menu</td><td><b>AVAILABLE</b></td><td><span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>QR ordering with table-linked payment</td><td><b>PARTIALLY AVAILABLE</b></td><td>QR menu + "WhatsApp store order"; table-linked dine-in ordering to KDS <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Online ordering</td><td><b>AVAILABLE</b></td><td>Storefront <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Delivery management (riders, tracking, geofence)</td><td><b>NOT AVAILABLE</b></td><td>Only a service type</td></tr>
+<tr><td>Customer loyalty</td><td><b>PARTIALLY AVAILABLE</b></td><td>Reward points, gift cards, deposits <span class="b v">VERIFIED FACT</span>; tiers/campaigns UNK</td></tr>
+<tr><td>WhatsApp (receipts, campaigns, order status)</td><td><b>PARTIALLY AVAILABLE</b></td><td>Cloud API + staff-triggered messages + per-event matrix (Part 12); no campaign engine, opt-in ledger or automatic order-status sends</td></tr>
+<tr><td>Payment integration (UPI, cards, QR)</td><td><b>PARTIALLY AVAILABLE</b></td><td>Razorpay UPI-only in POS <span class="b v">VERIFIED FACT</span>; card/EDC terminals and dynamic UPI QR per bill <span class="b unk">UNKNOWN</span></td></tr>
+<tr><td>Aggregator integration (Swiggy, Zomato, Magicpin)</td><td><b>NOT AVAILABLE</b></td><td>Not found. Also needs aggregator partner approval — calendar time regardless of code</td></tr>
+<tr><td>Multi-branch</td><td><b>PARTIALLY AVAILABLE</b></td><td>Warehouses, billers, user location limits <span class="b v">VERIFIED FACT</span>; central menu/pricing per outlet UNK; package limits for outlets not found</td></tr>
+<tr><td>Central kitchen</td><td><b>NOT AVAILABLE</b></td><td>Warehouse transfers exist; indenting/production planning UNK</td></tr>
+<tr><td>Purchase / suppliers</td><td><b>AVAILABLE</b></td><td><span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Staff management</td><td><b>AVAILABLE</b></td><td>HRM/payroll <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>Reservations, split/merge bill, table transfer</td><td><b>UNKNOWN → verify</b></td><td>Not documented (AppZetBilling has reservations and table transfer)</td></tr>
+<tr><td>Offline for KOT/billing on LAN</td><td><b>REQUIRES CUSTOMIZATION</b></td><td>Browser-based queue only <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+<div class="callout bad"><b>Verdict <span class="b add">RECOMMENDATION</span></b> SalePro is a retail/ERP product with a restaurant layer, not a restaurant-first POS. For restaurants, AppZetBilling is already ahead on the things that matter operationally (recipes, KOT, reservations, Odia). Do not adopt SalePro for restaurants.</div>
+
+<h2>12. Retail market fit</h2>
+<div class="tblw"><table>
+<thead><tr><th>Segment</th><th>Suitable features</th><th>Missing / customization</th><th>Competition</th><th>Willingness to pay</th><th>Ops complexity</th><th>Sales difficulty</th><th>Opportunity</th></tr></thead><tbody>
+<tr><td><b>A Restaurants</b></td><td>Tables, KDS, QR, modifiers</td><td>Recipe deduction, kitchen printers, aggregators, WhatsApp, offline LAN</td><td>Petpooja, Posist, GoFrugal, Restrofi, DotPe</td><td>₹500–1,700/outlet/mo <span class="b inf">ESTIMATE</span></td><td>High</td><td>High (Petpooja incumbent)</td><td>Large, crowded</td></tr>
+<tr><td><b>B Cafés</b></td><td>Fast counter POS, modifiers, tables</td><td>Same as A, lighter; combos, loyalty</td><td>Same + Loyverse</td><td>₹500–1,200 <span class="b inf">ESTIMATE</span></td><td>Medium</td><td>Medium</td><td>Good starter vertical</td></tr>
+<tr><td><b>C Bakeries</b></td><td>Batch/expiry, weight barcodes, retail POS</td><td>Custom-order/advance booking, production planning</td><td>Local billing software, Vyapar</td><td>₹300–900 <span class="b inf">ESTIMATE</span></td><td>Medium</td><td>Medium</td><td>Good</td></tr>
+<tr><td><b>D Cloud kitchens</b></td><td>Delivery service type, recipes (manual)</td><td>Aggregator integration is essential</td><td>Petpooja, DotPe, LimeTray</td><td>₹1,000–3,000 <span class="b inf">ESTIMATE</span></td><td>High</td><td>High</td><td>Poor fit without integrations</td></tr>
+<tr><td><b>E Retail shops</b></td><td>Barcode, variants, stock, GST fields, deposits</td><td>Verify the documented Indian GST format, e-invoice</td><td>Vyapar, GoFrugal, Marg, Busy, Zoho</td><td>₹250–700 <span class="b inf">ESTIMATE</span> (Vyapar ₹3,399/yr anchors it)</td><td>Low–medium</td><td>Medium</td><td>Best fit</td></tr>
+<tr><td><b>F Supermarkets</b></td><td>Weight barcodes, multi-warehouse, multi-payment</td><td>Scale integration, promotions engine, high-volume performance</td><td>GoFrugal, Marg, Easy Solutions</td><td>₹1,500–4,000 <span class="b inf">ESTIMATE</span></td><td>High</td><td>High</td><td>Selective</td></tr>
+<tr><td><b>G Grocery / kirana</b></td><td>Fast billing, dues (udhaar), barcode</td><td>Very price-sensitive; Hindi/Odia UI, voice/quick keys, khata reminders</td><td>Vyapar, Khatabook-type apps, free tools</td><td>₹200–500 <span class="b inf">ESTIMATE</span></td><td>Low</td><td>High volume/low ARPU</td><td>Huge but thin margin</td></tr>
+<tr><td><b>H Pharmacies</b></td><td>Batch, expiry, supplier</td><td>Schedule H1 register, drug-licence fields, doctor/patient, HSN-wise GST, expiry-return workflow</td><td>Marg, Gofrugal, Pharmacy-specific tools</td><td>₹500–1,500 <span class="b inf">ESTIMATE</span></td><td>Medium–high (regulatory)</td><td>High</td><td>Requires vertical customization</td></tr>
+<tr><td><b>I Wholesale</b></td><td>Wholesale prices, credit, installments, multi-warehouse, purchase</td><td>Price lists by party, e-way bill, transport, GSTR export, ledger statements</td><td>Marg, Busy, Tally-centred workflows</td><td>₹600–2,000 <span class="b inf">ESTIMATE</span></td><td>Medium–high</td><td>Medium (accountant influence)</td><td>Good if e-way bill and Tally export added</td></tr>
+<tr><td><b>J Distributors</b></td><td>Batch, multi-warehouse, sale agents</td><td>Beat/route sales, van sales, scheme management, credit-limit control</td><td>Marg, Busy, distributor DMS suites</td><td>₹1,000–3,000 <span class="b inf">ESTIMATE</span></td><td>High</td><td>High</td><td>Later phase</td></tr>
+<tr><td><b>K Electronics shops</b></td><td>IMEI/serial, repair management, installments, warranty</td><td>Warranty claims and EMI finance integration</td><td>Local dealer software, Vyapar</td><td>₹500–1,500 <span class="b inf">ESTIMATE</span></td><td>Medium</td><td>Medium</td><td>Strong differentiated fit</td></tr>
+<tr><td><b>L Garment shops</b></td><td>Variants (size/colour), barcode labels, reward points</td><td>Size-colour matrix entry, exchange/return flows, season markdown</td><td>Marg, GoFrugal, Vyapar</td><td>₹400–1,200 <span class="b inf">ESTIMATE</span></td><td>Medium</td><td>Medium</td><td>Good</td></tr>
+<tr><td><b>M Other SMBs</b></td><td>Generic billing, HRM, projects, repair, booking</td><td>Per-vertical templates</td><td>Vyapar, Zoho, local</td><td>₹250–800 <span class="b inf">ESTIMATE</span></td><td>Low</td><td>Medium</td><td>Long tail</td></tr>
+</tbody></table></div>
+<p>WTP figures are anchored on verified price points in the pricing table above and are estimates, not survey results. Validate with the 20–30 owner interviews already recommended in gap-analysis Part 11.</p>
+<div class="callout ok"><b>Where SalePro is genuinely strong <span class="b add">RECOMMENDATION</span></b> Electronics (IMEI + repair + installments), garments (variants), wholesale (multi-price, credit, purchase, accounting), bakeries (batch/expiry + weight barcodes), and general retail. A retail vertical brand on SalePro, alongside a restaurant brand on AppZetBilling, is the only combination that uses both products' strengths — at the cost of two licences, two codebases and the licence question in Part 01.</div>
+
+<h3>Sources used in this part</h3>
+<ul>
+<li><a href="https://www.dineopen.com/blog/petpooja-pricing-plans-2026.html">DineOpen — Petpooja pricing 2026</a> · <a href="https://orderitnow.in/blog/top-10-best-petpooja-alternatives-india-2026/">OrderIt — Petpooja alternatives</a> · <a href="https://www.techjockey.com/detail/gofrugal-retail-pos">Techjockey — GoFrugal</a> · <a href="https://www.getapp.com/finance-accounting-software/a/vyapar/">GetApp — Vyapar</a> · <a href="https://www.patronaccounting.com/blog/zoho-books-pricing-india-2026">Patron Accounting — Zoho Books</a> · <a href="https://help.loyverse.com/help/how-taxes-are-calculated">Loyverse help</a> · <a href="https://posible.in/blog/posible-vs-square-pos.html">Posible — Square vs India</a>.</li>
+</ul>
+</section>
+<section id="05-gaps-customization" class="part-sep"><div class="k">PART 05</div><h1>05 Feature Gaps &amp; Customization Effort — Sections 13–14</h1>
+<p class="sub">All effort numbers are <span class="b inf">ESTIMATE</span> in developer-weeks (one experienced Laravel developer, including tests but excluding third-party approval lead time). They assume a clean, well-structured codebase; SalePro's internals have not been inspected <span class="b unk">UNKNOWN</span>, so add a 30–50% contingency until a code review is done <span class="b unk">ASSUMPTION</span>. Priority: P0 before launch · P1 for growth · P2 nice to have · P3 future.</p>
+
+<h2>13. Feature gaps (what SalePro lacks vs market)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Gap</th><th>Business impact</th><th>Dev complexity</th><th>Priority</th></tr></thead><tbody>
+<tr><td>Auto ingredient deduction on sale (recipes)</td><td>Restaurant margin control; the core reason restaurants pay</td><td>Medium</td><td><b>P0</b> (restaurant)</td></tr>
+<tr><td>Verify the documented Indian GST invoice format with a CA; add service charge/packaging charge and GSTR exports</td><td>Legal/tax credibility with CAs</td><td>Low–medium (CGST/SGST/IGST format already documented)</td><td><b>P0</b> (verify)</td></tr>
+<tr><td>Odia UI + Odia receipts (image-mode thermal printing)</td><td>Odisha differentiator; adoption by owners and staff</td><td>Medium</td><td><b>P0</b> for Odisha</td></tr>
+<tr><td>Razorpay subscriptions / UPI AutoPay, dunning and GST invoice for our own subscriptions</td><td>Revenue reliability; churn from missed renewals</td><td>Medium</td><td><b>P0</b></td></tr>
+<tr><td>Security hardening + login/price-change audit (Activity Log covers only create/update/delete of sales, purchases and quotations; see Part 08)</td><td>Trust, breach exposure</td><td>Medium</td><td><b>P0</b></td></tr>
+<tr><td>Per-station kitchen printer routing and KOT reprint/cancel audit (ESC/POS network printing already exists)</td><td>Restaurants unusable without it</td><td>Medium–high</td><td><b>P0</b> (restaurant)</td></tr>
+<tr><td>Scheduler cron, queue worker, tenant-aware jobs</td><td>Alerts and reports never run without them (your audit found this on AppZetBilling)</td><td>Low</td><td><b>P0</b></td></tr>
+<tr><td>WhatsApp: automatic event sends, campaigns, opt-in ledger (Cloud API and manual sends already exist)</td><td>Indian owners expect WhatsApp bills; drives retention</td><td>Low–medium</td><td>P1</td></tr>
+<tr><td>Reliable offline (LAN bridge or robust PWA sync) for restaurants</td><td>Internet outages are routine in tier-2 towns <span class="b inf">INFERENCE</span></td><td>High</td><td>P1</td></tr>
+<tr><td>Aggregator integrations (Swiggy, Zomato, Magicpin, ONDC)</td><td>Cloud kitchens and delivery-heavy restaurants</td><td>High + partner approval</td><td>P1 (restaurant)</td></tr>
+<tr><td>Captain/waiter handheld ordering app</td><td>Dine-in efficiency</td><td>Medium–high</td><td>P1</td></tr>
+<tr><td>Loyalty: tiers, expiry, campaigns; wallet</td><td>Repeat visits</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Tally / Zoho / GSTR exports</td><td>CA/accountant channel needs this</td><td>Medium</td><td>P1</td></tr>
+<tr><td>e-invoice (IRN) and e-way bill</td><td>Mandatory above turnover thresholds for B2B — thresholds/rules must be checked with a CA <span class="b unk">UNKNOWN</span></td><td>High (GSP integration)</td><td>P1 wholesale/distributors</td></tr>
+<tr><td>PO → GRN → purchase-invoice workflow</td><td>Mid-size and wholesale</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Central kitchen / outlet indenting / central menu</td><td>Multi-outlet chains</td><td>High</td><td>P2</td></tr>
+<tr><td>Tenant usage metering (DB, storage, WhatsApp, SMS), churn/ARR dashboard</td><td>Pricing and ops control</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Public REST API and webhooks (documented)</td><td>Integrations and partner ecosystem</td><td>Medium</td><td>P2</td></tr>
+<tr><td>Pharmacy compliance pack; distributor beat/van sales</td><td>Vertical expansion</td><td>Medium–high</td><td>P3</td></tr>
+<tr><td>AI assistant (owner Q&amp;A, demand forecast, menu suggestions)</td><td>Differentiation; SalePro has a built-in non-API assistant <span class="b v">VERIFIED FACT</span></td><td>Medium</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h2>14. Required customization — effort, difficulty, risk</h2>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Effort (dev-weeks)</th><th>Difficulty</th><th>Dependencies</th><th>Risk</th><th>Priority</th></tr></thead><tbody>
+<tr><td>Restaurant module hardening: recipe auto-deduction, KOT per station, split/merge bill, table transfer, reservations</td><td>10–16</td><td>Medium–high</td><td>Understanding SalePro product/stock model; per-tenant migrations</td><td>Breaks on vendor upgrades (High)</td><td>P0</td></tr>
+<tr><td>Per-station kitchen printing on top of existing ESC/POS support + KDS polish</td><td>4–8</td><td>Medium</td><td>Local print agent (browser cannot print raw)</td><td>Hardware variety (Medium)</td><td>P0</td></tr>
+<tr><td>Kitchen Display refinements, waiter app (Flutter/PWA)</td><td>8–14</td><td>Medium–high</td><td>SalePro API surface <span class="b unk">UNKNOWN</span></td><td>Medium</td><td>P1</td></tr>
+<tr><td>QR ordering: table-linked ordering to KDS, pay-at-table</td><td>4–8</td><td>Medium</td><td>Payment gateway, order status</td><td>Abuse/fake orders (Medium)</td><td>P1</td></tr>
+<tr><td>WhatsApp Cloud API automation (receipts, KOT ready, campaigns, opt-in)</td><td>5–8 (+ template approvals)</td><td>Medium</td><td>Meta Business verification, BSP or direct; per-tenant credits ledger</td><td>Cost leakage, spam bans (Medium–high)</td><td>P1</td></tr>
+<tr><td>Razorpay Subscriptions + UPI AutoPay + failed-payment/dunning + GST invoices for subscriptions</td><td>4–7</td><td>Medium</td><td>Razorpay account approval; add-on payment code</td><td>Billing errors (High)</td><td>P0</td></tr>
+<tr><td>UPI dynamic QR per bill + payment reconciliation</td><td>3–5</td><td>Medium</td><td>Gateway (Razorpay/Cashfree)</td><td>Medium</td><td>P1</td></tr>
+<tr><td>GST improvements: CGST/SGST split, service/packaging charge, invoice formats, GSTR exports</td><td>5–9</td><td>Medium</td><td>CA sign-off</td><td>Compliance (High)</td><td>P0</td></tr>
+<tr><td>e-invoice + e-way bill via a GSP/ASP</td><td>6–10</td><td>High</td><td>GSP contract/fees, IRP sandbox</td><td>Regulatory changes (High)</td><td>P1</td></tr>
+<tr><td>Multi-branch: central menu, outlet pricing, consolidated reports, package outlet limits</td><td>8–14</td><td>High</td><td>Data model changes across many tables</td><td>High</td><td>P2</td></tr>
+<tr><td>Advanced CRM + loyalty (tiers, campaigns, wallet)</td><td>8–12</td><td>Medium</td><td>WhatsApp/SMS</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Delivery integration: rider assignment/tracking, Dunzo-style partners</td><td>6–12</td><td>Medium–high</td><td>Partner APIs</td><td>Partner instability (Medium)</td><td>P2</td></tr>
+<tr><td>Swiggy / Zomato integration</td><td>10–16 per platform + approval</td><td>High</td><td>Partner/aggregator agreements — Petpooja and others are already integrated partners; approval for a new POS vendor is not guaranteed <span class="b unk">UNKNOWN</span></td><td>High (may be gated)</td><td>P1</td></tr>
+<tr><td>eCommerce polish: Odisha-specific themes, delivery slots, COD</td><td>3–6</td><td>Low–medium</td><td>Existing storefront</td><td>Low</td><td>P2</td></tr>
+<tr><td>Mobile apps: white-labeled Flutter build pipeline for SaaS tenants, store publishing</td><td>6–12</td><td>Medium</td><td>Apple/Google accounts; author's tenant app source</td><td>Store rejections (Medium)</td><td>P1</td></tr>
+<tr><td>Public API + webhooks + API keys/rate limits</td><td>6–10</td><td>Medium</td><td>Auth model</td><td>Security exposure (Medium)</td><td>P2</td></tr>
+<tr><td>Offline: LAN bridge or hardened PWA with conflict handling</td><td>12–20</td><td>High</td><td>Invoice-number scheme, stock reservations</td><td>High (data integrity)</td><td>P1</td></tr>
+<tr><td>Odia localization + Odia receipts/labels + training content</td><td>3–6 (+ translation work)</td><td>Low–medium</td><td>Translator; printer image mode</td><td>Low</td><td>P0</td></tr>
+<tr><td>Super-admin analytics: MRR/ARR/churn, usage metering, health, audit log, impersonation</td><td>6–10</td><td>Medium</td><td>Tenant DB access patterns</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Security hardening (Part 08 checklist)</td><td>4–8</td><td>Medium</td><td>—</td><td>High if skipped</td><td>P0</td></tr>
+<tr><td>AI features (owner insights, forecasting)</td><td>6–12</td><td>Medium</td><td>Data quality</td><td>Cost/quality (Medium)</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h3>Totals <span class="b inf">ESTIMATE</span></h3>
+<div class="grid">
+<div class="card"><b>P0 only (launchable restaurant + retail)</b><span class="v">≈ 30–55 wks</span>≈ 7–13 developer-months</div>
+<div class="card"><b>P0 + P1 (competitive)</b><span class="v">≈ 100–170 wks</span>≈ 2–3.5 developer-years</div>
+<div class="card"><b>Everything listed</b><span class="v">≈ 150–250 wks</span>before contingency</div>
+<div class="card"><b>Cost at ₹60k/month loaded</b><span class="v">₹7–13 lakh</span>for P0; ₹25–50 lakh for P0+P1 <span class="b unk">ASSUMPTION</span></div>
+</div>
+<div class="callout warn"><b>Upgrade collision</b> Every customization above lives inside a third-party codebase that the author upgrades. Keep changes in isolated modules/packages with tests, avoid editing vendor files, and budget 10–15% of dev time for merging vendor releases <span class="b add">RECOMMENDATION</span>. Without this, customized SalePro turns into a fork that cannot take updates — see Part 08 risk R3.</div>
+</section>
+<section id="06-pricing-unit-economics" class="part-sep"><div class="k">PART 06</div><h1>06 Pricing Strategy &amp; Unit Economics — Sections 15–16</h1>
+<p class="sub">Every figure here is a model, not a forecast. Rupee prices are <b>excluding 18% GST</b> unless stated <span class="b unk">ASSUMPTION</span> — confirm the GST treatment of SaaS subscriptions and registration thresholds with a CA. Verified market anchors are in Part 04.</p>
+
+<h2>15. Pricing strategy</h2>
+<h3>What the market anchors to <span class="b tp">THIRD-PARTY</span></h3>
+<ul>
+<li>Lowest: Loyverse free core, DotPe free-to-start, Restrofi ≈ ₹699/outlet/month, Vyapar ≈ ₹3,399/year (≈ ₹283/month).</li>
+<li>Mainstream: Petpooja ≈ ₹10k–20k/outlet/year (≈ ₹830–1,670/month) before GST; GoFrugal from ≈ ₹500/user/month.</li>
+<li>Premium: Petpooja top tier ≈ ₹40k/year + add-ons; Posist "above ₹8,000/month".</li>
+</ul>
+
+<h3>Five pricing models compared</h3>
+<div class="tblw"><table>
+<thead><tr><th>Model</th><th>How it charges</th><th>Revenue potential</th><th>Customer acquisition</th><th>Customer understanding</th><th>Tech complexity</th><th>Churn risk</th><th>Scalability</th></tr></thead><tbody>
+<tr><td><b>A. Per outlet</b></td><td>₹X per outlet/month (Petpooja-style)</td><td>Grows with chains; caps for single-outlet owners</td><td>Easy: matches how owners think</td><td>High</td><td>Low (needs outlet limit; SalePro packages have no outlet limit — warehouses/billers are the proxy <span class="b v">VERIFIED FACT</span>)</td><td>Medium</td><td>Good</td></tr>
+<tr><td><b>B. Per user</b></td><td>₹X per user/month (GoFrugal-style)</td><td>Punishes busy restaurants with many staff; discourages adoption</td><td>Harder; owners share logins</td><td>Medium</td><td>Low (package "users" limit exists <span class="b v">VERIFIED FACT</span>)</td><td>High (shared logins, downgrade)</td><td>Fair</td></tr>
+<tr><td><b>C. Per business</b></td><td>Flat price per tenant</td><td>Simple, leaves money on table for large tenants</td><td>Easiest to sell</td><td>Very high</td><td>Lowest</td><td>Low–medium</td><td>Good</td></tr>
+<tr><td><b>D. Feature-based plans</b></td><td>Starter/Growth/Business with modules</td><td>Upsell ladder; matches package/module toggles <span class="b v">VERIFIED FACT</span></td><td>Medium</td><td>Medium</td><td>Low (native to add-on)</td><td>Low if value clear</td><td>Good</td></tr>
+<tr><td><b>E. Hybrid (plan + add-ons + usage)</b></td><td>Base plan + extra outlets/users + WhatsApp credits</td><td>Highest ARPU ceiling</td><td>Medium–hard to explain</td><td>Medium</td><td>Medium–high (metering, credits)</td><td>Low if credits are optional</td><td>Best</td></tr>
+</tbody></table></div>
+
+<h3>Viable structures (3–5 options) <span class="b add">RECOMMENDATION</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Structure</th><th>Description</th><th>Best for</th></tr></thead><tbody>
+<tr><td><b>S1 — Simple 3 plans (recommended to test)</b></td><td>Feature plans with outlet cap; annual = 10 months paid; WhatsApp and SMS as prepaid credits</td><td>Odisha SMB launch</td></tr>
+<tr><td>S2 — Per-outlet flat</td><td>One feature set; ₹799/outlet/month, ₹7,999/year</td><td>Restaurants only, Petpooja-style</td></tr>
+<tr><td>S3 — Freemium retail + paid upgrade</td><td>Free 1 user, 200 bills/month; paid removes limits</td><td>Kirana/grocery lead generation</td></tr>
+<tr><td>S4 — Per-user retail</td><td>₹199/user/month</td><td>Distributors, wholesale</td></tr>
+<tr><td>S5 — Reseller wholesale</td><td>Partner buys blocks at 30–40% off list; sells with own margin</td><td>CA and dealer channels</td></tr>
+</tbody></table></div>
+
+<h2>Recommended pricing structure (to test, not to launch blindly)</h2>
+<div class="tblw"><table>
+<thead><tr><th></th><th>Starter</th><th>Growth</th><th>Business</th><th>Enterprise</th></tr></thead><tbody>
+<tr><td><b>For</b></td><td>Single-counter shop / small café</td><td>Growing restaurant or shop</td><td>Multi-user, up to 3 outlets</td><td>Chains, 5+ outlets</td></tr>
+<tr><td><b>Monthly</b></td><td>₹499</td><td>₹999</td><td>₹1,999</td><td>from ₹5,999</td></tr>
+<tr><td><b>Annual (pay 10 months)</b></td><td>₹4,990</td><td>₹9,990</td><td>₹19,990</td><td>custom</td></tr>
+<tr><td>Outlets / users</td><td>1 / 2</td><td>1 / 5</td><td>3 / 15</td><td>5+ / custom</td></tr>
+<tr><td>Products / invoices</td><td>1,000 / 1,500 per month</td><td>5,000 / unlimited</td><td>unlimited</td><td>unlimited</td></tr>
+<tr><td>Inventory</td><td>Basic stock</td><td>Batch/expiry, recipe stock</td><td>Multi-warehouse, transfers</td><td>Central kitchen, indenting</td></tr>
+<tr><td>Restaurant / KOT / QR</td><td>—</td><td>✔</td><td>✔ + KDS</td><td>✔ + custom</td></tr>
+<tr><td>Accounting</td><td>—</td><td>Light</td><td>Double-entry</td><td>Double-entry + exports</td></tr>
+<tr><td>WhatsApp</td><td>Prepaid credits</td><td>Prepaid credits + templates</td><td>Credits + campaigns</td><td>Dedicated number</td></tr>
+<tr><td>Mobile app</td><td>Owner app</td><td>Owner + captain</td><td>All</td><td>White-label</td></tr>
+<tr><td>API / eCommerce</td><td>—</td><td>Storefront</td><td>Storefront + API</td><td>API + webhooks + integrations</td></tr>
+<tr><td>Support</td><td>Chat/tickets, 9–6</td><td>Chat + WhatsApp</td><td>Priority + onboarding call</td><td>Dedicated manager + on-site option</td></tr>
+<tr><td>Backups / storage</td><td>Daily / 1 GB</td><td>Daily / 5 GB</td><td>Daily + 30-day restore / 20 GB</td><td>Custom SLA</td></tr>
+</tbody></table></div>
+
+<h3>Assumptions behind the numbers <span class="b unk">ASSUMPTION</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Assumption</th><th>Value</th></tr></thead><tbody>
+<tr><td>Plan mix</td><td>Starter 55% · Growth 32% · Business 11% · Enterprise 2%</td></tr>
+<tr><td>List-price blended ARPU</td><td>0.55×499 + 0.32×999 + 0.11×1,999 + 0.02×5,999 = <b>₹934/month</b></td></tr>
+<tr><td>Annual-plan share</td><td>50% pay annually at 10/12 of monthly → effective ARPU <b>≈ ₹860</b> (moderate case)</td></tr>
+<tr><td>Conservative / aggressive ARPU</td><td>₹550 (heavy Starter, discounts) / ₹1,300 (fewer starters, add-ons sold)</td></tr>
+<tr><td>Payment fees</td><td>2.4% of collections (2% platform fee + 18% GST) <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>WhatsApp cost (Meta + BSP)</td><td>₹40 per customer/month average; recharged credits treated as pass-through, not revenue</td></tr>
+<tr><td>Infra + tooling</td><td>from Part 03 (₹12k @100 → ₹5.5L @10k)</td></tr>
+<tr><td>Loaded cost per team member</td><td>₹38,000/month average across roles in Odisha/remote India <span class="b unk">ASSUMPTION</span></td></tr>
+<tr><td>Hardware, CAC</td><td>Excluded from this table; CAC handled in Part 09 and below</td></tr>
+</tbody></table></div>
+
+<h3>Cost drivers considered</h3>
+<ul>
+<li><b>Hosting</b> ≈ ₹15–60 per customer/month at scale <span class="b inf">ESTIMATE</span> (Part 03); <b>payment</b> 2.4%; <b>WhatsApp</b> ≈ ₹40 average <span class="b unk">ASSUMPTION</span>; <b>support</b> is the largest variable cost — one agent per ~250 low-touch tenants <span class="b unk">ASSUMPTION</span> (≈ ₹150/customer/month); <b>development</b> and <b>CAC</b> (₹4,000–8,000 per paying customer via field + digital <span class="b unk">ASSUMPTION</span> → payback 5–9 months at ₹860 ARPU).</li>
+</ul>
+
+<h2>16. Unit economics</h2>
+<h3>Revenue scenarios (monthly recurring revenue, ARR)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Customers</th><th>Conservative ₹550 — MRR / ARR</th><th>Moderate ₹860 — MRR / ARR</th><th>Aggressive ₹1,300 — MRR / ARR</th></tr></thead><tbody>
+<tr><td>100</td><td>₹55,000 / ₹6.6 L</td><td>₹86,000 / ₹10.3 L</td><td>₹1.30 L / ₹15.6 L</td></tr>
+<tr><td>500</td><td>₹2.75 L / ₹33 L</td><td>₹4.30 L / ₹51.6 L</td><td>₹6.50 L / ₹78 L</td></tr>
+<tr><td>1,000</td><td>₹5.5 L / ₹66 L</td><td>₹8.6 L / ₹1.03 Cr</td><td>₹13 L / ₹1.56 Cr</td></tr>
+<tr><td>5,000</td><td>₹27.5 L / ₹3.3 Cr</td><td>₹43 L / ₹5.16 Cr</td><td>₹65 L / ₹7.8 Cr</td></tr>
+<tr><td>10,000</td><td>₹55 L / ₹6.6 Cr</td><td>₹86 L / ₹10.3 Cr</td><td>₹1.30 Cr / ₹15.6 Cr</td></tr>
+</tbody></table></div>
+<p>1 L = ₹1,00,000 · 1 Cr = ₹1,00,00,000. All <span class="b inf">ESTIMATE</span>.</p>
+
+<h3>Contribution after direct costs (infra, payment fees, WhatsApp) — before people</h3>
+<div class="tblw"><table>
+<thead><tr><th>Customers</th><th>Infra+tools</th><th>Payment fees (2.4%, moderate)</th><th>WhatsApp</th><th>Contribution — Cons.</th><th>Contribution — Mod.</th><th>Contribution — Aggr.</th></tr></thead><tbody>
+<tr><td>100</td><td>₹12,000</td><td>₹2,100</td><td>₹4,000</td><td>₹37.7k (69%)</td><td>₹67.9k (79%)</td><td>₹1.11 L (85%)</td></tr>
+<tr><td>500</td><td>₹25,000</td><td>₹10,300</td><td>₹20,000</td><td>₹2.23 L (81%)</td><td>₹3.75 L (87%)</td><td>₹5.89 L (91%)</td></tr>
+<tr><td>1,000</td><td>₹50,000</td><td>₹20,600</td><td>₹40,000</td><td>₹4.47 L (81%)</td><td>₹7.49 L (87%)</td><td>₹11.8 L (91%)</td></tr>
+<tr><td>5,000</td><td>₹2.5 L</td><td>₹1.03 L</td><td>₹2.0 L</td><td>₹22.3 L (81%)</td><td>₹37.5 L (87%)</td><td>₹58.9 L (91%)</td></tr>
+<tr><td>10,000</td><td>₹5.5 L</td><td>₹2.06 L</td><td>₹4.0 L</td><td>₹44.2 L (80%)</td><td>₹74.4 L (87%)</td><td>₹1.17 Cr (90%)</td></tr>
+</tbody></table></div>
+
+<h3>Operating result with a realistic team (moderate ARPU ₹860)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Customers</th><th>Team (people)</th><th>Team cost</th><th>Total cost incl. infra/fees/WhatsApp</th><th>MRR</th><th>Operating result</th></tr></thead><tbody>
+<tr><td>100</td><td>3</td><td>₹1.14 L</td><td>₹1.32 L</td><td>₹0.86 L</td><td><b>−₹0.46 L</b> (loss)</td></tr>
+<tr><td>500</td><td>9</td><td>₹3.42 L</td><td>₹3.95 L</td><td>₹4.30 L</td><td><b>+₹0.35 L</b> (8%)</td></tr>
+<tr><td>1,000</td><td>16</td><td>₹6.08 L</td><td>₹7.21 L</td><td>₹8.60 L</td><td><b>+₹1.39 L</b> (16%)</td></tr>
+<tr><td>5,000</td><td>60</td><td>₹22.8 L</td><td>₹28.3 L</td><td>₹43 L</td><td><b>+₹14.7 L</b> (34%)</td></tr>
+<tr><td>10,000</td><td>100</td><td>₹38 L</td><td>₹49.6 L</td><td>₹86 L</td><td><b>+₹36.4 L</b> (42%)</td></tr>
+</tbody></table></div>
+
+<h3>People the revenue can afford (60% of MRR ÷ ₹38k)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Customers</th><th>Conservative</th><th>Moderate</th><th>Aggressive</th><th>People needed (Part 09)</th></tr></thead><tbody>
+<tr><td>100</td><td>0.9</td><td>1.4</td><td>2.1</td><td>3</td></tr>
+<tr><td>500</td><td>4.3</td><td>6.8</td><td>10.3</td><td>9</td></tr>
+<tr><td>1,000</td><td>8.7</td><td>13.6</td><td>20.5</td><td>16</td></tr>
+<tr><td>5,000</td><td>43</td><td>68</td><td>103</td><td>60</td></tr>
+<tr><td>10,000</td><td>87</td><td>136</td><td>205</td><td>100</td></tr>
+</tbody></table></div>
+
+<h3>Break-even</h3>
+<div class="grid">
+<div class="card"><b>Conservative ₹550</b><span class="v">≈ 275</span>customers to cover a 3-person team + infra</div>
+<div class="card"><b>Moderate ₹860</b><span class="v">≈ 165</span>customers</div>
+<div class="card"><b>Aggressive ₹1,300</b><span class="v">≈ 105</span>customers</div>
+<div class="card"><b>Fixed base used</b><span class="v">₹1.26 L</span>3 people ₹1.14 L + infra ₹12k <span class="b unk">ASSUMPTION</span></div>
+</div>
+<div class="callout warn"><b>What the numbers say</b> (1) At ₹550 ARPU the business cannot afford the human support model it needs at 500 customers (4.3 people affordable vs 9 needed) — cheap plans require self-serve onboarding, in-app help and Odia video training. (2) The licence and hosting costs are trivial next to team cost; the deciding variable is <b>how many customers one support/onboarding person can carry</b>. (3) Growth is capital-constrained: CAC of ₹4–8k × 165 customers ≈ ₹7–13 lakh to reach break-even, plus P0 development ₹7–13 lakh (Part 05) — budget roughly ₹20–30 lakh to reach break-even <span class="b inf">ESTIMATE</span>. (4) Churn is not yet in the model: at 3% monthly churn (≈ 31%/yr <span class="b unk">ASSUMPTION</span>), gross adds needed to stay flat at 500 customers are 15/month.</div>
+<div class="callout"><b>Revenue streams that look realistic <span class="b add">RECOMMENDATION</span></b> Subscriptions (core) · setup/onboarding fee ₹1,500–5,000 for restaurants (helps CAC) · WhatsApp/SMS credits at cost +25–40% · extra outlet/user add-ons · hardware bundles via dealers at thin margin (referral fee, not inventory) · reseller margins. <b>Weak or slow:</b> ecommerce upsell, API monetisation, custom integrations before you have 500+ customers.</div>
+</section>
+<section id="07-market-penetration" class="part-sep"><div class="k">PART 07</div><h1>07 Market Size &amp; Penetration Scenarios — Sections 17–18</h1>
+<p class="sub">Only a few market numbers are verifiable. Odisha-specific counts of restaurants, kirana stores or GST-registered trade outlets were <b>not found</b> in the sources searched, so they are UNKNOWN. The SAM/SOM figures below are explicit assumption chains you can replace with survey or GST-portal data.</p>
+
+<h2>17. TAM / SAM / SOM</h2>
+<h3>Facts we could verify</h3>
+<div class="tblw"><table>
+<thead><tr><th>Datum</th><th>Value</th><th>Source / tag</th></tr></thead><tbody>
+<tr><td>Restaurants NRAI claims to represent</td><td>≈ 500,000</td><td><a href="https://www.business-standard.com/industry/news/india-s-restaurant-sector-can-create-15-million-jobs-by-2028-nrai-125043000715_1.html">Business Standard</a> <span class="b tp">THIRD-PARTY</span> — an association claim, not a census</td></tr>
+<tr><td>Food-service growth</td><td>8.1% CAGR 2024–28; organised 13.2%</td><td>NRAI IFSR 2024 <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Restaurant-sector employment</td><td>85.5 lakh (2024)</td><td>NRAI <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Kirana stores</td><td>≈ 12–15 million; 91% of grocery share (Redseer, Jan 2026)</td><td><a href="https://www.dezerv.in/blog/the-91-market-share-shocker-why-indias-600-billion-grocery-economy-still-belongs-to-kiranas/">Dezerv</a> / <a href="https://www.investindia.gov.in/team-india-blogs/modernization-kirana-stores-india">Invest India</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Enterprises on Udyam (India)</td><td>7.83 crore registered</td><td><a href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246892&reg=3&lang=1">PIB</a> <span class="b v">VERIFIED FACT</span> — includes informal micro units</td></tr>
+<tr><td>Odisha Udyam MSMEs</td><td>≈ 23.5 lakh (Jan 2026 Economic Survey estimate); overwhelmingly micro</td><td><a href="https://www.outlookbusiness.com/industry/odishas-500-bn-dream-hinges-on-msmes-women-entrepreneurs-and-easier-credit-chief-secy-anu-garg">Outlook Business</a> <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Odisha restaurants / FSSAI licence count / GST taxpayers</td><td colspan="2">Not found in searches (FSSAI FoSCoS and Odisha GST portals hold the data) <span class="b unk">UNKNOWN</span> — request via FoSCoS public data, industry association, or GST-search sampling.</td></tr>
+<tr><td>India's digital POS adoption rate</td><td colspan="2">Not verified this session <span class="b unk">UNKNOWN</span></td></tr>
+</tbody></table></div>
+
+<h3>Chain from TAM to SOM (all steps beyond the table are assumptions) <span class="b unk">ASSUMPTION</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Level</th><th>Definition</th><th>India</th><th>Odisha</th></tr></thead><tbody>
+<tr><td><b>TAM</b></td><td>Businesses that could use billing/POS software in our verticals</td><td>Restaurants ≈ 0.5 M <span class="b tp">THIRD-PARTY</span> + kirana 12–15 M <span class="b tp">THIRD-PARTY</span> + other retail/wholesale/pharmacy (count UNK) → order of <b>10 M+</b> outlets</td><td>Population share ≈ 3.4% of India (2011 Census, rounded, from general knowledge) <span class="b inf">INFERENCE</span> → order of <b>3–4 lakh</b> relevant outlets from a pro-rata cut; Udyam 23.5 lakh sets an upper bound for all enterprises <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td><b>SAM</b></td><td>Formal, GST- or FSSAI-registered, urban/semi-urban, currently on paper/free tools, could pay ₹250+/month</td><td>≈ 10–15% of TAM ≈ 1–1.5 M outlets <span class="b unk">ASSUMPTION</span></td><td><b>≈ 35,000–60,000 outlets</b> (10–15% of the 3–4 lakh pro-rata figure) <span class="b unk">ASSUMPTION</span></td></tr>
+<tr><td><b>SOM</b></td><td>Share we can win with 3–10 people in 3 years</td><td>—</td><td><b>1,000–3,000 paying tenants by Year 3</b> (2–6% of Odisha SAM) <span class="b unk">ASSUMPTION</span></td></tr>
+</tbody></table></div>
+<p>Restaurants alone: applying the same pro-rata logic to NRAI's 500k gives ≈ 17,000 Odisha outlets, but income levels and NRAI membership skew make that an upper bound <span class="b inf">INFERENCE</span>; a working range of <b>8,000–15,000 restaurants/cafés/sweet shops</b> is prudent <span class="b unk">ASSUMPTION</span>. City-level splits require FoSCoS/GST sampling and the owner-interview programme in gap-analysis Part 11.</p>
+<div class="callout warn"><b>Why we do not give one exact number</b> Any Odisha figure derived from India totals is arithmetic on a proxy (population share). Treat SAM as ±50% until you sample 200 businesses per city on Google Maps + FSSAI and count who uses which billing tool.</div>
+
+<h2>18. Market penetration scenarios</h2>
+<p>Paying tenants at year end; SAM basis 50,000 Odisha outlets for Years 1–3, expanding when other states open (Year 4–5) <span class="b unk">ASSUMPTION</span>.</p>
+<div class="tblw"><table>
+<thead><tr><th>Scenario</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 5</th><th>Y3 penetration of Odisha SAM</th><th>Assumptions</th></tr></thead><tbody>
+<tr><td><b>Conservative</b></td><td>80</td><td>250</td><td>600</td><td>1,500</td><td>1.2%</td><td>2–3 people, referrals + dealers, ₹550 ARPU, 3% monthly churn, Odisha only until Year 4</td></tr>
+<tr><td><b>Base</b></td><td>200</td><td>700</td><td>1,600</td><td>4,000 (incl. 2–3 states)</td><td>3.2%</td><td>Field team in Bhubaneswar/Cuttack/Puri, CA/dealer channel live, ₹860 ARPU, 2.5% churn, P0+P1 delivered in ~18 months</td></tr>
+<tr><td><b>High-growth</b></td><td>400</td><td>1,500</td><td>4,000</td><td>10,000 (multi-state)</td><td>8%</td><td>External funding, 25+ people, reseller network in Odisha and neighbouring states, aggregator integrations live, ₹1,300 ARPU</td></tr>
+</tbody></table></div>
+<h3>What the scenarios imply</h3>
+<ul>
+<li>Base Year 1 (200 tenants) already exceeds the moderate break-even (165) on a 3-person team; the conservative case (80) never breaks even in Year 1 <span class="b inf">ESTIMATE</span> — see Part 06.</li>
+<li>Base needs ≈ 50 new paying customers per quarter in Year 1 rising to ≈ 230/quarter in Year 3, which is 3–4 productive salespeople plus channel partners <span class="b inf">ESTIMATE</span>.</li>
+<li>Penetration of 3% of the Odisha SAM by Year 3 is not "small": with Petpooja-type incumbents plus local billing-machine dealers and free tools, plausible but not guaranteed <span class="b inf">INFERENCE</span>. Treat 1,600 as a stretch that needs proof from the first 100 customers.</li>
+<li>Convert with actual data: run the Odisha owner interviews (gap-analysis Part 11), then replace SAM and ARPU with measured values.</li>
+</ul>
+</section>
+<section id="08-security-risks" class="part-sep"><div class="k">PART 08</div><h1>08 Security, Technical &amp; Business Risks — Sections 19–21</h1>
+<p class="sub">SalePro's code has not been inspected, so the security section is a <b>pre-launch checklist and hypothesis list</b>, not findings. Items marked <span class="b v">VERIFIED FACT</span> come from vendor documentation; other items are what we must verify by code review and penetration test before charging customers.</p>
+
+<h2>19. Security risks / audit checklist</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>What to verify / do</th><th>Known so far</th><th>Rating</th></tr></thead><tbody>
+<tr><td>Tenant isolation</td><td>Host-based tenant resolution cannot be spoofed via Host/X-Forwarded-Host; separate DB users per tenant (not one root); no shared cache keys/sessions across tenants; file storage paths per tenant; queue jobs carry tenant context</td><td>Separate DBs <span class="b v">VERIFIED FACT</span>; DB creation uses cPanel/Plesk API or MySQL root <span class="b v">VERIFIED FACT</span> → likely high-privilege credential in app config <span class="b inf">INFERENCE</span></td><td><b>CRITICAL</b> until reviewed</td></tr>
+<tr><td>Authentication / password security</td><td>Bcrypt/Argon hashes; lockout; password reset token expiry; default <code>superadmin/superadmin</code> forced change</td><td>Default credentials exist at install and must be rotated <span class="b v">VERIFIED FACT</span></td><td>HIGH</td></tr>
+<tr><td>Authorization / RBAC</td><td>Route-level permission checks, IDOR tests on every ID parameter (sale, customer, product), API role checks</td><td>Roles/permissions exist <span class="b v">VERIFIED FACT</span>; enforcement quality <span class="b unk">UNKNOWN</span></td><td>HIGH</td></tr>
+<tr><td>SQL injection</td><td>Eloquent/query builder use, raw queries audit, DataTables server-side search inputs</td><td><span class="b unk">UNKNOWN</span> — legacy Laravel apps often carry raw fragments</td><td>MEDIUM</td></tr>
+<tr><td>XSS</td><td>Blade escaping, product names, customer notes, receipts/print templates, CMS content editor (super admin CMS accepts HTML)</td><td><span class="b unk">UNKNOWN</span></td><td>MEDIUM–HIGH</td></tr>
+<tr><td>CSRF</td><td>Laravel default middleware on web routes; token on AJAX; exclusions list (payment webhooks)</td><td><span class="b unk">UNKNOWN</span></td><td>MEDIUM</td></tr>
+<tr><td>File upload security</td><td>Extension + MIME validation, non-executable storage, image re-encoding, size limits, virus scanning for attachments</td><td>Products/purchases attachments and CMS uploads exist <span class="b v">VERIFIED FACT</span>; validation <span class="b unk">UNKNOWN</span></td><td>HIGH</td></tr>
+<tr><td>API security / rate limiting</td><td>Token scopes, throttling, tenant binding on tokens; webhook signature verification for gateways</td><td>No API chapter in the full docs page <span class="b v">VERIFIED FACT</span></td><td>MEDIUM</td></tr>
+<tr><td>Audit logs</td><td>Immutable log of price changes, voids, deletes, logins, super-admin actions and impersonation</td><td>Activity Log report covers create/update/delete of sales, purchases, quotations (Part 12) <span class="b v">VERIFIED FACT</span>; logins, price changes and super-admin actions not documented</td><td>HIGH</td></tr>
+<tr><td>Encryption</td><td>Gateway keys and SMTP passwords encrypted at rest (Laravel Crypt) not plain columns; DB-at-rest encryption; TLS everywhere; backups encrypted</td><td>Your AppZetBilling audit found plain JSON gateway creds and unencrypted R2 backups <span class="b v">VERIFIED FACT</span> — repeat the check on SalePro</td><td>HIGH</td></tr>
+<tr><td>Backups / DR</td><td>Per-tenant automated schedule (add-on has manual "Backup Client DB" <span class="b v">VERIFIED FACT</span>), off-site copy, restore test monthly, RPO/RTO published</td><td>In-app "Backup Database" (.sql, restore drops and replaces the DB, files excluded) <span class="b v">VERIFIED FACT</span>; add-on has a manual "Backup Client DB" <span class="b v">VERIFIED FACT</span>; scheduling and cron/queue dependency <span class="b unk">UNKNOWN</span></td><td>HIGH</td></tr>
+<tr><td>Session security</td><td>Secure/HttpOnly/SameSite cookies, session regeneration, idle timeout, concurrent-login policy</td><td><span class="b unk">UNKNOWN</span></td><td>MEDIUM</td></tr>
+<tr><td>Admin security / 2FA</td><td>2FA for super admin and tenant owners, IP allow-list for super-admin, alerting on new device</td><td>Not documented <span class="b unk">UNKNOWN</span></td><td>HIGH</td></tr>
+<tr><td>IP/device monitoring</td><td>Login history per user visible to owner</td><td><span class="b unk">UNKNOWN</span></td><td>MEDIUM</td></tr>
+<tr><td>Payment security</td><td>Use hosted Razorpay/UPI flows; never store card data; webhook verification; idempotent order creation; reconcile daily</td><td>Gateway integration native <span class="b v">VERIFIED FACT</span>; verification <span class="b unk">UNKNOWN</span></td><td>HIGH</td></tr>
+<tr><td>Secrets management</td><td><code>.env</code> outside webroot, no <code>.env.bak</code>/zip artefacts (your audit found such files on AppZetBilling), rotate keys, <code>APP_DEBUG=false</code></td><td>Docs also warn: keep APP_DEBUG false, rotate tokens <span class="b v">VERIFIED FACT</span></td><td>HIGH</td></tr>
+<tr><td>Server hardening</td><td>Key-only SSH, firewall, fail2ban, unattended upgrades, separate MySQL user, no root DB for the web app at runtime</td><td>Yours to do</td><td>HIGH</td></tr>
+<tr><td>Privacy / compliance</td><td>DPDP-era consent for customer phone numbers and WhatsApp marketing, data-processing terms with tenants, erasure workflow, retention policy</td><td>Legal review needed <span class="b unk">UNKNOWN</span></td><td>MEDIUM</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Gate <span class="b add">RECOMMENDATION</span></b> Before any paying tenant: external penetration test focused on tenant isolation, IDOR, file upload and CMS XSS; static analysis (PHPStan/Larastan, Psalm), dependency audit (<code>composer audit</code>), and a written DR drill. Budget ₹1–2.5 lakh for the pen test <span class="b unk">ASSUMPTION</span>.</div>
+
+<h2>20. Technical risks</h2>
+<div class="tblw"><table>
+<thead><tr><th>#</th><th>Risk</th><th>Rating</th><th>Why</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>R1</td><td>Vendor dependency (single author, LionCoders)</td><td>HIGH</td><td>Add-on has 72 sales, last update 2 Aug 2026 <span class="b v">VERIFIED FACT</span>; a stalled vendor strands us</td><td>Written continuity terms; keep our changes modular; escrow of latest source; contract paid support</td></tr>
+<tr><td>R2</td><td>Tenant isolation flaw</td><td>CRITICAL</td><td>Root-level DB credential in the app; unreviewed code</td><td>Pen test, per-tenant DB users, least privilege, network segmentation</td></tr>
+<tr><td>R3</td><td>Upgrade conflicts with our customizations</td><td>HIGH</td><td>Vendor releases monthly-ish; forked code drifts</td><td>Extension modules, no vendor-file edits, upgrade branch + regression suite</td></tr>
+<tr><td>R4</td><td>SaaS scaling beyond ~1,000 tenants</td><td>HIGH</td><td>DB-per-tenant, manual "Update Client DB", table count</td><td>Sharding map, batch migration runner, load testing at 500 synthetic tenants before scale</td></tr>
+<tr><td>R5</td><td>Offline sync data integrity</td><td>HIGH</td><td>Undocumented conflict handling; duplicate invoice numbers</td><td>Offline invoice-series per device; server-side idempotency; disable offline until proven</td></tr>
+<tr><td>R6</td><td>Laravel / PHP version churn</td><td>MEDIUM</td><td>PHP requirement already moved 8.2 → 8.3 <span class="b v">VERIFIED FACT</span></td><td>Follow vendor's version; container image pinned; upgrade test cadence</td></tr>
+<tr><td>R7</td><td>Third-party package dependency</td><td>MEDIUM</td><td>Unknown composer tree <span class="b unk">UNKNOWN</span></td><td>SBOM, <code>composer audit</code>, license scan</td></tr>
+<tr><td>R8</td><td>Code quality / test coverage</td><td>MEDIUM–HIGH</td><td>8-year legacy; unknown tests</td><td>Two-week code review sprint before commit; characterisation tests around billing</td></tr>
+<tr><td>R9</td><td>Payment failures / duplicate charges</td><td>HIGH</td><td>One-time payments per renewal likely; no dunning <span class="b unk">UNKNOWN</span></td><td>Razorpay Subscriptions/AutoPay, idempotency, daily reconciliation</td></tr>
+<tr><td>R10</td><td>Backup failure / long restore</td><td>HIGH</td><td>N databases; manual per-tenant backup</td><td>Automated per-tenant dumps, restore drills, replicas</td></tr>
+<tr><td>R11</td><td>WhatsApp API dependency</td><td>MEDIUM</td><td>Template approval, quality rating bans, cost changes (service messages billable from 1 Oct 2026 <span class="b tp">THIRD-PARTY</span>)</td><td>Multi-BSP abstraction; credit ledger; opt-in evidence</td></tr>
+<tr><td>R12</td><td>E-mail / SMS dependency (DLT rules for SMS)</td><td>MEDIUM</td><td>Deliverability, DLT template approval</td><td>Two providers; SPF/DKIM/DMARC; DLT registration early</td></tr>
+<tr><td>R13</td><td>Database bottlenecks (open files, table cache, lock contention on sales numbering)</td><td>MEDIUM–HIGH</td><td>Per-tenant schema volume</td><td>Tune MySQL, monitor, cap tenants per server</td></tr>
+<tr><td>R14</td><td>Wildcard/custom-domain SSL automation</td><td>HIGH</td><td>Add-on does not issue custom-domain certs <span class="b v">VERIFIED FACT</span>; your wildcard renewal was already manual and broken <span class="b v">VERIFIED FACT</span></td><td>DNS-01 API hooks, Caddy/on-demand TLS, cert-expiry alerts</td></tr>
+<tr><td>R15</td><td>CodeCanyon licensing interpretation</td><td>HIGH</td><td>Part 01</td><td>Written author confirmation, Extended ×2, keep purchase codes/invoices</td></tr>
+<tr><td>R16</td><td>Vendor support responsiveness</td><td>MEDIUM</td><td>6-month support window <span class="b v">VERIFIED FACT</span>, the listed support phone has Bangladesh's +880 code, so the team is probably Bangladesh-based <span class="b inf">INFERENCE</span>; no SLA is published</td><td>Pre-sale test ticket, response-time measurement</td></tr>
+</tbody></table></div>
+
+<h2>21. Business risks</h2>
+<div class="tblw"><table>
+<thead><tr><th>#</th><th>Risk</th><th>Rating</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>B1</td><td>Duplicated product: SalePro vs AppZetBilling — split engineering focus, two data models, double licence/hosting cost</td><td>CRITICAL</td><td>Decide one core platform; consider SalePro only as a retail vertical with a hard scope</td></tr>
+<tr><td>B2</td><td>Incumbent response: Petpooja/GoFrugal bundle features and discount in Odisha</td><td>HIGH</td><td>Local trust, Odia UX, onboarding, aggressive annual pricing; avoid head-on feature race</td></tr>
+<tr><td>B3</td><td>Low ARPU vs human-heavy support</td><td>HIGH</td><td>Self-serve onboarding, in-app videos, WhatsApp bot; charge onboarding fee</td></tr>
+<tr><td>B4</td><td>High churn in SMB segment (shop closures, price switching)</td><td>HIGH</td><td>Annual prepay discounts, data lock-in via value not exit barriers, CRM features</td></tr>
+<tr><td>B5</td><td>Hardware/printer support burden</td><td>MEDIUM–HIGH</td><td>Certified hardware list; dealer partnerships; remote diagnostics</td></tr>
+<tr><td>B6</td><td>Regulatory change (GST, e-invoice thresholds, DPDP)</td><td>MEDIUM</td><td>CA advisor; modular tax layer</td></tr>
+<tr><td>B7</td><td>Payment-gateway / WhatsApp policy or price shifts</td><td>MEDIUM</td><td>Pass-through pricing, multi-provider abstraction</td></tr>
+<tr><td>B8</td><td>Capital: ₹20–30 lakh to reach break-even <span class="b inf">ESTIMATE</span></td><td>MEDIUM–HIGH</td><td>Stage-gate spending; revenue-first vertical (retail) to fund restaurant depth</td></tr>
+<tr><td>B9</td><td>Key-person risk (one lead developer knows the forked code)</td><td>HIGH</td><td>Documentation, second developer, code reviews</td></tr>
+<tr><td>B10</td><td>Brand collision or trademark dispute after launch</td><td>MEDIUM</td><td>Pre-launch trademark search (Part 10)</td></tr>
+</tbody></table></div>
+</section>
+<section id="09-gtm-roadmap-scaling" class="part-sep"><div class="k">PART 09</div><h1>09 Go-to-Market, Operations, Roadmap &amp; Scaling — Sections 14, 22–24 and the Odisha-first plan</h1>
+<p class="sub">Builds on the Odisha strategy already written in gap-analysis Part 11 (cities, channels, competitor list) and adds the numbers and phases this decision needs. City-level demand data was not verifiable <span class="b unk">UNKNOWN</span>; ordering below is reasoning, not measurement.</p>
+
+<h2>Business model (Section 14 of the brief)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Acquisition channel</th><th>Realism in Odisha</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Direct field sales + demos</td><td>High</td><td>Trust and localisation are the edge; small team per city cluster</td></tr>
+<tr><td>Digital (Google search, Instagram/YouTube in Odia, WhatsApp click-to-chat)</td><td>Medium–high</td><td>Competitors already rank locally <span class="b tp">THIRD-PARTY</span>; keep paid budget small, measure cost per trial</td></tr>
+<tr><td>Local sales agents (commission)</td><td>High</td><td>Pay on activated + paid month 2, not on signup</td></tr>
+<tr><td>Resellers / hardware dealers (POS printers, billing machines)</td><td>High</td><td>Dealers meet new outlets first; give 25–35% first-year margin</td></tr>
+<tr><td>CA / accountant partnerships</td><td>High for GST-heavy retail and wholesale</td><td>Needs Tally/GSTR exports (P1)</td></tr>
+<tr><td>Restaurant consultants, franchise partnerships</td><td>Medium</td><td>Few in Odisha; good for multi-outlet groups</td></tr>
+<tr><td>Channel partners outside Odisha</td><td>Later</td><td>After playbook proven</td></tr>
+</tbody></table></div>
+<div class="tblw"><table>
+<thead><tr><th>Revenue stream</th><th>Realistic?</th><th>Why</th></tr></thead><tbody>
+<tr><td>Monthly subscription</td><td>Yes</td><td>Core; monthly for trial-converters</td></tr>
+<tr><td>Annual subscription</td><td>Yes — push it</td><td>Cuts churn and payment-fee count</td></tr>
+<tr><td>Setup / onboarding fee</td><td>Yes (restaurants)</td><td>₹1,500–5,000; funds onboarding people</td></tr>
+<tr><td>Premium support</td><td>Yes, modest</td><td>Priority WhatsApp line, on-site visit</td></tr>
+<tr><td>WhatsApp/SMS credits</td><td>Yes</td><td>Pass-through at cost + margin</td></tr>
+<tr><td>Additional branch/users/storage</td><td>Yes</td><td>Cleanest expansion revenue</td></tr>
+<tr><td>Hardware bundles</td><td>Referral only</td><td>Inventory and warranty risk not worth it early</td></tr>
+<tr><td>Ecommerce, API, mobile app, custom integrations</td><td>Later</td><td>After 500+ customers; low early demand <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+
+<h2>22. Go-to-market and operations</h2>
+<h3>Geographic expansion logic</h3>
+<div class="tblw"><table>
+<thead><tr><th>Wave</th><th>Cities/states</th><th>Rationale</th></tr></thead><tbody>
+<tr><td>1</td><td>Bhubaneswar → Cuttack (twin-city cluster)</td><td>Highest density of cafés, cloud kitchens, modern retail; existing local competitors show demand <span class="b tp">THIRD-PARTY</span>; one team covers both</td></tr>
+<tr><td>2</td><td>Puri, Berhampur, Sambalpur, Rourkela</td><td>Tourism restaurants (Puri, seasonal), regional trade hubs, industrial canteens; requires per-city partners</td></tr>
+<tr><td>3</td><td>Balasore, Jharsuguda, Angul, Baripada</td><td>Smaller markets; serve by remote onboarding + dealer partners</td></tr>
+<tr><td>4</td><td>West Bengal, Andhra Pradesh, Telangana, Tamil Nadu, Karnataka</td><td>Order by language reuse and partner availability: Bengali/Telugu/Tamil/Kannada UI; West Bengal shares borders and business links with Odisha <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+<p><b>Does the expansion strategy make sense?</b> Yes for waves 1–2, because local trust and Odia support are cheap advantages; do not leave Odisha until you hit a measurable threshold (e.g. 500 paying tenants, monthly churn under 3%, CAC payback under 9 months) <span class="b add">RECOMMENDATION</span>. Neighbouring-state expansion should follow partners and language readiness, not map adjacency.</p>
+
+<h3>Support and operations by scale <span class="b unk">ASSUMPTION</span></h3>
+<div class="tblw"><table>
+<thead><tr><th>Function</th><th>100</th><th>500</th><th>1,000</th><th>5,000</th></tr></thead><tbody>
+<tr><td>Developers</td><td>1</td><td>2</td><td>4</td><td>12</td></tr>
+<tr><td>DevOps / SRE</td><td>0 (fractional)</td><td>1</td><td>1</td><td>3</td></tr>
+<tr><td>Technical support</td><td>1</td><td>2</td><td>4</td><td>15</td></tr>
+<tr><td>Onboarding</td><td>(shared)</td><td>1</td><td>2</td><td>8</td></tr>
+<tr><td>Sales</td><td>1</td><td>3</td><td>4</td><td>15</td></tr>
+<tr><td>Customer success</td><td>0</td><td>0</td><td>1</td><td>5</td></tr>
+<tr><td>Management/finance/HR</td><td>founders</td><td>founders</td><td>founders</td><td>2</td></tr>
+<tr><td><b>Total</b></td><td><b>3</b></td><td><b>9</b></td><td><b>16</b></td><td><b>60</b></td></tr>
+</tbody></table></div>
+<p><b>Likely support problems</b> <span class="b inf">INFERENCE</span>: thermal printer set-up and drivers; Odia characters printing as blanks; internet drop-outs mid-service; wrong GST rate/HSN on products; staff sharing one login; menu/product import errors from CSV; forgotten passwords; WhatsApp template rejections; UPI settlement mismatches; "software is slow" (actually a cheap Android tablet); accidental deletions ("Fresh Business Reset" exists for admins <span class="b v">VERIFIED FACT</span>); subscription lapse on festival days.</p>
+
+<h2>23. 12-month roadmap</h2>
+<p>Assumes the decision to proceed and a team of 3–5. Effort from Part 05. If AppZetBilling stays the core, Phases 1–3 apply to hardening it instead and SalePro enters only in Phase 6.</p>
+<div class="tblw"><table>
+<thead><tr><th>Phase</th><th>Months</th><th>Features</th><th>Effort</th><th>Dependencies</th><th>Objective</th><th>Priority</th></tr></thead><tbody>
+<tr><td><b>0 Due diligence</b></td><td>0–1</td><td>Author Q&amp;A, demo walk, licence confirmation, code sample review, decision memo</td><td>2–3 wks</td><td>Part 01 questions</td><td>Decide platform</td><td>P0</td></tr>
+<tr><td><b>1 Purchase + install</b></td><td>1–2</td><td>Buy Extended ×2; staging + production servers; wildcard DNS/SSL automation; cron/queue; backups</td><td>3–4 wks</td><td>Licence answer</td><td>Working environment</td><td>P0</td></tr>
+<tr><td><b>2 Branding</b></td><td>2</td><td>Name, logo, CMS site, Odia + English landing, legal pages, GST invoice for subscriptions</td><td>2–3 wks</td><td>Trademark check</td><td>Public identity</td><td>P0</td></tr>
+<tr><td><b>3 SaaS hardening</b></td><td>2–4</td><td>Security checklist, pen test, audit log, 2FA, per-tenant DB users, monitoring, Razorpay Subscriptions + dunning</td><td>8–12 wks</td><td>Code access</td><td>Safe to charge</td><td>P0</td></tr>
+<tr><td><b>4 Indian adaptation</b></td><td>3–5</td><td>CGST/SGST invoices, GSTR/Tally exports, Odia UI, Odia receipts, UPI QR, onboarding videos</td><td>8–12 wks</td><td>CA review, translator</td><td>Legal + local fit</td><td>P0</td></tr>
+<tr><td><b>5 Restaurant features</b></td><td>4–8</td><td>Recipe deduction, KOT printing, split/merge bill, captain app, QR table ordering</td><td>16–28 wks</td><td>Platform decision</td><td>Restaurant vertical</td><td>P0/P1</td></tr>
+<tr><td><b>6 Retail features</b></td><td>5–9</td><td>Scale integration, size-colour matrix, wholesale price lists, pharmacy pack (later), barcode label templates</td><td>8–14 wks</td><td>—</td><td>Retail vertical</td><td>P1</td></tr>
+<tr><td><b>7 Integrations</b></td><td>8–12</td><td>WhatsApp Cloud API, Swiggy/Zomato (subject to approval), delivery partners, payment terminals</td><td>20–35 wks</td><td>Partner approval, Meta verification</td><td>Retention and revenue</td><td>P1</td></tr>
+<tr><td><b>8 Mobile apps</b></td><td>9–12</td><td>Owner app, captain app, white-label pipeline</td><td>10–18 wks</td><td>Store accounts; tenant app source <span class="b v">VERIFIED FACT</span></td><td>Owner engagement</td><td>P1</td></tr>
+<tr><td><b>9 Scale</b></td><td>12+</td><td>Sharding map, batch migrations, load test, replicas, observability</td><td>12–20 wks</td><td>500+ tenants</td><td>Reliability</td><td>P1</td></tr>
+<tr><td><b>10 AI features</b></td><td>18+</td><td>Owner insights, demand forecast, menu suggestions</td><td>6–12 wks</td><td>Clean data</td><td>Differentiation</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h2>24. Three-year scaling plan (base scenario) <span class="b unk">ASSUMPTION</span></h2>
+<div class="tblw"><table>
+<thead><tr><th>Year</th><th>Tenants (year end)</th><th>Team</th><th>Focus</th><th>Infrastructure</th><th>Gate to next stage</th></tr></thead><tbody>
+<tr><td>1</td><td>200</td><td>3–5</td><td>Bhubaneswar/Cuttack, retail + café first; P0 delivered; 20–30 owner interviews before ad spend</td><td>One VPS → app/DB split at ~150–300 tenants</td><td>Churn &lt; 3%/mo, 100 paying tenants, one repeatable channel</td></tr>
+<tr><td>2</td><td>700</td><td>10–14</td><td>Restaurants with recipes/KOT; WhatsApp; CA and dealer channels; Puri/Berhampur/Rourkela</td><td>Separate DB + Redis + workers; nightly restore drill; second app node</td><td>Positive operating result, CAC payback &lt; 9 months</td></tr>
+<tr><td>3</td><td>1,600</td><td>20–26</td><td>Aggregators, multi-outlet, one neighbouring state, partner programme</td><td>2 DB servers, LB, sharding map, per-tenant restore tooling</td><td>Decide multi-state and funding</td></tr>
+</tbody></table></div>
+<div class="callout"><b>What we should build ourselves vs buy <span class="b add">RECOMMENDATION</span></b> Build: Indian tax/invoice layer, Odia UX, recipe/KOT logic, onboarding flow, WhatsApp automation orchestration, owner dashboards, tenant metering. Buy/rent: payment gateway, WhatsApp BSP, SMS/DLT, e-invoice GSP, object storage, monitoring, error tracking, support desk tool. Do <b>not</b> build: your own payment processing, your own aggregator marketplace, hardware manufacturing, a custom accounting engine (adopt SalePro's or export to Tally).</div>
+</section>
+<section id="10-odisha-branding" class="part-sep"><div class="k">PART 10</div><h1>10 Odisha Branding, Naming &amp; Positioning — Odisha brief Sections A–G</h1>
+<p class="sub">No name below has been checked for domain, trademark, social handle or company-name availability — none may be assumed available. Odia word meanings are from general knowledge <span class="b inf">INFERENCE</span> and must be confirmed by a native Odia speaker (spelling, connotation, transliteration). Some names may collide with existing Indian products; known collisions are flagged. Your current product is called AppZetBilling — renaming is optional and only worthwhile if the new brand will carry a multi-vertical, multi-state story.</p>
+
+<h2>A. Product naming — 30 candidates</h2>
+<div class="tblw"><table>
+<thead><tr><th>#</th><th>Name</th><th>Meaning</th><th>Target segment</th><th>Brand feel</th><th>Odisha relevance</th><th>Expansion potential</th></tr></thead><tbody>
+<tr><td>1</td><td><b>Bikri</b></td><td>Odia/Hindi-Bengali "sale"</td><td>Retail + restaurant</td><td>Direct, friendly</td><td>Everyday Odia word</td><td>Understood in Hindi/Bengali belts</td></tr>
+<tr><td>2</td><td><b>Hisaab</b></td><td>Accounts/calculation (Hindi/Urdu; Odia "hisaba")</td><td>All SMB</td><td>Trustworthy, ledger-like</td><td>Recognised in Odia</td><td>Pan-India Hindi belt (but generic; heavy collision risk)</td></tr>
+<tr><td>3</td><td><b>Labha</b></td><td>"Profit" (Sanskrit-origin, Odia "labha")</td><td>Retail, wholesale</td><td>Aspirational</td><td>Common word</td><td>Sanskrit-rooted words travel in India</td></tr>
+<tr><td>4</td><td><b>Sahaj</b></td><td>"Easy/simple"</td><td>Small shops, kirana</td><td>Simple, warm</td><td>Used in Odia</td><td>Pan-India</td></tr>
+<tr><td>5</td><td><b>Utkal Bill</b></td><td>Utkal = historical name of Odisha</td><td>All</td><td>Regional pride</td><td>Very high</td><td>Weak outside Odisha</td></tr>
+<tr><td>6</td><td><b>Kalinga POS</b></td><td>Ancient region/kingdom identity</td><td>All</td><td>Heritage</td><td>High</td><td>Kalinga is also a brand name in several industries — collision risk</td></tr>
+<tr><td>7</td><td><b>Konark</b></td><td>Sun Temple (World Heritage)</td><td>Restaurant/retail</td><td>Premium heritage</td><td>Iconic; but heavily used name</td><td>Good national recognition</td></tr>
+<tr><td>8</td><td><b>Chilika</b></td><td>Asia's largest brackish lagoon</td><td>Cafés, hospitality</td><td>Calm, natural</td><td>High</td><td>Fine nationally</td></tr>
+<tr><td>9</td><td><b>Mahanadi</b></td><td>Major river of Odisha</td><td>Enterprise, wholesale</td><td>Flow, scale</td><td>High</td><td>Regional connotation</td></tr>
+<tr><td>10</td><td><b>Dhauli</b></td><td>Site of Ashokan edicts</td><td>Enterprise</td><td>Historic</td><td>Moderate</td><td>Low</td></tr>
+<tr><td>11</td><td><b>OdiPOS</b></td><td>Odia + POS</td><td>All</td><td>Functional</td><td>Explicit</td><td>Limits national story</td></tr>
+<tr><td>12</td><td><b>Odishop</b></td><td>Odisha + shop</td><td>Retail</td><td>Playful</td><td>Explicit</td><td>Limited</td></tr>
+<tr><td>13</td><td><b>Byabasa</b></td><td>"Business" (Odia byabasaya)</td><td>All SMB</td><td>Serious</td><td>High</td><td>Hard to spell/pronounce elsewhere</td></tr>
+<tr><td>14</td><td><b>Bajar</b></td><td>"Market"</td><td>Retail, grocery</td><td>Earthy</td><td>High</td><td>Hindi "bazaar" familiarity</td></tr>
+<tr><td>15</td><td><b>Bhandar</b></td><td>Store/stock</td><td>Grocery, wholesale</td><td>Traditional</td><td>High</td><td>Pan-India</td></tr>
+<tr><td>16</td><td><b>Lekha</b></td><td>Writing/records/accounts</td><td>Accounting-led</td><td>Calm, reliable</td><td>Moderate</td><td>Pan-India via Sanskrit</td></tr>
+<tr><td>17</td><td><b>Nua</b></td><td>"New" in Odia</td><td>Startups, cafés</td><td>Fresh</td><td>High (Nua-prefixed names are common in Odisha)</td><td>Limited</td></tr>
+<tr><td>18</td><td><b>Sabu</b></td><td>"All/everything" in Odia</td><td>All-in-one message</td><td>Simple, cute</td><td>High</td><td>Low outside Odisha; means other things elsewhere</td></tr>
+<tr><td>19</td><td><b>Pragati</b></td><td>Progress</td><td>Growth-oriented SMB</td><td>Corporate</td><td>Moderate</td><td>Pan-India; heavily used name</td></tr>
+<tr><td>20</td><td><b>Mo Hisaab</b></td><td>"Mo" = my (Odia); "my accounts"</td><td>Owners</td><td>Personal</td><td>Very Odia; "Mo" echoes state-government schemes</td><td>Low</td></tr>
+<tr><td>21</td><td><b>Growbill</b></td><td>Grow + bill</td><td>Growing SMB</td><td>Modern</td><td>None</td><td>National</td></tr>
+<tr><td>22</td><td><b>Counterly</b></td><td>Counter + -ly</td><td>Retail, café</td><td>Modern SaaS</td><td>None</td><td>National/global</td></tr>
+<tr><td>23</td><td><b>Shopwise</b></td><td>Smart shop</td><td>Retail</td><td>Friendly</td><td>None</td><td>National; crowded generic</td></tr>
+<tr><td>24</td><td><b>Storeya</b></td><td>Store + "-ya"</td><td>Retail, grocery</td><td>Soft</td><td>None</td><td>National</td></tr>
+<tr><td>25</td><td><b>Kitchenly</b></td><td>Kitchen + -ly</td><td>Restaurants</td><td>Warm</td><td>None</td><td>Restaurant-only</td></tr>
+<tr><td>26</td><td><b>Bizlo</b></td><td>Biz + "lo" (take/get)</td><td>All SMB</td><td>Playful</td><td>None</td><td>National</td></tr>
+<tr><td>27</td><td><b>Tilly</b></td><td>Till (cash register)</td><td>Retail, café</td><td>Friendly</td><td>None</td><td>Global (many "Tilly" brands)</td></tr>
+<tr><td>28</td><td><b>SmartBikri</b></td><td>Smart + sale</td><td>All</td><td>Hybrid local-modern</td><td>High</td><td>Medium</td></tr>
+<tr><td>29</td><td><b>Nabin</b></td><td>"New/young" (Odia name-word)</td><td>Startups</td><td>Youthful</td><td>High</td><td>Confusable with a personal name</td></tr>
+<tr><td>30</td><td><b>Randhana</b></td><td>Odia "cooking"</td><td>Restaurants, cloud kitchens</td><td>Homely</td><td>High</td><td>Restaurant-only</td></tr>
+</tbody></table></div>
+<p><b>Known collision flags</b> <span class="b inf">INFERENCE</span>: existing Indian products already occupy "Dukaan" (e-commerce), "Khatabook", "Vyapar", "Tally", "Marg", "Petpooja", "Zoho". Avoid similar-sounding names such as Dokan, Khata, Byapar. Also check that the name is not a personal name/Odia word already registered in class 9/42 trademarks.</p>
+
+<h2>B. Should the brand include "Odisha" or "Odia"?</h2>
+<div class="tblw"><table>
+<thead><tr><th>Approach</th><th>Advantages</th><th>Disadvantages</th><th>Fit for our goals</th></tr></thead><tbody>
+<tr><td>1. Odisha-based (Utkal, Kalinga, OdiPOS)</td><td>Instant local pride and trust; easy word-of-mouth; strong when pitching to associations and local media</td><td>Reads as "regional tool"; hard to sell in Kolkata/Hyderabad; a rebrand later costs SEO and goodwill</td><td>Best for Year 1–2 identity, worst for expansion</td></tr>
+<tr><td>2. Odia-language (Bikri, Labha, Bajar)</td><td>Authentic; owners feel it speaks their language; culturally rooted but not geographically labelled; Sanskrit-origin words can travel</td><td>Pronunciation/spelling issues for non-Odia speakers; some words collide with other languages' meanings</td><td>Strong balance if the word is shared across Odia/Hindi/Bengali</td></tr>
+<tr><td>3. Neutral Indian (Sahaj, Hisaab)</td><td>Works across Hindi belt; easy to remember</td><td>Generic, crowded, hard to trademark/SEO; no Odisha edge</td><td>Good for national plans, weak locally</td></tr>
+<tr><td>4. Global SaaS (Counterly, Growbill)</td><td>Investor-friendly; easy domain match; can add languages later</td><td>No local warmth; Odia owners may perceive it as "big company software"</td><td>Best for scale, worst for local trust</td></tr>
+</tbody></table></div>
+<p><b>Evidence available:</b> the local competitors we found use neutral, English-style names (Restrofi, TMBill, Aerobill, EffiPOS, FoodKort, Restaurant XP) <span class="b tp">THIRD-PARTY</span> — so a warm Odia-rooted name would stand out; but no survey data on Odia owners' brand preference exists in our sources <span class="b unk">UNKNOWN</span>. <b>Recommendation <span class="b add">RECOMMENDATION</span>:</b> an Odia-word brand (approach 2) with an English descriptor ("Bikri — Smart POS &amp; Billing") and an "Made in Odisha" badge as a tag, not the name. Test 3–4 finalists in 10–15 owner conversations before choosing.</p>
+
+<h2>C. Positioning directions</h2>
+<div class="tblw"><table>
+<thead><tr><th>Segment</th><th>Positioning statement (candidate)</th></tr></thead><tbody>
+<tr><td>Restaurants</td><td>"Bill, KOT and stock in Odia and English — built for Odisha's kitchens, works even when the internet doesn't."</td></tr>
+<tr><td>Retail</td><td>"Fast GST billing and stock control for Odisha's shops, with WhatsApp bills."</td></tr>
+<tr><td>Grocery</td><td>"Barcode billing and udhaar tracking that a shop-owner learns in one afternoon — in Odia."</td></tr>
+<tr><td>Pharmacy</td><td>"Batch and expiry control with GST-ready bills." (after pharmacy pack ships)</td></tr>
+<tr><td>Bakery</td><td>"Fresh-daily stock, weight billing and festival-season orders."</td></tr>
+<tr><td>Café</td><td>"Quick counter billing with QR menu and repeat-customer rewards."</td></tr>
+<tr><td>Wholesale</td><td>"Party-wise price lists, credit control and GST-ready invoices."</td></tr>
+<tr><td>Small businesses</td><td>"Complete business management software for Odisha businesses."</td></tr>
+</tbody></table></div>
+
+<h2>D. Odisha-first go-to-market</h2>
+<ul>
+<li><b>Vertical first:</b> our recommendation <span class="b add">RECOMMENDATION</span> is <b>retail + cafés first</b> (lower operational complexity, faster onboarding, no aggregator dependency), with restaurants following once KOT printing, recipes and offline are solid. If AppZetBilling stays the core, restaurants can lead because it already has that depth.</li>
+<li><b>City order:</b> Bhubaneswar and Cuttack (wave 1), then Puri, Berhampur, Sambalpur, Rourkela, then Balasore, Jharsuguda, Angul, Baripada (Part 09). Industrial towns (Jharsuguda, Angul, Rourkela) offer canteens and wholesale trade; connectivity should be validated <span class="b unk">UNKNOWN</span>.</li>
+<li><b>Typical business size:</b> 1 outlet, 2–5 staff, ₹5–50 lakh annual turnover <span class="b unk">ASSUMPTION</span>; subscription sensitivity high — annual prepay discount and free trial are the conversion levers.</li>
+<li><b>Local sales:</b> 2-person field pairs, 10 demos/day, WhatsApp follow-up in Odia; dealer bundles with printer sellers; CA partnerships for GST-heavy retail; referral credit (one free month) for both sides; local business associations (traders' and hotel-restaurant associations) for group demos.</li>
+<li><b>Digital:</b> Google search "billing software Bhubaneswar", Instagram/YouTube shorts in Odia, WhatsApp click-to-chat; small budget first.</li>
+</ul>
+
+<h2>E. Localization requirements</h2>
+<div class="tblw"><table>
+<thead><tr><th>Item</th><th>Priority</th><th>Notes</th></tr></thead><tbody>
+<tr><td>English + Odia UI</td><td>P0</td><td>AppZetBilling has ~96% Odia <span class="b v">VERIFIED FACT</span>; SalePro's Odia support UNK</td></tr>
+<tr><td>GST (CGST/SGST split, HSN)</td><td>P0</td><td>Indian GST format is documented in SalePro; verify with a CA (Part 12)</td></tr>
+<tr><td>UPI (dynamic QR, Razorpay UPI)</td><td>P0</td><td>UPI MDR is 0% by law; gateway platform fee may apply <span class="b tp">THIRD-PARTY</span></td></tr>
+<tr><td>Local support (Odia phone/WhatsApp)</td><td>P0</td><td>Core differentiator</td></tr>
+<tr><td>Local onboarding (on-site or video call)</td><td>P0</td><td>Paid for restaurants</td></tr>
+<tr><td>Odia invoice/receipt</td><td>P1</td><td>Needs image-mode thermal print or PDF; test on common 58/80mm printers</td></tr>
+<tr><td>WhatsApp bills</td><td>P1</td><td>Adoption habit is strong in India <span class="b inf">INFERENCE</span>; SalePro has WhatsApp Cloud API and a POS send tick-box (Part 12)</td></tr>
+<tr><td>Odia training videos</td><td>P1</td><td>Cheapest support deflection</td></tr>
+<tr><td>Local sales representatives</td><td>P1</td><td>Commission-based</td></tr>
+<tr><td>Local payment preferences (cash, UPI, cards, credit/udhaar)</td><td>P1</td><td>Split payments and customer dues already exist in SalePro <span class="b v">VERIFIED FACT</span></td></tr>
+<tr><td>e-invoice/e-way bill</td><td>P2 (until wholesale)</td><td></td></tr>
+</tbody></table></div>
+
+<h2>F. Brand architecture</h2>
+<div class="tblw"><table>
+<thead><tr><th>Concern</th><th>Option 1: one brand</th><th>Option 2: parent + vertical products</th><th>Option 3: separate brands</th></tr></thead><tbody>
+<tr><td>Marketing</td><td>Simplest; one story</td><td>Shared awareness, targeted pages</td><td>Two budgets</td></tr>
+<tr><td>Development</td><td>One codebase</td><td>One core, vertical modules</td><td>Possibly two codebases (SalePro retail + AppZet restaurant)</td></tr>
+<tr><td>SEO</td><td>Diluted keywords</td><td>Vertical landing pages + parent authority</td><td>Focused but split authority</td></tr>
+<tr><td>Recognition</td><td>Strong</td><td>Strong</td><td>Weaker each</td></tr>
+<tr><td>Expansion</td><td>Easy</td><td>Easiest to add verticals</td><td>Costly</td></tr>
+<tr><td>Acquisition</td><td>"Is it for me?" confusion</td><td>Clear vertical message</td><td>Clear</td></tr>
+<tr><td>Ops complexity / licence</td><td>Lowest; one Extended licence pair</td><td>Low; licence likely one End Product if same app <span class="b unk">UNKNOWN</span></td><td>Highest; likely two licences <span class="b inf">INFERENCE</span></td></tr>
+</tbody></table></div>
+<p><b>Recommendation <span class="b add">RECOMMENDATION</span>:</b> Option 2 — a parent brand with "for Restaurants", "for Retail", "for Wholesale" product pages on one platform. Choose Option 3 only if you deliberately run two engines (AppZetBilling for restaurants and SalePro for retail).</p>
+
+<h2>G. Final branding output</h2>
+<h3>10 strongest name directions</h3>
+<div class="tblw"><table>
+<thead><tr><th>Name</th><th>Meaning</th><th>Tagline</th><th>Target customer</th><th>Positioning</th><th>Why it works for Odisha</th><th>National?</th></tr></thead><tbody>
+<tr><td><b>Bikri</b></td><td>Sale</td><td>"Bikri Sahaj, Hisaab Saaf"</td><td>All shops</td><td>Sales-first, simple</td><td>Everyday word, easy to say</td><td>Yes (Hindi/Bengali)</td></tr>
+<tr><td><b>Labha</b></td><td>Profit</td><td>"Where profit is visible"</td><td>Retail, wholesale</td><td>Margin visibility</td><td>Aspirational and familiar</td><td>Yes</td></tr>
+<tr><td><b>Sahaj</b></td><td>Easy</td><td>"Business made easy"</td><td>Kirana, small shops</td><td>Ease of use</td><td>Sahaj is used in Odia</td><td>Yes (crowded)</td></tr>
+<tr><td><b>Hisaab</b></td><td>Accounts</td><td>"Aapka poora hisaab"</td><td>SMB, wholesale</td><td>Trust, accounting</td><td>Familiar term</td><td>Yes (crowded)</td></tr>
+<tr><td><b>Utkal</b></td><td>Odisha's old name</td><td>"Made in Odisha, ready for India"</td><td>All Odisha</td><td>Regional champion</td><td>Very high pride</td><td>Limited</td></tr>
+<tr><td><b>Chilika</b></td><td>The lagoon</td><td>"Smooth billing, deep insights"</td><td>Cafés, hotels</td><td>Calm modern</td><td>Iconic place</td><td>Yes</td></tr>
+<tr><td><b>Nua Bikri</b></td><td>New sale</td><td>"Nua way to sell"</td><td>Startups, cafés</td><td>Fresh, youthful</td><td>Odia "Nua" charm</td><td>Limited</td></tr>
+<tr><td><b>Byabasa</b></td><td>Business</td><td>"Sabu byabasa, ek jagaye"</td><td>All SMB</td><td>All-in-one</td><td>Serious, local</td><td>Hard to spell nationally</td></tr>
+<tr><td><b>Counterly</b></td><td>Counter software</td><td>"Run your counter, grow your shop"</td><td>Retail, café</td><td>Modern SaaS</td><td>Neutral, English-friendly for staff</td><td>Yes (global)</td></tr>
+<tr><td><b>SmartBikri</b></td><td>Smart sale</td><td>"Smart POS for Odisha's businesses"</td><td>All</td><td>Local + modern</td><td>Odia word + tech cue</td><td>Moderate</td></tr>
+</tbody></table></div>
+<p>Taglines and slogans are drafts; the Odia phrases must be checked by a native speaker.</p>
+
+<h3>5 taglines</h3>
+<ol>
+<li>"Bill smart. Grow local."</li><li>"Made for Indian businesses, starting from Odisha."</li><li>"Your shop's hisaab, in your language."</li><li>"Every bill, every stock, one place."</li><li>"From counter to kitchen to books."</li>
+</ol>
+<h3>5 positioning statements</h3>
+<ol>
+<li>Complete business management software for Odisha businesses.</li>
+<li>Smart POS and business management for growing businesses.</li>
+<li>Made for Indian businesses, starting from Odisha.</li>
+<li>The Odia-language billing and inventory platform with local support.</li>
+<li>Restaurant, retail and wholesale software with GST, UPI and WhatsApp built in.</li>
+</ol>
+<h3>3 brand architectures</h3>
+<ol>
+<li><b>One brand for everything</b> — simplest, one licence pair.</li>
+<li><b>Parent + vertical products</b> — recommended.</li>
+<li><b>Separate restaurant and retail brands</b> — only if two engines are run.</li>
+</ol>
+<h3>3 Odisha-first go-to-market strategies</h3>
+<ol>
+<li><b>Twin-city dense launch:</b> Bhubaneswar + Cuttack cafés and retail, field demos, printer-dealer partnerships, 100 paying tenants before any other city.</li>
+<li><b>CA/association-led:</b> partner with CAs and trader/hotel-restaurant associations, offer group onboarding and GST-ready templates, then radiate to district towns.</li>
+<li><b>Digital-first remote:</b> Odia YouTube/Instagram content, WhatsApp support, remote onboarding for smaller towns, one regional dealer per district.</li>
+</ol>
+<div class="callout warn"><b>Before finalising any name</b> check: domain (.com/.in/.co.in), trademark search on the Indian IP portal (classes 9 and 42), social handles (Instagram, YouTube, X, Facebook), company-name availability with the MCA, plus similarity to Khatabook/Vyapar/Petpooja/Dukaan. Do not print materials before that.</div>
+</section>
+<section id="11-decision-checklist" class="part-sep"><div class="k">PART 11</div><h1>11 Final Decision, Due-Diligence &amp; Purchase Checklist — Sections 25–30</h1>
+<p class="sub">This is a decision report, not a purchase instruction. Nothing here says "buy now".</p>
+
+<h2>Decision analysis — answers A to P</h2>
+<div class="tblw"><table>
+<thead><tr><th>Q</th><th>Answer</th></tr></thead><tbody>
+<tr><td><b>A. Can SalePro + SaaS technically support a commercial SaaS?</b></td><td>Yes for the first few hundred tenants: DB-per-tenant, packages with limits, trials, Razorpay, MRR dashboard, CMS, affiliates, tickets <span class="b v">VERIFIED FACT</span>. Beyond ~1,000 tenants, fleet migrations, backups and DB-file counts need custom tooling the add-on does not document <span class="b unk">UNKNOWN</span>. Security and isolation must be reviewed before paying customers <span class="b add">RECOMMENDATION</span>.</td></tr>
+<tr><td><b>B. What do we get immediately?</b></td><td>A full retail/wholesale ERP with POS, inventory (batch/expiry/IMEI), purchasing, double-entry accounting, HRM, light restaurant features, eCommerce storefront, plus a super-admin SaaS layer with subscription billing, CMS and support tickets.</td></tr>
+<tr><td><b>C. What must we build ourselves?</b></td><td>Indian tax layer, Odia UI/printing, Razorpay recurring + dunning, GST invoices for our subscriptions, tenant metering/analytics, WhatsApp automation, kitchen printing, offline hardening, security hardening, backup/DR tooling, onboarding content.</td></tr>
+<tr><td><b>D. What must we customize?</b></td><td>Restaurant module (recipe deduction, KOT, split bill), invoice formats, super-admin reporting, mobile apps, branding — inside isolated modules to survive vendor upgrades.</td></tr>
+<tr><td><b>E. What features are missing?</b></td><td>Aggregator integration, WhatsApp automation and campaigns (Cloud API and manual sends exist), CGST/SGST verification with real invoices, e-invoice/e-way bill, captain app, delivery management, central kitchen, loyalty campaigns, public API, login/price-change audit log, 2FA, Tally export, restaurant-grade offline (Part 05).</td></tr>
+<tr><td><b>F. What licences do we need?</b></td><td>Extended for SalePro ($120) and for SaaS add-on ($125) — $245 total ≈ ₹22,000 <span class="b unk">ASSUMPTION</span> — plus written author confirmation of the SaaS interpretation; separate licences if we run separate End Products.</td></tr>
+<tr><td><b>G. What infrastructure?</b></td><td>Start on one 4 vCPU/8 GB VPS with wildcard DNS/SSL, Redis, queue worker, cron and encrypted off-site backups; split DB at ~150–300 tenants; shard after ~1,000 (Part 03).</td></tr>
+<tr><td><b>H. Approx. monthly operating cost?</b></td><td>Infra + tooling ≈ ₹12,000 at 100 tenants, ₹25,000 at 500, ₹50,000 at 1,000, ₹2.5 L at 5,000; plus people. A 3-person team ≈ ₹1.14 L/month <span class="b inf">ESTIMATE</span> (Part 06).</td></tr>
+<tr><td><b>I. What subscription pricing could we test?</b></td><td>₹499 / ₹999 / ₹1,999 / from ₹5,999 per month, annual = 10 months, WhatsApp/SMS as credits (Part 06) <span class="b add">RECOMMENDATION</span>.</td></tr>
+<tr><td><b>J. Suitable segments?</b></td><td>Retail, garments, electronics, bakeries, wholesale, general SMB; cafés (light).</td></tr>
+<tr><td><b>K. Segments needing major customization?</b></td><td>Restaurants, cloud kitchens, supermarkets, pharmacies, distributors.</td></tr>
+<tr><td><b>L. Biggest technical risks?</b></td><td>Tenant isolation/DB-root credential (R2), upgrade conflicts (R3), scale beyond ~1,000 tenants (R4), offline integrity (R5), vendor dependency (R1).</td></tr>
+<tr><td><b>M. Biggest business risks?</b></td><td>Duplicating AppZetBilling (B1), low ARPU vs support cost (B3), churn (B4), incumbents (B2), licence interpretation.</td></tr>
+<tr><td><b>N. Realistic TAM/SAM/SOM?</b></td><td>TAM ≈ 10 M+ outlets India <span class="b tp">THIRD-PARTY</span>/<span class="b unk">ASSUMPTION</span>; Odisha SAM ≈ 35–60k outlets <span class="b unk">ASSUMPTION</span>; SOM 1,000–3,000 tenants by Year 3 <span class="b unk">ASSUMPTION</span>. Odisha counts themselves were UNKNOWN in sources.</td></tr>
+<tr><td><b>O. Customer targets?</b></td><td>Conservative 80 / 250 / 600; Base 200 / 700 / 1,600; High 400 / 1,500 / 4,000 (Years 1/2/3).</td></tr>
+<tr><td><b>P. What to build first?</b></td><td>P0 stack: security + scheduler/queue/backups + Razorpay recurring + GST invoice + Odia UI/print; then restaurant depth (if on AppZet) or retail polish (if on SalePro).</td></tr>
+</tbody></table></div>
+
+<h2>The platform decision (the most important comparison)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Option</th><th>Upside</th><th>Downside</th><th>When it wins</th></tr></thead><tbody>
+<tr><td><b>1. Extend AppZetBilling only</b></td><td>No licence fees or migration; already has restaurant depth, Odia, plans and custom domains; you know the code <span class="b v">VERIFIED FACT</span></td><td>Missing accounting, offline, loyalty points, split payment, WhatsApp, GST split, audit log (all P0/P1 anyway); shared-schema tenancy needs a global scope</td><td>Restaurant-first Odisha strategy; small team</td></tr>
+<tr><td><b>2. Migrate to SalePro SaaS</b></td><td>Free accounting, ERP breadth, HRM, ecommerce, mobile apps, vendor-maintained core; DB-per-tenant isolation</td><td>Rebuild restaurant depth and Odia there; migrate existing customers; vendor lock-in; licence ambiguity; 72-sale add-on</td><td>Retail/wholesale-first, if code review is clean</td></tr>
+<tr><td><b>3. Both (SalePro for retail brand, AppZet for restaurants)</b></td><td>Uses each product's strength</td><td>Two codebases, two teams, higher ops cost, possibly two licences</td><td>Only when funded and each vertical has a dedicated owner</td></tr>
+<tr><td><b>4. Neither — build a new platform</b></td><td>Full control</td><td>Slowest; duplicates work</td><td>Not recommended now</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Current lean <span class="b add">RECOMMENDATION</span>:</b> Option 1 for restaurants, with a 2-to-3-week evaluation of SalePro as the accelerator for a <i>retail</i> vertical only if the code review and author answers are good. The licence fee is small; the risk sits in engineering and lock-in, so run the evaluation cheaply (demo, code sample, written answers) before committing.</div>
+
+<h2>27. What we should build ourselves</h2>
+<ul><li>Indian tax/invoice layer, e-invoice orchestration, Odia UX and receipts, recipe/KOT logic, onboarding flow, WhatsApp orchestration and credits ledger, tenant metering and owner dashboards, backup/restore tooling, security controls.</li></ul>
+<h2>28. What we should not build ourselves</h2>
+<ul><li>Payment processing (use Razorpay), WhatsApp infrastructure (Meta/BSP), SMS/DLT delivery, GSP/IRP connectivity, object storage, error tracking/monitoring, support desk software, hardware, and a bespoke accounting engine.</li></ul>
+
+<h2>29. Final business model options</h2>
+<div class="tblw"><table>
+<thead><tr><th>Model</th><th>Description</th><th>Pros</th><th>Cons</th></tr></thead><tbody>
+<tr><td>M1 Direct SaaS (subscription)</td><td>Own brand, 3 plans, monthly/annual</td><td>Recurring revenue, full control</td><td>Support-heavy</td></tr>
+<tr><td>M2 Direct + reseller network</td><td>Dealers/CAs sell at discount</td><td>Faster reach</td><td>Lower margin, brand control</td></tr>
+<tr><td>M3 Vertical SaaS (restaurant first)</td><td>Depth over breadth</td><td>Higher ARPU</td><td>Competes with Petpooja head-on</td></tr>
+<tr><td>M4 Retail/wholesale SaaS (SalePro-led)</td><td>Breadth with accounting</td><td>Lower complexity, faster start</td><td>Lower ARPU, price-sensitive</td></tr>
+<tr><td>M5 Services + software (setup, hardware referral)</td><td>Cash flow from onboarding</td><td>Funds early stage</td><td>Distracts from product</td></tr>
+</tbody></table></div>
+
+<h2>25. Final due-diligence checklist</h2>
+<ol>
+<li>Written answers to all 23 author questions (Part 01).</li>
+<li>Read the Envato SaaS help article directly and save it with date.</li>
+<li>Walk the SalePro demo (admin and staff) and enumerate every report, export and print format; record a checklist of Indian invoice fields.</li>
+<li>Test restaurant flow end to end: table → KOT → KDS → bill → split payment → cancel; note every gap.</li>
+<li>Test offline: airplane-mode billing, reconnect, stock and invoice-number effects.</li>
+<li>Request a SaaS staging login; create a tenant, upgrade/downgrade, suspend, and export a backup.</li>
+<li>Request the composer dependency list and a redacted code sample of billing and tenancy layers; run static analysis.</li>
+<li>Confirm Odia language support and thermal-printer behaviour on two common printers.</li>
+<li>Confirm Razorpay recurring/AutoPay approach and GST invoice generation for subscriptions.</li>
+<li>Estimate migration work for existing AppZetBilling customers (if any).</li>
+<li>CA sign-off on GST invoice format and SaaS subscription GST treatment.</li>
+<li>Trademark/domain/company-name checks for the chosen brand.</li>
+<li>Owner interviews (20–30) to validate price and segment assumptions.</li>
+<li>Decision meeting with go/no-go criteria written in advance.</li>
+</ol>
+
+<h2>30. Management summary</h2>
+<ul>
+<li>SalePro + SalePro SaaS is a credible, cheap starting point for a <b>retail-oriented</b> SaaS; the licence cost is negligible (≈ ₹22k for Extended ×2 <span class="b unk">ASSUMPTION</span>) and the technology can serve hundreds of tenants.</li>
+<li>It is <b>not</b> a restaurant-first product, and you already own a restaurant-strong SaaS.</li>
+<li>Economics: break-even ≈ 165 paying customers at ₹860 ARPU with a 3-person team <span class="b inf">ESTIMATE</span>; requires about ₹20–30 lakh of runway <span class="b inf">ESTIMATE</span>.</li>
+<li>Biggest unknowns: licence interpretation, tenant isolation quality, offline behaviour, Odia support, and vendor dependence.</li>
+<li>Recommended next step: a 2–3 week evidence-gathering sprint, not a purchase.</li>
+</ul>
+
+<h2>Summary table</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>Current capability</th><th>Required work</th><th>Risk</th><th>Priority</th></tr></thead><tbody>
+<tr><td>Licensing</td><td>Extended ×2 likely required; SaaS covers all tenants (per summaries)</td><td>Written author confirmation; read Envato article</td><td>HIGH</td><td>P0</td></tr>
+<tr><td>Multi-tenancy</td><td>DB per tenant, subdomains, custom domains</td><td>Isolation review, per-tenant DB users, sharding map</td><td>CRITICAL→HIGH</td><td>P0</td></tr>
+<tr><td>Subscription billing</td><td>Packages, trials, 15+ gateways incl. Razorpay</td><td>Recurring/AutoPay, dunning, GST invoices</td><td>HIGH</td><td>P0</td></tr>
+<tr><td>Restaurant</td><td>Tables, KDS, QR, modifiers (set-up not documented)</td><td>Recipe deduction, printers, split bill, captain app</td><td>HIGH</td><td>P0/P1</td></tr>
+<tr><td>Retail/wholesale</td><td>Strong (batch, IMEI, variants, accounting)</td><td>GST format check, exports, polish</td><td>MEDIUM</td><td>P0/P1</td></tr>
+<tr><td>Offline</td><td>Browser-based queue</td><td>LAN bridge or hardened sync</td><td>HIGH</td><td>P1</td></tr>
+<tr><td>Indian compliance</td><td>Indian GST invoice format documented; HSN</td><td>CA verification, e-invoice, e-way bill, GSTR/Tally export</td><td>HIGH</td><td>P0/P1</td></tr>
+<tr><td>Localisation</td><td>18+ languages, Odia UNK; SMS only Twilio/Clickatell</td><td>Odia UI + printing</td><td>MEDIUM</td><td>P0</td></tr>
+<tr><td>Integrations</td><td>Payment gateways, WooCommerce, WhatsApp Cloud API (mostly manual)</td><td>WhatsApp automation, aggregators, delivery</td><td>HIGH</td><td>P1</td></tr>
+<tr><td>Security</td><td>Unknown; defaults and Activity Log documented</td><td>Pen test, 2FA, login audit, secrets</td><td>HIGH</td><td>P0</td></tr>
+<tr><td>Infrastructure</td><td>Self-hosted</td><td>Wildcard cert automation, cron/queue, backups, monitoring</td><td>MEDIUM</td><td>P0</td></tr>
+<tr><td>Super-admin analytics</td><td>MRR, renewals, clients</td><td>Churn/ARR, metering, health, audit</td><td>MEDIUM</td><td>P1</td></tr>
+<tr><td>Mobile</td><td>Separate Flutter apps</td><td>White-label pipeline</td><td>MEDIUM</td><td>P1</td></tr>
+<tr><td>Vendor dependence</td><td>Single author; add-on 72 sales</td><td>Continuity plan, modular customizations</td><td>HIGH</td><td>P0</td></tr>
+<tr><td>Market/pricing</td><td>Anchors known; Odisha data UNK</td><td>Owner interviews, price tests</td><td>MEDIUM</td><td>P0</td></tr>
+</tbody></table></div>
+
+<h2>PURCHASE CHECKLIST — verify BEFORE spending money</h2>
+<ul style="list-style:none;padding-left:4px">
+<li>☐ Author has confirmed in writing that Extended ×2 covers a paid multi-tenant SaaS (unlimited tenants)</li>
+<li>☐ Author has confirmed whether SalePro + SaaS count as one End Product and how multiple brands are treated</li>
+<li>☐ Correct price ($39 vs $69) and correct PHP version (8.2 vs 8.3) confirmed</li>
+<li>☐ Envato SaaS help article read directly (not via summary) and archived</li>
+<li>☐ Demo walk completed; restaurant, offline, reports, GST invoice tested and recorded</li>
+<li>☐ SaaS staging access obtained; tenant create/suspend/upgrade/delete/backup tested</li>
+<li>☐ Odia UI/printing feasibility confirmed</li>
+<li>☐ Razorpay recurring/AutoPay and GST invoice for subscriptions confirmed</li>
+<li>☐ Composer dependency list and code sample reviewed; static analysis run</li>
+<li>☐ Security review plan and budget agreed (pen test)</li>
+<li>☐ Support SLA, update policy after support expiry, and roadmap obtained in writing</li>
+<li>☐ Decision made on platform (Option 1/2/3) with the AppZetBilling comparison</li>
+<li>☐ Migration plan for existing customers, if any</li>
+<li>☐ Infrastructure plan and budget approved (wildcard SSL automation, backups, monitoring)</li>
+<li>☐ CA sign-off on GST treatment and invoice formats</li>
+<li>☐ Owner interviews and price test results collected</li>
+<li>☐ Brand name checked: domain, trademark, social, company name</li>
+<li>☐ Runway of ≈ ₹20–30 lakh identified or a stage-gated budget agreed</li>
+<li>☐ Written go/no-go criteria signed off</li>
+</ul>
+</section>
+<section id="12-official-docs-reference" class="part-sep"><div class="k">PART 12</div><h1>12 SalePro Official Documentation Reference — every chapter checked</h1>
+<p class="sub">Source: <a href="https://lion-coders.com/blog/salepropos">lion-coders.com/blog/salepropos</a> — the full page was downloaded and read this session (≈ 34,600 words, 23 chapters, 540 headings, page dated "Updated Sep 2, 2026" on the site). Everything below is <span class="b v">VERIFIED FACT</span> from that page unless tagged. Parts 01–11 were written from summaries before this was read; the box below lists what this document changes.</p>
+
+<div class="callout bad"><b>Corrections to earlier parts (docs override my earlier "not found")</b>
+<ul>
+<li><b>WhatsApp exists</b> (Ch. 18, 21.25, POS): WhatsApp Cloud API (Meta) settings, approved-template sync, send from Customer List, "Send WhatsApp Message" tick-box in the POS payment modal, per-event In-App/WhatsApp/SMS/Email matrix. Sending is mostly staff-triggered, not automatic. Earlier: "NOT FOUND / NOT AVAILABLE" → now <b>PARTIAL</b>.</li>
+<li><b>Indian GST invoice format exists</b> (5.3): General Setting → Invoice Format "Indian GST" auto-calculates CGST/SGST/IGST and shows them separately on the receipt. Earlier: "UNK" → now <b>AVAILABLE (test with real invoices)</b>. e-invoice and e-way bill are still not mentioned.</li>
+<li><b>Activity Log exists</b> (20.1): who created/updated/deleted sales, purchases and quotations. Earlier "audit log likely absent" → <b>PARTIAL</b> (no login, price-change or super-admin coverage documented).</li>
+<li><b>Cash register, coupons, discount plans, gift cards, customer credit limits, deposits, reward points, direct ESC/POS network printing, low-stock notification in POS, expiry and quantity-alert reports</b> are all documented → earlier UNK items now <b>AVAILABLE</b>.</li>
+<li><b>Offline POS</b> is documented in detail (see Ch. 5.3 below) — browser-only, single device, data lost if browser storage is cleared. This confirms the earlier inference.</li>
+<li><b>Restaurant depth is still thin in the docs:</b> only a few paragraphs in 5.3 and "Tables" 21.5. Floors only work "when the Restaurant module is installed/active"; KDS and modifiers are named but have <b>no chapter</b>. Ask whether the Restaurant module is a separate paid item.</li>
+<li><b>Manufacturing and Repair are listed as Addons</b> (Ch. 22) and Project/eCommerce/Tailoring/Social Commerce as "enabled modules". The CodeCanyon page says several are included — ask exactly which are in the $30 licence.</li>
+<li><b>Recipes:</b> "Wastage Percent" is reference info only and does not change stock deduction; production is a manual entry that adds finished stock and deducts ingredients. Confirms there is no auto-deduction per restaurant sale.</li>
+<li><b>SMS is Twilio or Clickatell only</b> (21.14) — no Indian DLT provider (MSG91, etc.). Extra work for India.</li>
+<li><b>Languages:</b> the docs mention Bengali as the example; Odia still not confirmed.</li>
+</ul></div>
+
+<h2>Getting started (Ch. 0)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>What the docs say</th></tr></thead><tbody>
+<tr><td>0.0 How to use</td><td>Recommended setup order: install → general settings/currency/tax → warehouses, billers, roles, users → units/categories/brands/products → suppliers/customers/opening stock → payment accounts → test one purchase/sale/payment/return → optional modules (Restaurant, Manufacturing, Repair, eCommerce, Tailoring, Social Commerce, WhatsApp, HRM). Core flow: Supplier → Purchase → Warehouse stock → Sale/POS → Payment → Return/Exchange → Accounting → Reports.</td></tr>
+<tr><td>0.1 Server requirements</td><td>Laravel app, PHP 8.3, MySQL 5.7+, required extensions, Apache/Nginx/LiteSpeed; troubleshooting.</td></tr>
+<tr><td>0.2 Installation</td><td>cPanel and XAMPP/WAMP installs with a web wizard (DB creation, upload/extract, wizard fields).</td></tr>
+<tr><td>0.3 Change domain / hosting</td><td>Export DB, zip files, import, edit <code>.env</code>.</td></tr>
+<tr><td>0.4 Updating</td><td>Download update, upload and replace files, run update script. <b>Warning: any custom code in core files is overwritten by updates</b> — confirms upgrade-conflict risk R3.</td></tr>
+<tr><td>0.5 Quick start</td><td>Login, dummy data, <b>Fresh Business Reset</b> to wipe demo data.</td></tr>
+</tbody></table></div>
+
+<h2>1. Dashboard</h2>
+<p>Date filter; KPI cards (Sale, Sale Due, Sale Return, Expense, Purchase, Purchase Due, Purchase Return, Profit); cash-flow chart (6 months); monthly summary donut; yearly report; recent transactions; best-seller panels (month, year by qty, year by value). Cards hidden by role.</p>
+
+<h2>2. People</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>2.1 Customers</td><td>Customer groups (price adjustment %), walk-in customer, WhatsApp number, credit limit, payment term, customer type, custom fields, reward point balance, deposit balance, total due; actions: Edit, Due Report, <b>Clear Due</b> (cash, gift card, card, cheque, PayPal, deposit, points), Add/View Deposit, <b>WhatsApp Notification</b>, Add/View Points; CSV import.</td></tr>
+<tr><td>2.2 Suppliers</td><td>Profiles, total due, View Payment, Clear Due, purchases link to supplier payables; CSV import.</td></tr>
+<tr><td>2.3 Users</td><td>Users tied to a Role; default Biller and Warehouse per staff user; status control; password reset; user creation by role.</td></tr>
+<tr><td>2.4 Sale Agents</td><td>Sales-target tiers and commission; commission calculated during payroll from sales under the agent's linked user.</td></tr>
+<tr><td>2.5 Billers</td><td>Branch/store/company issuer profiles; company name and VAT number print on invoices.</td></tr>
+</tbody></table></div>
+
+<h2>3. Product</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>3.1–3.3</td><td>Nested categories (CSV import), brands (CSV import), units with base and sub-units (box→piece).</td></tr>
+<tr><td>3.4 Product list</td><td>Filters (warehouse, type, stock status), stock worth at price and cost, history, CSV import.</td></tr>
+<tr><td>3.5 Add product</td><td><b>Four types: Standard, Combo (bundle of standard products), Digital (file), Service.</b> Auto/manual code, price, promotional price (only the end date is enforced — start date is ignored, a documented quirk), variants (unique code/extra cost/price per combination), IMEI/serial (blocks duplicate IMEI), batch and expiry (required at purchase), featured (priority on POS grid), tax method inclusive/exclusive, warranty period shown on invoice, alert quantity, eCommerce toggles, custom fields. There is no "is recipe" flag — recipes are set in Manufacturing.</td></tr>
+<tr><td>3.6 Barcodes</td><td>Built-in generator, A4/label-roll printing, name/price/promo text on labels, weight-embedded barcodes (7-digit code + 5-digit weight) for deli scales — the barcode never encodes price; price = weight × normal price.</td></tr>
+<tr><td>3.7–3.9</td><td>Quantity adjustment (add/subtract), stock count with downloadable expected-quantity file and reconciliation, damage list (reduction only).</td></tr>
+</tbody></table></div>
+
+<h2>4. Purchase</h2>
+<p>Purchase list with detail modal and filters; add purchase (warehouse, supplier, status Received/Pending/Ordered, live tax/discount/shipping, payment status, stock logic by status, attachments per settings); CSV import; purchase return by original reference with supplier refund. A purchase both raises stock and posts to accounting (expense or payable).</p>
+
+<h2>5. Sale</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>5.1 Sale list</td><td>Invoice detail modal, filters (including <b>Sale Type</b>: POS, eCommerce, Social Commerce, Tailoring), add payment, add delivery, add return, delete (restores stock), WhatsApp links when Social Commerce active.</td></tr>
+<tr><td>5.2 Instalments</td><td>Plans created from sales; paid/remaining/next due; instalment report with overdue amount.</td></tr>
+<tr><td>5.3 POS</td><td>Customer, warehouse/biller, currency and exchange rate, retail/wholesale price toggle, product search by name/code/IMEI, barcode scan, category/brand/featured filters, variant modal, price and discount override (manager permission), flat/percent discount, coupon, order tax, shipping, drafts, recent transactions, calculator, sale-return shortcut, customer display, print last receipt, cash register, notifications with low-stock alerts, offline indicator, keyboard shortcuts (Shift+C/D/E/F/K/P/Q/R/S/X/T/W), on-screen keyboard, sound, custom POS CSS.<br><b>Payments:</b> cash, card, cheque, gift card, deposit, points; <b>multiple pay (split tender)</b>; credit sale with pay term and credit-limit check; instalment; gateways with polling/QR (M-Pesa, MTN MoMo, PayHere, Stripe); <b>Razorpay is UPI-only and needs customer name/email/phone</b>; tick-boxes "Print Invoice" and "Send WhatsApp Message". Out-of-stock sales blocked unless "Sale without stock" is enabled.</td></tr>
+<tr><td>5.3 Offline / auto sync</td><td>POS caches products in the browser while online; on connection loss it switches automatically, hides online-only options, saves completed sales in the same browser, shows a pending count, prints an offline receipt; on reconnect it sends pending sales one by one, failures stay pending. <b>Limits (from the docs' own warnings):</b> tied to one computer/browser; clearing browser storage before sync can lose sales; POS must be opened online first; the server record (stock, payments, accounting) is created only after sync.</td></tr>
+<tr><td>5.3 Restaurant mode</td><td>POS mode Regular / Restaurant / Ask-every-time; service type Dine-in/Take-away/Delivery; table picker (green free, red occupied); waiter select; order kept as a Draft until paid; reopen occupied table; add items while kitchen works; kitchen-routed items appear in KDS with configured statuses; modifiers; one stock deduction at finalize. Requires prior set-up of floors/tables, waiters, kitchens/KDS routing and modifiers — <b>the set-up screens for floors, kitchens and modifiers are not documented in this page</b>.</td></tr>
+<tr><td>5.3 Catalog QR</td><td>Per-table QR that opens a digital menu where customers browse and order.</td></tr>
+<tr><td>5.4–5.5 Add sale / import</td><td>Full sale form, global modifiers, sale status Completed/Pending/Draft, CSV import.</td></tr>
+<tr><td>5.6–5.8, 5.11 Delivery</td><td>Delivery records, packing slips/challans, statuses Packing/Delivering/Delivered, delivery person, courier list.</td></tr>
+<tr><td>5.9–5.10 Gift cards, coupons</td><td>Gift card (random or scanned physical card, amount, customer); coupons (percentage or fixed, generate code).</td></tr>
+<tr><td>5.12–5.13 Return, exchange</td><td>Returns restock and post refund; exchange computes returned value vs new items and settles the difference.</td></tr>
+</tbody></table></div>
+
+<h2>6–9. Quotation, transfer, expense, income</h2>
+<ul>
+<li><b>Quotation:</b> price offer with status, e-mail PDF, convert to sale; no stock or revenue until converted.</li>
+<li><b>Transfer:</b> warehouse-to-warehouse with status, shipping cost, CSV import; must have stock in source.</li>
+<li><b>Expense:</b> categories, list with filters, receipt attachment, warehouse-tagged; <b>Income:</b> categories, list; posts a credit to the account (no receipt upload).</li>
+</ul>
+
+<h2>10. Accounting</h2>
+<p>Double-entry. Accounts (with default account for checkout), add account, money transfer (journal), balance sheet, account statement with opening balance and running balance. Sales, purchases and payments post automatically; edits/deletes reverse the earlier effect rather than rewriting history; <b>periodic inventory</b> for COGS/profit (not per-sale COGS); Accounting Health/reconciliation tool for admins. Not documented: trial balance in this chapter (product page mentions it), Tally/GSTR export.</p>
+
+<h2>11. HRM</h2>
+<p>Department, designation, shift, employee (payroll is tied to the employee record, not the user), attendance, holiday, overtime, leave type, leaves, payroll (sale-agent commission flows in), HRM settings (default check-in/out).</p>
+
+<h2>12. Manufacturing (add-on)</h2>
+<p>Recipe (Standard or Combo products; ingredient rows with quantity, unit cost/price, wastage % as reference), Production (select recipe, quantity, cost → finished stock added, ingredients deducted), production details and calculation examples. Manual, not per-sale.</p>
+
+<h2>13–16. Repair, Project, eCommerce, Tailoring</h2>
+<div class="tblw"><table>
+<thead><tr><th>Module</th><th>Features</th></tr></thead><tbody>
+<tr><td>13 Repair (add-on)</td><td>Dashboard and filters, service jobs, device and vehicle records, customer management, parts and billing, payments, technician assignment, device/vehicle types, job status and priority management, print/receipt.</td></tr>
+<tr><td>14 Project management</td><td>Projects (customer, dates, priority, employees, status, discussions, bugs, files), project categories, tasks (hours, WhatsApp notify).</td></tr>
+<tr><td>15 eCommerce</td><td>Sliders, menus, collections, pages with page builder (home included), widgets, FAQ categories/FAQs, social links, blog, payment gateways (same global screen), storefront settings (Default/Fashion theme, RTL, warehouse/biller for online orders, tracking codes), product reviews, newsletter, delivery areas, theme.</td></tr>
+<tr><td>16 Tailoring</td><td>Dashboard, orders with multiple garment pieces, measurement profiles (versioned, PDF), Kanban production board with material reservation and consumption, notification templates (only WhatsApp link delivers; SMS/e-mail are logged only), public order-tracking page, reports (CSV) and profit estimate.</td></tr>
+</tbody></table></div>
+
+<h2>17–19. AI Assistant, WhatsApp, Social Commerce</h2>
+<ul>
+<li><b>AI Assistant (17):</b> a fixed library of ten questions answered from your own data (sales/purchase/expense summaries, daily snapshot, low stock, top and slow sellers, customer/supplier dues, cash and bank). Not a free-form chatbot; no external AI API or cost; respects warehouse restriction. (Consistent with the CodeCanyon "no external API" claim.)</li>
+<li><b>WhatsApp (18):</b> Cloud API credentials (permanent token, phone-number ID, business-account ID); templates are approved in Meta and only listed/deleted in SalePro; send from Customer List; falls back to wa.me link without credentials.</li>
+<li><b>Social Commerce (19):</b> dashboard by channel (WhatsApp/Facebook/Instagram/Telegram), publishable product catalog with share links and QR, Meta Commerce CSV feed with secret URL, settings including three staff-triggered WhatsApp text templates (order confirmation, payment request, delivery update).</li>
+</ul>
+
+<h2>20. Reports (34 documented)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Group</th><th>Reports</th></tr></thead><tbody>
+<tr><td>Audit</td><td>20.1 Activity Log (sales, purchases, quotations)</td></tr>
+<tr><td>Profit</td><td>20.2 Profit/Loss (revenue, COGS, gross, expenses, net — needs correct cost); 20.3–20.8 Profit by Product, Category, Brand, Customer, Location, Invoice</td></tr>
+<tr><td>Sales</td><td>20.9 Best Seller, 20.10 Product Report (slow on big data), 20.12 Daily Sale, 20.13 Monthly Sale, 20.16 Sale Report, 20.17 Challan Report, 20.18 Sale Report Chart, 20.30 Daily Sale Objective (needs a daily cron)</td></tr>
+<tr><td>Purchases</td><td>20.14 Daily Purchase, 20.15 Monthly Purchase, 20.20 Purchase Report</td></tr>
+<tr><td>Stock</td><td>20.11 Stock Report (weighted-average cost; in/low/out/negative filter), 20.26 Warehouse Report, 20.27 Warehouse Stock Chart, 20.28 Product Expiry, 20.29 Product Quantity Alert</td></tr>
+<tr><td>Money</td><td>20.19 Payment Report, 20.23 Customer Due, 20.25 Supplier Due, 20.33 Instalment Report, 20.34 Cash Register sessions (admin only)</td></tr>
+<tr><td>People</td><td>20.21 Customer, 20.22 Customer Group, 20.24 Supplier, 20.31 User, 20.32 Biller (only Sale/Quotation/Payment tabs populate)</td></tr>
+</tbody></table></div>
+<p>Export: CSV/PDF (and Excel/print on list pages). Not present in this list: dedicated <b>GST/GSTR report</b> (the product page mentions a consolidated India GST report — not in the docs chapter list; verify), <b>tax report by rate</b>, <b>staff/waiter performance</b>, <b>KOT/kitchen</b> reports, <b>table turnover</b>, <b>food-cost</b>.</p>
+
+<h2>21. Settings (27 sections)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>What exists</th></tr></thead><tbody>
+<tr><td>Access</td><td>Role Permission matrix per module (products, purchases, sales, POS, reports…); user profile.</td></tr>
+<tr><td>Business</td><td>General settings (site, company, VAT number, logo, currency and position, timezone — do not change after selling —, date format, Indian GST invoice format, oversell toggle, POS CSS), languages, currency and exchange rate, taxes (unlimited, CSV import), warehouses, tables (with floors if Restaurant module), custom fields (product/sale/purchase/customer).</td></tr>
+<tr><td>Pricing</td><td>Discount plans, discounts (per product or all, day-of-week), customer groups (price %), reward points (amount per point, minimum, point value).</td></tr>
+<tr><td>POS</td><td>Default customer/biller/warehouse, POS mode, payment options list, touchscreen keyboard, table management, send SMS after sale, cash register lock, sound, print-invoice tick-box.</td></tr>
+<tr><td>Payments</td><td>PayPal, Stripe, Razorpay, Paystack, Mollie, Xendit, bKash, SSLCommerz, M-Pesa, Pesapal, MTN MoMo, PayHere, Moneipoint (keys entered here).</td></tr>
+<tr><td>Printing</td><td>ESC/POS printers (network IP:9100, Windows SMB, Linux device) or browser printing 58/80 mm; customer display on a second monitor; invoice templates (logo, footer, terms); barcode label settings.</td></tr>
+<tr><td>Messaging</td><td>SMTP mail; SMS via Twilio/Clickatell, bulk SMS, SMS templates; notification center (all/send) and per-event matrix (In-App, WhatsApp, SMS, Email; recipients admin/customer/supplier).</td></tr>
+<tr><td>Data</td><td>Backup Database: one-click .sql dump, download, restore (drops and replaces DB; files not included).</td></tr>
+</tbody></table></div>
+
+<h2>22. Addons and 23. Glossary</h2>
+<ul>
+<li><b>WooCommerce:</b> orders sync Woo→SalePro, products/categories SalePro→Woo, tax mapping; installed with an Envato purchase key.</li>
+<li><b>eCommerce:</b> separate storefront add-on with its own docs. <b>SaaS add-on:</b> must sit at the root domain; installing over live data may overwrite it — back up first; existing installs can be added as a tenant. <b>Repair</b> and <b>Manufacturing</b> are listed as add-ons.</li>
+<li>Glossary covers warehouse, biller, dues, payment account, variant, batch/expiry, IMEI, return vs exchange, credit sale, instalment, recipe/production, service job, tailoring piece, draft, journal.</li>
+</ul>
+
+<h2>What this changes for the decision</h2>
+<ul>
+<li>SalePro is broader than I first reported (WhatsApp Cloud API, Indian GST invoice, activity log, cash register, tailoring, social commerce, 34 reports). Retail and wholesale fit improves; the AI, HRM and accounting claims hold up.</li>
+<li>The restaurant verdict does <b>not</b> improve: KDS, kitchens, modifiers and floors are only referenced, with no set-up documentation, and there is still no automatic ingredient deduction, aggregator integration, split/merge bill or captain app in the docs.</li>
+<li>India gaps that remain: e-invoice/e-way bill, Indian SMS (DLT) providers, Odia language and printing, Tally/GSTR exports, UPI beyond Razorpay's UPI-only POS flow.</li>
+<li>New questions for the author (add to Part 01): Is Restaurant/KDS a separate paid module? Which of Manufacturing, Repair, Tailoring, Social Commerce, Project are in the $30 licence? Where is the GST consolidated report? Is the Activity Log per tenant in SaaS? Does the tenant DB backup ("Backup Database") run in SaaS per tenant?</li>
+</ul>
+</section><footer>SalePro + SalePro SaaS due-diligence analysis - generated 2026-09-20 - research only; nothing was purchased or installed.</footer></div></body></html>

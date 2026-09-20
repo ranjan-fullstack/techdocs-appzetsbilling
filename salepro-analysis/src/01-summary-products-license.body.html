@@ -1,0 +1,115 @@
+<!--TITLE:01 Executive Summary, Products &amp; License — Sections Exec, 1, 2-->
+<p class="sub">Due-diligence only. Nothing was bought, installed or run. Evidence tags: [[V]] read on an official page this session · [[TP]] third-party page · [[EST]] calculated estimate · [[ASM]] stated assumption · [[REC]] our recommendation · [[UNK]] could not be verified · [[INF]] reasoned inference.</p>
+
+<h2>Executive summary</h2>
+
+<div class="callout bad"><b>The pivotal finding: you already own a SaaS product</b>
+Your previous audit (gap-analysis Parts 01–12) shows AppZetBilling is a working multi-tenant Laravel POS/restaurant SaaS (shared schema, <code>business_id</code>, plans with limits, custom domains, KOT, tables, recipe-based stock deduction, Odia UI ~96%). So the real question is not "can SalePro be a foundation?" but <b>"is it better than extending AppZetBilling?"</b> SalePro would mean a second codebase, a second data model, and a migration for any existing customers. Read Part 11 before anything else. <b>Part 12 (official docs, read in full) corrects several "not found" claims in Parts 01–11 — WhatsApp Cloud API, Indian GST invoice format and an activity log do exist.</b></div>
+
+<div class="grid">
+<div class="card"><b>SalePro (core)</b><span class="v">$30 / $120</span>Regular / Extended · 3,165 sales · 4.52★ (217) [[V]]</div>
+<div class="card"><b>SalePro SaaS add-on</b><span class="v">$39 / $125</span>Regular / Extended · 72 sales · 1 review [[V]]</div>
+<div class="card"><b>Licence needed to charge tenants</b><span class="v">Extended ×2</span>$245 total on the page prices; author must confirm [[V]] [[REC]]</div>
+<div class="card"><b>Break-even (moderate case)</b><span class="v">≈165</span>paying customers at ₹860 ARPU, 3-person team [[EST]]</div>
+</div>
+
+<h3>Straight answers</h3>
+<ul>
+<li><b>Can the pair technically run a commercial SaaS?</b> Yes for a first few hundred tenants: it has separate-DB tenants, packages with limits, trials, 15+ gateways including Razorpay, a super-admin dashboard, CMS, affiliates and tickets [[V]]. Beyond ~1,000 tenants the database-per-tenant model and per-tenant "Update Client DB" workflow become operational problems that the add-on does not document solutions for [[INF]].</li>
+<li><b>Is it a fit for restaurants?</b> Partly. Floors/tables, waiter, dine-in/takeaway/delivery, KDS and QR menu are advertised [[V]]. Ingredient deduction on sale is not automatic in the docs excerpt ("production is manual, not automatic on sale") [[V]], no aggregator integration was found, and KOT printer routing, split/merge bill and captain app are undocumented [[UNK]]. Retail/wholesale/pharmacy-lite/electronics is where it is strongest.</li>
+<li><b>Is the licence fee the risk?</b> No: $245 is roughly ₹22,000 [[ASM]] (₹90/USD). The risk is engineering lock-in, the 72-sale add-on maturity, the unresolved licence interpretation, and duplicating a product you already have.</li>
+<li><b>Recommendation</b> [[REC]]: do not purchase yet. Run the 2–3 week due-diligence in Part 11 (author Q&amp;A in writing, demo walk-through, licence confirmation), then decide between (a) extend AppZetBilling, (b) SalePro SaaS for a retail/wholesale vertical only, (c) both. Our current lean is (a) for restaurants, with SalePro considered only as a retail-vertical accelerator.</li>
+</ul>
+
+<h2>1. Products analysed</h2>
+<div class="tblw"><table>
+<thead><tr><th>Attribute</th><th>SalePro</th><th>SalePro SaaS add-on</th></tr></thead>
+<tbody>
+<tr><td>CodeCanyon title</td><td>SalePro – All-in-One POS, Inventory, ERP &amp; eCommerce</td><td>SalePro SaaS – Multi-Tenant POS Add-on</td></tr>
+<tr><td>Item link</td><td><a href="https://codecanyon.net/item/lims-stock-manager-pro-with-pos/22256829">/22256829</a></td><td><a href="https://codecanyon.net/item/pos-saas-addon-for-salepro-multitenant-inventory-billing-module/58373948">/58373948</a></td></tr>
+<tr><td>Author</td><td>LionCoders (Elite Author) [[V]]</td><td>LionCoders (Elite Author) [[V]]</td></tr>
+<tr><td>Published</td><td>~8 years ago [[V]]</td><td>~1 year ago [[V]]</td></tr>
+<tr><td>Last update</td><td>25 Aug 2026 [[V]]</td><td>2 Aug 2026 [[V]]</td></tr>
+<tr><td>Sales / rating</td><td>3,165 sales · 4.52 (217 reviews) [[V]]</td><td>72 sales · 1 review [[V]]</td></tr>
+<tr><td>Standalone?</td><td>Yes</td><td><b>No.</b> Requires SalePro; converts a compatible install into multi-tenant [[V]]</td></tr>
+<tr><td>Framework</td><td>Laravel [[V]]</td><td>Laravel [[V]]</td></tr>
+<tr><td>PHP</td><td>8.3 [[V]]</td><td>8.3+ (CodeCanyon page and docs); the author's own product page says 8.2+ [[V]] — inconsistency, ask author</td></tr>
+<tr><td>Database</td><td>MySQL 5.7+ [[V]]</td><td>MySQL-compatible, needs root/main access to create tenant DBs [[V]]</td></tr>
+<tr><td>Files included</td><td>JavaScript, HTML, CSS, PHP, SQL — full Laravel source [[V]]</td><td>Full source (add-on) [[INF]]</td></tr>
+<tr><td>Frontend</td><td>Blade/HTML/CSS/JS (framework details such as jQuery vs SPA not stated on the page) [[UNK]]</td><td>Same + CMS landing site, themes [[V]]</td></tr>
+<tr><td>Extensions</td><td>OpenSSL, PDO, Fileinfo, Mbstring, Tokenizer, Zip, GD/Imagick, cURL, XML [[V]]; 512MB+ PHP memory, URL rewrite, VPS recommended for multi-register [[V]]</td><td>PDO/PDO MySQL, cURL, Fileinfo, GD, ZIP, Calendar + Laravel base; wildcard DNS + HTTPS; must be installed at the root domain, not a subfolder [[V]]</td></tr>
+<tr><td>Hosting panels supported for tenant DB automation</td><td>n/a</td><td>cPanel (API token), Plesk (user/password/DB server ID), PlanetHoster, VPS/dedicated [[V]]</td></tr>
+<tr><td>Support</td><td>6 months included; 12-month extension listed at $9.38; updates included [[V]]</td><td>6 months included, extendable to 12; updates included [[V]]</td></tr>
+<tr><td>Related paid add-ons</td><td>eCommerce add-on (separate item), WooCommerce connector add-on, mobile apps (Flutter) [[V]]</td><td>Tenant mobile app is a separate product; docs say it is "required for each tenant" for mobile use [[V]]</td></tr>
+<tr><td>Demo</td><td>salepropos.com/demo/login (admin/admin, staff/staff) [[V]] — <b>not yet walked through</b></td><td>No SaaS demo found in the sources read [[UNK]]</td></tr>
+<tr><td>Major limitations on record</td><td>Docs are 244 sections/32,704 words; no public REST API reference in the sections summarised [[V]]; the docs' restaurant, KDS and modifier set-up is not documented (Part 12) [[V]]</td><td>Tenant restaurant module availability, offline POS in tenants, tenant deletion and upgrade-at-scale are undocumented [[UNK]]; 72 sales = thin production track record [[INF]]</td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><b>Price discrepancy</b> The author's own site lists the SaaS add-on at <b>$69</b> ([[V]] lion-coders.com), while CodeCanyon shows <b>$39</b> Regular / $125 Extended. Also confirm whether the $39/$125 shown excludes Envato's buyer fee and tax [[UNK]]. Ask which price and which licence applies if bought directly from LionCoders.</div>
+
+<h2>2. Current price &amp; licence</h2>
+<div class="tblw"><table>
+<thead><tr><th>Item</th><th>Regular</th><th>Extended</th></tr></thead>
+<tbody>
+<tr><td>SalePro</td><td>$30</td><td>$120</td></tr>
+<tr><td>SalePro SaaS add-on</td><td>$39</td><td>$125</td></tr>
+<tr><td><b>Total, both items</b></td><td>$69 (≈ ₹6,200)</td><td><b>$245 (≈ ₹22,000)</b> [[ASM]] ₹90/USD, excl. buyer fee/tax</td></tr>
+<tr><td>Optional</td><td colspan="2">Support extension ≈ $9.38 each item [[V]]; author setup help for mobile app builds $100 [[V]]; eCommerce add-on / mobile app prices [[UNK]]</td></tr>
+</tbody></table></div>
+
+<h3>What Envato's terms say [[V]]</h3>
+<ul>
+<li><b>Regular:</b> one single End Product "for yourself or for one client". "You can't Sell the End Product, except to one client." Free end products may be copied to any number of free users. (<a href="https://codecanyon.net/licenses/terms/regular">Regular terms</a>, clauses 2, 5, 7; <a href="https://codecanyon.net/licenses/standard">licence summary</a>: "Use in an end product that's sold: No".)</li>
+<li><b>Extended:</b> one single End Product which "may be Sold"; "You can Sell and make any number of copies of the single End Product." It is "a 'single application' license and not a 'multi-use' license" — a second unique End Product needs another licence. (<a href="https://codecanyon.net/licenses/terms/extended">Extended terms</a>.)</li>
+<li><b>Prohibited under both:</b> using the item in an application that lets end users customise a product ("on demand", "made to order", "build it yourself"). A POS is not that, but a white-label builder feature could drift into it [[INF]].</li>
+<li>Search-result summaries of Envato's help article "Can I use Envato Market items in a SaaS product?" state that paid-access SaaS needs the Extended licence and that <b>one Extended licence covers all customers of that single SaaS product</b> ([[TP]] summary; the help page itself returned HTTP 403 to our fetcher, so we did not read it directly). <a href="https://help.market.envato.com/hc/en-us/articles/42955865046297-Can-I-use-Envato-Market-items-in-a-SaaS-product">Article link</a>.</li>
+</ul>
+
+<h3>Our licence conclusions</h3>
+<div class="tblw"><table>
+<thead><tr><th>Question</th><th>Answer</th><th>Confidence</th></tr></thead>
+<tbody>
+<tr><td>Which licence to charge monthly/yearly subscriptions?</td><td><b>Extended</b>, for each item you modify and sell access to</td><td>High [[V]]</td></tr>
+<tr><td>Regular or Extended?</td><td>Regular is explicitly not allowed for a sold End Product</td><td>High [[V]]</td></tr>
+<tr><td>Can one purchased copy operate a SaaS with many tenants?</td><td>Extended terms allow unlimited copies/sales of the single End Product; the Envato SaaS article (per summaries) says one Extended covers all customers. Each tenant is then an end user of one End Product, not a separate End Product</td><td>Medium — read the Envato article directly and get the author's written confirmation [[REC]]</td></tr>
+<tr><td>Is each tenant an "end user"?</td><td>Reasonable reading: yes. Risk: the tenant database is a separate DB copy — an author or Envato reviewer might argue per-tenant copies</td><td>Medium [[INF]]</td></tr>
+<tr><td>Do SalePro and the add-on together count as one End Product?</td><td>Not stated. Buy Extended for both to be safe, and ask</td><td>Unknown [[UNK]]</td></tr>
+<tr><td>If we also sell a restaurant SaaS and a retail SaaS as separate branded products?</td><td>Each unique End Product likely needs its own Extended licence pair ("not a multi-use license") — matters for the brand-architecture decision in Part 10</td><td>Medium [[INF]]</td></tr>
+<tr><td>Can we resell/whitelabel the source code itself to other agencies?</td><td>No: Envato forbids letting end users extract the Item (clause 11 of Regular) — we sell access, not code</td><td>High [[V]]</td></tr>
+<tr><td>Are updates/support tied to licence?</td><td>Updates included per page; support 6 months, extendable. After expiry, updates may still need a valid purchase code [[UNK]]</td><td>Medium</td></tr>
+</tbody></table></div>
+
+<div class="callout"><b>If AppZetBilling itself is derived from a marketplace script</b> the same Extended-licence question applies to it today. This analysis does not know its provenance [[UNK]] — worth checking regardless of the SalePro decision.</div>
+
+<h2>26. Questions we must ask the CodeCanyon author before buying</h2>
+<p>Put these in a written pre-sale ticket at the LionCoders support portal and keep the reply as evidence.</p>
+<h3>Licensing / legal</h3>
+<ol>
+<li>Does one Extended licence of SalePro + one Extended licence of the SaaS add-on cover a hosted subscription service with unlimited tenants and unlimited paying customers, under one brand?</li>
+<li>Is a tenant DB copy treated as a separate "End Product" under any LionCoders policy?</li>
+<li>Is the PHP requirement 8.2+ or 8.3+, and which price is correct ($39 on CodeCanyon vs $69 on lion-coders.com)?</li>
+<li>If we run two brands (restaurant, retail) on the same codebase, is that one End Product or two?</li>
+<li>Will you provide a licence/invoice document naming our company for Indian audit and investor due diligence?</li>
+<li>After the 6/12-month support window, do we keep receiving updates and can we still download new versions?</li>
+<li>Are we allowed to modify source and remove LionCoders branding/credits in the tenant and super-admin UI?</li>
+</ol>
+<h3>Technical</h3>
+<ol start="8">
+<li>How does the add-on create tenant DBs on a plain VPS with no cPanel/Plesk? Does it use MySQL root credentials stored in <code>.env</code>? Can it target multiple DB servers (sharding)?</li>
+<li>What is the largest production SaaS deployment you know (tenant count, DB server size)?</li>
+<li>How are tenant updates applied at scale ("Update Client DB")? Is there a batch/queued migration runner, rollback, and failure reporting? Approx. time per tenant?</li>
+<li>Does the restaurant module (tables, KDS, QR menu, modifiers) work in SaaS tenants and can it be toggled per package? Is offline POS supported in tenants?</li>
+<li>How does offline POS sync work: what data is cached, how are conflicts and duplicate invoice numbers resolved, and what is the maximum offline duration?</li>
+<li>Is there a REST API (for tenants and for the super admin)? Is it documented? Is there a webhook system?</li>
+<li>How is Razorpay integrated in SaaS billing — one-time payments each renewal, or Razorpay Subscriptions/UPI AutoPay mandates? Are failed-payment retries and grace periods supported?</li>
+<li>Does tenant deletion drop the DB? Is there soft-delete/restore? How are backups per tenant scheduled ("Backup Client DB": manual or scheduled)?</li>
+<li>The Activity Log covers create/update/delete of sales, purchases and quotations. Does it cover logins, price changes and super-admin actions? Is there login history, IP/device tracking, 2FA? Is it per tenant in SaaS?</li>
+<li>Which stack parts are encrypted at rest (gateway credentials, API tokens)?</li>
+<li>The docs describe an "Indian GST" invoice format with CGST/SGST/IGST. Please share a sample invoice. Is e-invoicing (IRN) or e-way bill on the roadmap, and where is the consolidated India GST report?</li>
+<li>Is Odia supported as a language, and is a thermal-printer Odia glyph rendering supported (many ESC/POS printers cannot print Odia; image-mode printing needed)?</li>
+<li>What is the roadmap for the next 12 months, and how are breaking changes communicated to SaaS operators with customised code?</li>
+<li>Is the Restaurant module (floors, KDS, modifiers) a separate paid item? Which of Manufacturing, Repair, Tailoring, Social Commerce and Project are included in the $30 licence (the docs list Manufacturing and Repair as add-ons)?</li>
+<li>Do you offer paid customisation, what is your rate/turnaround, and will you accept a code-escrow/continuity agreement?</li>
+<li>Are there known scalability limits (per-tenant table count, session storage, queue usage)? Does the app need a queue worker and cron and which jobs run there?</li>
+<li>Can we see a real SaaS instance (staging login) with a package that enables restaurant + accounting + HRM?</li>
+</ol>

@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script>if(window.self!==window.top)document.documentElement.classList.add("embedded")</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>05 Feature Gaps &amp; Customization Effort — Sections 13–14</title><style>:root{--bg:#fafaf7;--fg:#1c1f24;--mut:#5b6472;--line:#dfe2e6;--card:#fff;--acc:#0b6b5c;--acc2:#e8f3f0;--warn:#b45309;--warn2:#fef3e2;--bad:#b42318;--bad2:#fdecea;--ok:#127a3d;--ok2:#e6f5ec;--info:#1d4ed8;--info2:#e8eefc;--code:#f1f3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171a;--fg:#e6e8eb;--mut:#9aa4b2;--line:#2b3138;--card:#1b1f24;--acc:#4fd1b5;--acc2:#16302b;--warn:#f5b453;--warn2:#3a2c12;--bad:#ff8a80;--bad2:#3b1a18;--ok:#63d68e;--ok2:#142e1f;--info:#8fb0ff;--info2:#1a2646;--code:#242a31}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 80px}
+header.top{border-bottom:1px solid var(--line);padding:22px 0 14px;margin-bottom:18px}
+header.top .k,.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 6px}h2{font-size:21px;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}h3{font-size:16.5px;margin:22px 0 6px}h4{font-size:13px;margin:16px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+p{margin:8px 0}ul,ol{padding-left:22px;margin:8px 0}li{margin:3px 0}
+a{color:var(--info)}code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px;word-break:break-word}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.45}
+.sub{color:var(--mut);margin:0}
+nav.parts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}nav.parts a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--fg);background:var(--card)}nav.parts a.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--acc2);font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}td.n{white-space:nowrap}
+.callout{border-left:4px solid var(--info);background:var(--info2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}.callout.warn{border-color:var(--warn);background:var(--warn2)}.callout.bad{border-color:var(--bad);background:var(--bad2)}.callout.ok{border-color:var(--ok);background:var(--ok2)}.callout>b:first-child{display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}.card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 13px}.card b{display:block}.card .v{font-size:22px;font-weight:700;color:var(--acc)}
+.b{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:99px;white-space:nowrap;border:1px solid transparent;vertical-align:1px}
+.b.v{background:var(--ok2);color:var(--ok);border-color:var(--ok)}.b.po{background:var(--info2);color:var(--info);border-color:var(--info)}.b.tp{background:var(--warn2);color:var(--warn);border-color:var(--warn)}.b.inf{background:var(--code);color:var(--mut);border-color:var(--line)}.b.unk{background:var(--bad2);color:var(--bad);border-color:var(--bad)}.b.add{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+.s-ex,.g-none{color:var(--ok);font-weight:700}.s-pa,.g-minor,.g-moderate{color:var(--warn);font-weight:700}.s-nf,.g-major,.g-critical{color:var(--bad);font-weight:700}.s-unk{color:var(--mut);font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}.toolbar input,.toolbar select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.part-sep{margin-top:60px;border-top:3px solid var(--acc);padding-top:14px}
+footer{margin-top:50px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:640px){h1{font-size:23px}body{font-size:14.5px}}
+@media print{nav.parts,.toolbar{display:none}.part-sep{page-break-before:always}}
+
+/* when shown inside the docs site iframe, the site sidebar does the navigation */
+.embedded nav.parts,.embedded header.top .k{display:none}
+.embedded header.top{padding-top:6px}
+.embedded .wrap{padding-top:8px}
+</style></head><body><div class="wrap"><header class="top"><div class="k">SalePro due diligence - part 05 of 12</div><h1>05 Feature Gaps &amp; Customization Effort — Sections 13–14</h1><nav class="parts"><a class="" href="01-summary-products-license.html">01 Executive Summary, Products &amp; License</a><a class="" href="02-features-saas-techstack-admin.html">02 SalePro &amp; SaaS Feature Matrices, Tech Stack, Admin</a><a class="" href="03-architecture-infra-cloud.html">03 Tenant Architecture, Servers &amp; Cloud Cost</a><a class="" href="04-competitors-restaurant-retail.html">04 Competitors, Restaurant &amp; Retail Fit</a><a class="cur" href="05-gaps-customization.html">05 Feature Gaps &amp; Customization Effort</a><a class="" href="06-pricing-unit-economics.html">06 Pricing Strategy &amp; Unit Economics</a><a class="" href="07-market-penetration.html">07 Market Size &amp; Penetration Scenarios</a><a class="" href="08-security-risks.html">08 Security, Technical &amp; Business Risks</a><a class="" href="09-gtm-roadmap-scaling.html">09 Go-to-Market, Operations, Roadmap &amp; Scaling</a><a class="" href="10-odisha-branding.html">10 Odisha Branding, Naming &amp; Positioning</a><a class="" href="11-decision-checklist.html">11 Final Decision, Due-Diligence &amp; Purchase Checklist</a><a class="" href="12-official-docs-reference.html">12 SalePro Official Documentation Reference</a></nav></header>
+<p class="sub">All effort numbers are <span class="b inf">ESTIMATE</span> in developer-weeks (one experienced Laravel developer, including tests but excluding third-party approval lead time). They assume a clean, well-structured codebase; SalePro's internals have not been inspected <span class="b unk">UNKNOWN</span>, so add a 30–50% contingency until a code review is done <span class="b unk">ASSUMPTION</span>. Priority: P0 before launch · P1 for growth · P2 nice to have · P3 future.</p>
+
+<h2>13. Feature gaps (what SalePro lacks vs market)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Gap</th><th>Business impact</th><th>Dev complexity</th><th>Priority</th></tr></thead><tbody>
+<tr><td>Auto ingredient deduction on sale (recipes)</td><td>Restaurant margin control; the core reason restaurants pay</td><td>Medium</td><td><b>P0</b> (restaurant)</td></tr>
+<tr><td>Verify the documented Indian GST invoice format with a CA; add service charge/packaging charge and GSTR exports</td><td>Legal/tax credibility with CAs</td><td>Low–medium (CGST/SGST/IGST format already documented)</td><td><b>P0</b> (verify)</td></tr>
+<tr><td>Odia UI + Odia receipts (image-mode thermal printing)</td><td>Odisha differentiator; adoption by owners and staff</td><td>Medium</td><td><b>P0</b> for Odisha</td></tr>
+<tr><td>Razorpay subscriptions / UPI AutoPay, dunning and GST invoice for our own subscriptions</td><td>Revenue reliability; churn from missed renewals</td><td>Medium</td><td><b>P0</b></td></tr>
+<tr><td>Security hardening + login/price-change audit (Activity Log covers only create/update/delete of sales, purchases and quotations; see Part 08)</td><td>Trust, breach exposure</td><td>Medium</td><td><b>P0</b></td></tr>
+<tr><td>Per-station kitchen printer routing and KOT reprint/cancel audit (ESC/POS network printing already exists)</td><td>Restaurants unusable without it</td><td>Medium–high</td><td><b>P0</b> (restaurant)</td></tr>
+<tr><td>Scheduler cron, queue worker, tenant-aware jobs</td><td>Alerts and reports never run without them (your audit found this on AppZetBilling)</td><td>Low</td><td><b>P0</b></td></tr>
+<tr><td>WhatsApp: automatic event sends, campaigns, opt-in ledger (Cloud API and manual sends already exist)</td><td>Indian owners expect WhatsApp bills; drives retention</td><td>Low–medium</td><td>P1</td></tr>
+<tr><td>Reliable offline (LAN bridge or robust PWA sync) for restaurants</td><td>Internet outages are routine in tier-2 towns <span class="b inf">INFERENCE</span></td><td>High</td><td>P1</td></tr>
+<tr><td>Aggregator integrations (Swiggy, Zomato, Magicpin, ONDC)</td><td>Cloud kitchens and delivery-heavy restaurants</td><td>High + partner approval</td><td>P1 (restaurant)</td></tr>
+<tr><td>Captain/waiter handheld ordering app</td><td>Dine-in efficiency</td><td>Medium–high</td><td>P1</td></tr>
+<tr><td>Loyalty: tiers, expiry, campaigns; wallet</td><td>Repeat visits</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Tally / Zoho / GSTR exports</td><td>CA/accountant channel needs this</td><td>Medium</td><td>P1</td></tr>
+<tr><td>e-invoice (IRN) and e-way bill</td><td>Mandatory above turnover thresholds for B2B — thresholds/rules must be checked with a CA <span class="b unk">UNKNOWN</span></td><td>High (GSP integration)</td><td>P1 wholesale/distributors</td></tr>
+<tr><td>PO → GRN → purchase-invoice workflow</td><td>Mid-size and wholesale</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Central kitchen / outlet indenting / central menu</td><td>Multi-outlet chains</td><td>High</td><td>P2</td></tr>
+<tr><td>Tenant usage metering (DB, storage, WhatsApp, SMS), churn/ARR dashboard</td><td>Pricing and ops control</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Public REST API and webhooks (documented)</td><td>Integrations and partner ecosystem</td><td>Medium</td><td>P2</td></tr>
+<tr><td>Pharmacy compliance pack; distributor beat/van sales</td><td>Vertical expansion</td><td>Medium–high</td><td>P3</td></tr>
+<tr><td>AI assistant (owner Q&amp;A, demand forecast, menu suggestions)</td><td>Differentiation; SalePro has a built-in non-API assistant <span class="b v">VERIFIED FACT</span></td><td>Medium</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h2>14. Required customization — effort, difficulty, risk</h2>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Effort (dev-weeks)</th><th>Difficulty</th><th>Dependencies</th><th>Risk</th><th>Priority</th></tr></thead><tbody>
+<tr><td>Restaurant module hardening: recipe auto-deduction, KOT per station, split/merge bill, table transfer, reservations</td><td>10–16</td><td>Medium–high</td><td>Understanding SalePro product/stock model; per-tenant migrations</td><td>Breaks on vendor upgrades (High)</td><td>P0</td></tr>
+<tr><td>Per-station kitchen printing on top of existing ESC/POS support + KDS polish</td><td>4–8</td><td>Medium</td><td>Local print agent (browser cannot print raw)</td><td>Hardware variety (Medium)</td><td>P0</td></tr>
+<tr><td>Kitchen Display refinements, waiter app (Flutter/PWA)</td><td>8–14</td><td>Medium–high</td><td>SalePro API surface <span class="b unk">UNKNOWN</span></td><td>Medium</td><td>P1</td></tr>
+<tr><td>QR ordering: table-linked ordering to KDS, pay-at-table</td><td>4–8</td><td>Medium</td><td>Payment gateway, order status</td><td>Abuse/fake orders (Medium)</td><td>P1</td></tr>
+<tr><td>WhatsApp Cloud API automation (receipts, KOT ready, campaigns, opt-in)</td><td>5–8 (+ template approvals)</td><td>Medium</td><td>Meta Business verification, BSP or direct; per-tenant credits ledger</td><td>Cost leakage, spam bans (Medium–high)</td><td>P1</td></tr>
+<tr><td>Razorpay Subscriptions + UPI AutoPay + failed-payment/dunning + GST invoices for subscriptions</td><td>4–7</td><td>Medium</td><td>Razorpay account approval; add-on payment code</td><td>Billing errors (High)</td><td>P0</td></tr>
+<tr><td>UPI dynamic QR per bill + payment reconciliation</td><td>3–5</td><td>Medium</td><td>Gateway (Razorpay/Cashfree)</td><td>Medium</td><td>P1</td></tr>
+<tr><td>GST improvements: CGST/SGST split, service/packaging charge, invoice formats, GSTR exports</td><td>5–9</td><td>Medium</td><td>CA sign-off</td><td>Compliance (High)</td><td>P0</td></tr>
+<tr><td>e-invoice + e-way bill via a GSP/ASP</td><td>6–10</td><td>High</td><td>GSP contract/fees, IRP sandbox</td><td>Regulatory changes (High)</td><td>P1</td></tr>
+<tr><td>Multi-branch: central menu, outlet pricing, consolidated reports, package outlet limits</td><td>8–14</td><td>High</td><td>Data model changes across many tables</td><td>High</td><td>P2</td></tr>
+<tr><td>Advanced CRM + loyalty (tiers, campaigns, wallet)</td><td>8–12</td><td>Medium</td><td>WhatsApp/SMS</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Delivery integration: rider assignment/tracking, Dunzo-style partners</td><td>6–12</td><td>Medium–high</td><td>Partner APIs</td><td>Partner instability (Medium)</td><td>P2</td></tr>
+<tr><td>Swiggy / Zomato integration</td><td>10–16 per platform + approval</td><td>High</td><td>Partner/aggregator agreements — Petpooja and others are already integrated partners; approval for a new POS vendor is not guaranteed <span class="b unk">UNKNOWN</span></td><td>High (may be gated)</td><td>P1</td></tr>
+<tr><td>eCommerce polish: Odisha-specific themes, delivery slots, COD</td><td>3–6</td><td>Low–medium</td><td>Existing storefront</td><td>Low</td><td>P2</td></tr>
+<tr><td>Mobile apps: white-labeled Flutter build pipeline for SaaS tenants, store publishing</td><td>6–12</td><td>Medium</td><td>Apple/Google accounts; author's tenant app source</td><td>Store rejections (Medium)</td><td>P1</td></tr>
+<tr><td>Public API + webhooks + API keys/rate limits</td><td>6–10</td><td>Medium</td><td>Auth model</td><td>Security exposure (Medium)</td><td>P2</td></tr>
+<tr><td>Offline: LAN bridge or hardened PWA with conflict handling</td><td>12–20</td><td>High</td><td>Invoice-number scheme, stock reservations</td><td>High (data integrity)</td><td>P1</td></tr>
+<tr><td>Odia localization + Odia receipts/labels + training content</td><td>3–6 (+ translation work)</td><td>Low–medium</td><td>Translator; printer image mode</td><td>Low</td><td>P0</td></tr>
+<tr><td>Super-admin analytics: MRR/ARR/churn, usage metering, health, audit log, impersonation</td><td>6–10</td><td>Medium</td><td>Tenant DB access patterns</td><td>Medium</td><td>P1</td></tr>
+<tr><td>Security hardening (Part 08 checklist)</td><td>4–8</td><td>Medium</td><td>—</td><td>High if skipped</td><td>P0</td></tr>
+<tr><td>AI features (owner insights, forecasting)</td><td>6–12</td><td>Medium</td><td>Data quality</td><td>Cost/quality (Medium)</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h3>Totals <span class="b inf">ESTIMATE</span></h3>
+<div class="grid">
+<div class="card"><b>P0 only (launchable restaurant + retail)</b><span class="v">≈ 30–55 wks</span>≈ 7–13 developer-months</div>
+<div class="card"><b>P0 + P1 (competitive)</b><span class="v">≈ 100–170 wks</span>≈ 2–3.5 developer-years</div>
+<div class="card"><b>Everything listed</b><span class="v">≈ 150–250 wks</span>before contingency</div>
+<div class="card"><b>Cost at ₹60k/month loaded</b><span class="v">₹7–13 lakh</span>for P0; ₹25–50 lakh for P0+P1 <span class="b unk">ASSUMPTION</span></div>
+</div>
+<div class="callout warn"><b>Upgrade collision</b> Every customization above lives inside a third-party codebase that the author upgrades. Keep changes in isolated modules/packages with tests, avoid editing vendor files, and budget 10–15% of dev time for merging vendor releases <span class="b add">RECOMMENDATION</span>. Without this, customized SalePro turns into a fork that cannot take updates — see Part 08 risk R3.</div>
+<footer>SalePro + SalePro SaaS due-diligence analysis - generated 2026-09-20 - research only; nothing was purchased or installed.</footer></div></body></html>

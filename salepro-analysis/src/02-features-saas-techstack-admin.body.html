@@ -1,0 +1,171 @@
+<!--TITLE:02 SalePro &amp; SaaS Feature Matrices, Tech Stack, Admin — Sections 3–6-->
+<p class="sub">Evidence limits: the CodeCanyon page, lion-coders.com product pages, the SalePro documentation (244 sections; read through an extraction of the first parts) and the SaaS documentation were read. The live demo was <b>not</b> opened, so anything not stated in those sources is marked UNKNOWN, not assumed absent. "Sold as" = what the vendor says exists; it does not prove quality.</p>
+
+<h2>3. Complete SalePro feature matrix</h2>
+<p>Status key: <b>YES</b> = stated in vendor material [[V]] · <b>PARTIAL</b> = stated with limits · <b>UNK</b> = not documented in what we read (test in demo) · <b>NOT FOUND</b> = absent from sources read.</p>
+
+<h3>POS</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Touch-friendly POS, category/brand filter, barcode scan</td><td>YES</td><td>Docs POS section [[V]]</td></tr>
+<tr><td>Sales list, sale details, invoice print</td><td>YES</td><td>Docs [[V]]</td></tr>
+<tr><td>Sale returns</td><td>YES</td><td>Dashboard KPIs "Sale Return"; GST support for sales returns [[V]]</td></tr>
+<tr><td>Discounts (order-level), price override (manager-only permission)</td><td>YES</td><td>Docs permission points [[V]]</td></tr>
+<tr><td>Coupons</td><td>YES</td><td>Docs 5.10: percentage or fixed, generated codes [[V]]</td></tr>
+<tr><td>Taxes: unlimited custom rates, exclusive/inclusive, order tax</td><td>YES</td><td>Docs + CodeCanyon page snippet [[V]]</td></tr>
+<tr><td>India GST: HSN/SAC, GST snapshots on transactions, consolidated India GST report</td><td>YES (claimed)</td><td>Appears in the CodeCanyon page description via search; the docs excerpt did not detail a GST report [[TP]] — verify in demo</td></tr>
+<tr><td>CGST/SGST/IGST split on printed invoice</td><td>YES</td><td>Docs 5.3: Invoice Format "Indian GST" shows CGST/SGST/IGST separately [[V]] — test with real invoices</td></tr>
+<tr><td>e-invoice (IRN) / e-way bill</td><td>NOT FOUND</td><td>No mention anywhere read</td></tr>
+<tr><td>Multiple payment methods, split payments</td><td>YES</td><td>salepropos.com: "split payments" [[V]]</td></tr>
+<tr><td>Payment tenders: gift card, customer deposit, reward points, credit sale</td><td>YES</td><td>Docs [[V]]</td></tr>
+<tr><td>Installment sales with next-due alerts</td><td>YES</td><td>Docs [[V]]</td></tr>
+<tr><td>POS payment gateways: Razorpay (UPI-only in POS), Stripe, M-Pesa, MTN MoMo, PayHere</td><td>YES</td><td>Docs POS section [[V]]. Razorpay in POS is UPI-only as documented</td></tr>
+<tr><td>Reward points (manual add + automatic redeem at POS)</td><td>YES</td><td>Docs [[V]]; tiers/expiry/campaigns [[UNK]]</td></tr>
+<tr><td>Barcode generation; label printing (A4/roll); weight-embedded barcodes (7+5+1)</td><td>YES</td><td>Docs 3.6 [[V]]</td></tr>
+<tr><td>Receipt printing (auto on finalize, "print last receipt"); thermal printers</td><td>YES</td><td>Docs + site "thermal receipts" [[V]]; ESC/POS vs browser print, Odia glyphs [[UNK]]</td></tr>
+<tr><td>Customer display</td><td>YES</td><td>Docs: uses localStorage for live sync between screens [[V]] — same-machine browser only</td></tr>
+<tr><td>Weight scale</td><td>PARTIAL</td><td>Weight-embedded deli-scale barcodes supported; direct serial scale integration [[UNK]]. Site says hardware needs on-site testing [[V]]</td></tr>
+<tr><td>Offline POS</td><td>PARTIAL</td><td>"Offline-first with sync"; cloud icon with pending-sale count [[V]]. Mechanics: see below</td></tr>
+<tr><td>WhatsApp receipts</td><td>PARTIAL</td><td>Docs Ch. 18: WhatsApp Cloud API, POS "Send WhatsApp Message" tick-box, send from Customer List; mostly staff-triggered [[V]]</td></tr>
+<tr><td>Sale agents with commission; billers (multi-branch cashier identity)</td><td>YES</td><td>Docs [[V]]</td></tr>
+<tr><td>Registers / cash-in-hand / shift close</td><td>YES</td><td>Docs POS settings + report 20.34 [[V]]</td></tr>
+</tbody></table></div>
+
+<h3>Product &amp; inventory</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Products, categories, brands, units with conversion (box→piece)</td><td>YES</td><td>Docs §3 [[V]]</td></tr>
+<tr><td>Variants (size/colour)</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Batch and expiry tracking (optional per product)</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Serial number / IMEI</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Multiple warehouses; transactions tied to a warehouse; staff restricted by warehouse</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Stock transfer between warehouses</td><td>YES</td><td>Site: "multi-warehouse stock and transfers" [[V]]</td></tr>
+<tr><td>Stock adjustment, damage logging, physical stock count</td><td>YES</td><td>Docs §3 [[V]]</td></tr>
+<tr><td>Stock valuation report</td><td>YES</td><td>Site [[V]]</td></tr>
+<tr><td>Low-stock alerts</td><td>YES</td><td>POS notification icon shows low-stock alerts; Product Quantity Alert report (20.29) [[V]]</td></tr>
+<tr><td>Expiry alerts</td><td>UNK</td><td>Expiry fields exist; alert mechanism [[UNK]]</td></tr>
+<tr><td>CSV import: products, categories, brands, suppliers, customers, billers, purchases</td><td>YES</td><td>Fixed column order; mismatches error [[V]]</td></tr>
+<tr><td>Export PDF / Excel / CSV / print from list pages</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Retail vs wholesale pricing</td><td>YES</td><td>salepropos.com: "retail/wholesale pricing" [[V]]; price lists per customer group [[UNK]]</td></tr>
+<tr><td>Customer groups</td><td>YES</td><td>Docs §2 [[V]]</td></tr>
+</tbody></table></div>
+
+<h3>Purchase</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Suppliers, supplier due report</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Purchases with status Received/Pending/Ordered (acts as PO-lite)</td><td>PARTIAL</td><td>Formal PO → GRN → invoice matching [[UNK]]</td></tr>
+<tr><td>Live tax/discount calc, shipping cost</td><td>YES</td><td>Docs mention tax/discount live calc; shipping [[UNK]]</td></tr>
+<tr><td>Purchase returns with supplier refund</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>CSV import of purchases</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Attachments on purchases</td><td>UNK</td><td></td></tr>
+<tr><td>India GST on purchases (ITC-oriented)</td><td>YES (claimed)</td><td>"GST support for purchases, expenses and sales returns" [[TP]]</td></tr>
+</tbody></table></div>
+
+<h3>Accounting</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Double-entry accounting that posts from sales and purchases; chart of accounts</td><td>YES</td><td>salepropos.com [[V]]</td></tr>
+<tr><td>Trial balance, balance sheet, P&amp;L, cash flow</td><td>YES</td><td>lion-coders product page [[V]]</td></tr>
+<tr><td>Bank accounts, transactions, transfers, receivables/payables</td><td>YES</td><td>[[V]] (transfers UNK in detail)</td></tr>
+<tr><td>Tally/Zoho export, GSTR-1/3B JSON export</td><td>NOT FOUND</td><td>Not in sources read</td></tr>
+<tr><td>Expenses module</td><td>YES</td><td>Dashboard "Expense" KPI [[V]]</td></tr>
+</tbody></table></div>
+
+<h3>HRM, manufacturing, other modules</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>HRM: employees, payroll (module "included")</td><td>YES</td><td>Depth (attendance, leave, holidays, departments, shifts) documented in docs §11 but not read [[UNK]]</td></tr>
+<tr><td>Manufacturing: recipes/BOM, production entries</td><td>PARTIAL</td><td>Production is manual, "not automatic on sale" [[V]] — this is the key restaurant gap</td></tr>
+<tr><td>Repair management, booking, projects</td><td>YES</td><td>Listed on product pages [[V]]</td></tr>
+<tr><td>Roles &amp; permissions (Admin, Manager, Cashier, Staff, Waiter, Sale Agent, Customer)</td><td>YES</td><td>[[V]]; granular matrix [[UNK]]</td></tr>
+<tr><td>18+ languages incl. Arabic RTL</td><td>YES</td><td>[[V]] — Odia not confirmed [[UNK]]</td></tr>
+<tr><td>AI assistant: fixed library of 10 business questions from your own data (no external API, not a free-form chatbot)</td><td>YES</td><td>Docs Ch. 17 [[V]]</td></tr>
+<tr><td>Tailoring (made-to-measure orders, production board), Social Commerce (catalog, Meta feed), Project management</td><td>YES</td><td>Docs Ch. 14, 16, 19; module enablement per licence [[UNK]]</td></tr>
+<tr><td>"Fresh Business Reset" (wipe demo data)</td><td>YES</td><td>Admin-only [[V]]; risk if misused</td></tr>
+</tbody></table></div>
+
+<h3>Restaurant, eCommerce, mobile</h3>
+<div class="tblw"><table>
+<thead><tr><th>Feature</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody>
+<tr><td>Restaurant mode toggle; dine-in / takeaway / delivery</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Floor plan and table picker; waiter assignment</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Modifiers; Kitchen Display System with order status</td><td>YES</td><td>lion-coders product page [[V]]; depth (course firing, item status per station) [[UNK]]</td></tr>
+<tr><td>QR menu with WhatsApp store order</td><td>YES</td><td>[[TP]] search summary of product pages</td></tr>
+<tr><td>Built-in eCommerce storefront</td><td>YES</td><td>CodeCanyon page: "Full eCommerce storefront (included)" [[V]]; a separate eCommerce add-on item also exists (page returned HTTP 410) — clarify what is core vs paid [[UNK]]</td></tr>
+<tr><td>WooCommerce integration</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Mobile app</td><td>ADD-ON</td><td>Flutter; prebuilt Play Store app or source code; needs Firebase/OneSignal/APNs; SaaS tenants need the separate tenant app [[V]]; offline in app [[UNK]]</td></tr>
+</tbody></table></div>
+
+<h3>Reporting (what is confirmed)</h3>
+<div class="tblw"><table>
+<thead><tr><th>Report</th><th>What it shows / who uses</th><th>Business value</th><th>Export / filters</th></tr></thead><tbody>
+<tr><td>Dashboard KPIs: Sale, Sale Due, Sale Return, Expense, Purchase, Purchase Due, Purchase Return, Profit</td><td>Owner morning view [[V]]</td><td>Daily health</td><td>Role-hideable cards</td></tr>
+<tr><td>Cash-flow chart (6 months), monthly summary donut, yearly trend, recent transactions, best sellers (month/year, qty/value)</td><td>Owner/manager [[V]]</td><td>Trend &amp; merchandising</td><td>Charts only</td></tr>
+<tr><td>Customer due, supplier due</td><td>Accounts/collections [[V]]</td><td>Cash recovery</td><td>Export from list pages</td></tr>
+<tr><td>Biller report, sale report, purchase report, product history</td><td>Manager/auditor [[V]]</td><td>Staff and SKU control</td><td>PDF/Excel/CSV per list page [[V]]</td></tr>
+<tr><td>Profitability by product, category, brand, customer, location; gross margin; stock value</td><td>Owner/accountant [[V]] (site claim)</td><td>Margin visibility</td><td>Filters [[UNK]]</td></tr>
+<tr><td>Consolidated India GST report</td><td>Accountant [[TP]]</td><td>GSTR prep</td><td>Format vs GSTR-1/3B [[UNK]]</td></tr>
+<tr><td>Full report catalogue (payment, tax, warehouse, register, user, expiry/low-stock, HRM, accounting statements)</td><td colspan="3">34 reports are documented — see Part 12. Missing: dedicated GST/GSTR report, tax-by-rate, staff/waiter performance, KOT/kitchen and food-cost reports.</td></tr>
+</tbody></table></div>
+
+<h3>How offline POS works (what is known)</h3>
+<ul>
+<li>Vendor says: "Offline first with sync … keep taking POS sales during temporary connectivity loss and sync when the connection returns" [[V]]. The UI shows a cloud icon (online/offline) with a pending-sale count badge [[V]].</li>
+<li><b>Documented (Part 12):</b> products are cached in the browser while online; the POS switches to offline automatically and hides online-only options; sales are saved in the same browser, an offline receipt can print, and sales sync one by one on reconnect (failures stay pending). <b>Not documented:</b> storage engine, customer/price/stock caching, invoice numbering while offline, stock conflict rules, maximum offline duration, whether KOT/tables/KDS work offline [[UNK]].</li>
+<li>Limits: the docs themselves warn it is tied to one computer/browser and that clearing browser storage before sync can lose sales [[V]]. Inferred [[INF]]: stock can oversell on reconnect; gateway payments, QR orders and cross-device KDS cannot work offline; invoice-number collisions are the classic risk.</li>
+<li><b>Indian restaurants/retail:</b> restaurants need KOT→kitchen printer/KDS on the LAN even when internet drops; a browser queue on one device does not give that. Petpooja solves it with a local Bridge Server (see gap-analysis Part 04). SalePro's model is therefore <b>PARTIAL</b> for single-counter retail and <b>NOT proven</b> for multi-terminal restaurants [[INF]].</li>
+</ul>
+
+<h2>4. Complete SaaS feature matrix (add-on)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr><td rowspan="6">Multi-tenancy</td><td>Separate database per tenant ("true multi-tenant")</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Automatic provisioning: subdomain + DB (needs cPanel API token, Plesk creds, PlanetHoster or VPS/dedicated with MySQL root)</td><td>YES</td><td>[[V]]; multi-DB-server placement [[UNK]]</td></tr>
+<tr><td>Wildcard subdomain + wildcard SSL required; custom domains supported, each needing its own certificate</td><td>YES</td><td>[[V]]; automatic per-domain SSL issuance is <b>not</b> automated by the add-on [[V]]</td></tr>
+<tr><td>Tenant identification by host name</td><td>YES</td><td>[[INF]]</td></tr>
+<tr><td>Tenant suspension (activate/deactivate)</td><td>YES</td><td>v2.4.2 [[V]]</td></tr>
+<tr><td>Tenant deletion / restore / export</td><td>UNK</td><td>Not documented. "Backup Client DB" exists [[V]]</td></tr>
+<tr><td rowspan="8">Subscription</td><td>Packages with monthly and yearly price</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Free trial (duration in general settings), free packages</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Limits: warehouses, products, invoices, users, employees (0 = unlimited)</td><td>YES</td><td>[[V]]; storage limit and business/outlet limit NOT FOUND</td></tr>
+<tr><td>Module toggles per package (POS &amp; Sales, Inventory &amp; Purchasing, Accounting, HRM, Reports)</td><td>YES</td><td>[[V]]; restaurant/eCommerce toggles [[UNK]]</td></tr>
+<tr><td>Change package, renew subscription, sync package changes to existing tenants</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Payment: manual (with verification) + 15+ gateways incl. Stripe, PayPal, <b>Razorpay</b>, Paystack, bKash, SSLCommerz, M-Pesa…</td><td>YES</td><td>[[V]]. Razorpay is native — no integration work for one-time payments; recurring mandates/UPI AutoPay [[UNK]]</td></tr>
+<tr><td>Coupons for subscriptions; affiliate programme with 30-day cookie, commission on first paid subscription, payouts recorded manually</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Dunning (retry, grace period, reminder e-mails), proration on upgrade/downgrade</td><td>UNK</td><td>Not documented; assume absent until shown [[INF]]</td></tr>
+<tr><td>India GST invoice for the subscription itself</td><td>UNK</td><td>Single currency code setting [[V]]; GST invoice generation to tenants [[UNK]]</td></tr>
+<tr><td rowspan="6">Platform</td><td>CMS: landing page, hero, features, testimonials, FAQ, blog with SEO, legal pages, contact, multi-language</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Themes/branding presets, light/dark, GA/Pixel/chat scripts</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Tenant support tickets in super-admin</td><td>YES</td><td>v2.1.0 [[V]]</td></tr>
+<tr><td>Migrate a standalone SalePro DB into a tenant (data-only; roles/permissions tables excluded)</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Add-on installer (WooCommerce, eCommerce) with purchase code check</td><td>YES</td><td>[[V]]</td></tr>
+<tr><td>Update tenants: "Update Client DB", "Update SuperAdmin DB" buttons</td><td>YES</td><td>[[V]] — manual per action; batch/queue [[UNK]]</td></tr>
+</tbody></table></div>
+
+<h2>5. Tech stack</h2>
+<div class="tblw"><table>
+<thead><tr><th>Layer</th><th>Detail</th><th>Tag</th></tr></thead><tbody>
+<tr><td>Backend</td><td>Laravel on PHP 8.3, MySQL 5.7+ (MariaDB compatibility [[UNK]])</td><td>[[V]]</td></tr>
+<tr><td>Web server</td><td>Apache, Nginx, LiteSpeed, OpenLiteSpeed; URL rewrite</td><td>[[V]]</td></tr>
+<tr><td>Frontend</td><td>HTML/CSS/JS, Blade server-rendered (inferred from "Files: JavaScript, HTML, CSS, PHP, SQL")</td><td>[[INF]]</td></tr>
+<tr><td>Queue / cache / Redis</td><td>Not stated as required; cron optional for scheduled reports</td><td>[[V]] ("Optional: Cron")</td></tr>
+<tr><td>Mobile</td><td>Flutter, OneSignal push, Firebase (Android), APNs (iOS)</td><td>[[V]]</td></tr>
+<tr><td>Packages / dependencies list</td><td>Not published; needs source inspection (composer.lock) after purchase or from author</td><td>[[UNK]]</td></tr>
+<tr><td>Code quality, tests, static analysis</td><td>Unknown; 8-year-old codebase with 3,165 buyers suggests real-world use but also legacy debt</td><td>[[UNK]] [[INF]]</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>Version coupling risk</b> The add-on documents that PHP 8.2 "is no longer sufficient" — upgrades of the base can change the runtime requirement mid-life. Our server image must follow the vendor's PHP, not our own preferred version.</div>
+
+<h2>6. Admin panel (what we get out of the box)</h2>
+<h3>Super admin — confirmed [[V]]</h3>
+<ul>
+<li>Dashboard: estimated MRR, active paid vs total clients, renewals due in 30 days, revenue/subscription charts.</li>
+<li>Clients: create tenant with subdomain; renew; change package; change tenant password; assign custom domain; activate/deactivate; back up tenant DB; update tenant DB.</li>
+<li>Packages: monthly/yearly price, limits (warehouses, products, invoices, users, employees), module toggles, sync to existing tenants.</li>
+<li>Payments: manual + gateway settings (sandbox/live, keys, callback URLs); failed payment monitoring recommended in docs (manual).</li>
+<li>CMS, blog, SEO, analytics scripts, themes; affiliates; support tickets; mail (SMTP); general settings (title, logo, currency, trial length, disable signup/tickets); add-on installation.</li>
+</ul>
+<h3>Super admin — needed for our business but not found [[UNK]]/NOT FOUND</h3>
+<p>Churn and ARR reports, cohort/retention, per-tenant usage metering (DB size, storage, API calls, WhatsApp/SMS usage), system-health page, feature flags beyond packages, audit log of super-admin actions, login-activity/IP/device tracking, 2FA for super admin, impersonation ("login as tenant") with audit, dunning automation, tenant-facing invoices with GST, tenant export/delete tooling, reseller/partner accounts (affiliate is not the same as reseller with tenant management).</p>
+<h3>Tenant admin and staff</h3>
+<p>Tenant admin: everything in the enabled modules — products, purchases, sales, people, warehouses, HRM, accounting, reports, roles and settings, plus a tenant support-ticket UI. Staff roles: cashier, manager, waiter/service staff, sale agent, warehouse-restricted user; granular matrix [[UNK]]. Gaps we would still need for Indian operators: owner mobile dashboard, daily WhatsApp summary, cash-drawer shift handover audit.</p>

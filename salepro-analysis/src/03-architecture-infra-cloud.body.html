@@ -1,0 +1,99 @@
+<!--TITLE:03 Tenant Architecture, Servers &amp; Cloud Cost — Sections 7–9-->
+<p class="sub">Currency assumptions [[ASM]]: ₹90 = US$1, ₹100 = €1. Provider prices are taken from the pages named; all other line items are estimates. Hetzner prices conflict between sources (see box) — treat every Hetzner figure as a range.</p>
+
+<h2>7. Tenant architecture</h2>
+<h3>What SalePro SaaS actually does [[V]]</h3>
+<p>One landlord (super-admin) database plus <b>one MySQL database per tenant</b>, created automatically through cPanel/Plesk/PlanetHoster API or, on a VPS, MySQL root access. Tenants are found by subdomain or custom domain. Tenant DB backups and updates are triggered from the client list. Migrating a standalone SalePro into a tenant is a data-only import that excludes roles/permission tables.</p>
+
+<h3>Architecture comparison</h3>
+<div class="tblw"><table>
+<thead><tr><th>Concern</th><th>A. One DB + tenant_id (AppZetBilling today)</th><th>B. DB per tenant (SalePro SaaS)</th><th>C. Hybrid (pooled small tenants + dedicated large)</th></tr></thead><tbody>
+<tr><td>Security / isolation</td><td>Weakest: one missing <code>WHERE business_id</code> leaks data. Your audit found no global business scope and global unique phone/coupon keys [[V]]</td><td>Strong logical isolation; a bug rarely crosses tenants. But the app holds DB-root or panel-API credentials — compromise gives all tenants [[INF]]</td><td>Best of both if routed well; most complex</td></tr>
+<tr><td>Backup / restore one tenant</td><td>Hard (extract rows across 97 tables)</td><td>Easy: dump one DB. Fleet-wide backups take longer as N grows</td><td>Easy for dedicated, hard for pooled</td></tr>
+<tr><td>Cost</td><td>Cheapest per tenant</td><td>More RAM/files: each tenant carries the full schema (table count per DB [[UNK]]); 1,000 tenants ≈ 1000× schema</td><td>Medium</td></tr>
+<tr><td>Performance</td><td>Large tables, index bloat, noisy neighbour</td><td>Small tables per tenant = fast queries; open-table/file-descriptor pressure at high N</td><td>Balanced</td></tr>
+<tr><td>Schema migration</td><td>One migration</td><td>N migrations; failures leave tenants on mixed versions — the main operating pain</td><td>Mixed</td></tr>
+<tr><td>Scaling</td><td>Vertical, then read replicas, then sharding by business_id</td><td>Horizontal by moving DBs between servers (needs a tenant→DB-host map; add-on support [[UNK]])</td><td>Natural</td></tr>
+<tr><td>Disaster recovery</td><td>One large restore; RPO/RTO same for all</td><td>Per-tenant restore; whole-fleet restore is long</td><td>Tiered SLA possible</td></tr>
+<tr><td>Tenant deletion (DPDP-style erasure)</td><td>Row deletes with FK risk</td><td>Drop DB (clean) — provided you also purge backups</td><td>Mixed</td></tr>
+<tr><td>Data residency / enterprise demand</td><td>Poor</td><td>Good (dedicated DB, even dedicated server)</td><td>Good</td></tr>
+</tbody></table></div>
+
+<div class="callout ok"><b>Recommendation [[REC]]</b> For a ₹500–₹2,000/month SMB product, DB-per-tenant is operationally heavier than the revenue justifies past ~1,000 tenants, but safer for a small team that cannot audit every query. Practical path: <b>start with B</b> if you adopt SalePro (it is what it ships), design the tenant→DB-host map early so DBs can move to more servers, and cap tenants per DB server (≈ 300–500 [[EST]]). If you keep AppZetBilling (option A today), prioritise a global tenant scope and composite unique keys (already recommended in gap-analysis Part 09) instead of re-platforming.</div>
+
+<h2>8. Server requirements</h2>
+<p>Sizing method [[ASM]]: a POS tenant is a light OLTP workload — a single-outlet shop peaks at ~1–3 requests/second per active register, mostly reads plus one write per bill. Only 10–30% of tenants are peak-active concurrently (evening rush overlaps for restaurants). Tenants per DB: average DB size 50–200 MB after year 1 [[ASM]].</p>
+
+<h3>Minimum viable production (up to ~100 tenants)</h3>
+<ul>
+<li>4 vCPU / 8 GB RAM / 80–160 GB NVMe, Ubuntu LTS, Nginx + PHP-FPM 8.3 (OPcache), MySQL 8 (root access for the add-on), Redis (cache/session/queue — recommended even though not required), Supervisor queue worker, a per-minute cron, Let's Encrypt <b>wildcard</b> cert via DNS-01 <i>with an API hook</i>, daily off-site encrypted backups, uptime + cert-expiry monitoring.</li>
+<li>Wildcard DNS: <code>*.yourdomain</code> A/AAAA record. Custom domains need per-domain certs that the add-on does <b>not</b> auto-issue [[V]] → plan Caddy/Traefik/certbot automation or Cloudflare for SaaS.</li>
+<li>Lesson from your own audit: wildcard cert renewal was manual DNS-01 without a hook and would have expired (memory: gap-analysis Priority 0). Automate before onboarding paying customers [[V]].</li>
+</ul>
+
+<h3>Scale table [[EST]]</h3>
+<div class="tblw"><table>
+<thead><tr><th>Tenants</th><th>App tier</th><th>DB tier</th><th>Redis / queue</th><th>Storage &amp; backup</th><th>Edge / monitoring</th></tr></thead><tbody>
+<tr><td><b>100</b></td><td>1 shared VPS: 4 vCPU / 8 GB</td><td>Same box, MySQL 4 GB buffer pool</td><td>Redis on the same box; 1 queue worker</td><td>160 GB NVMe; R2 backups ~20–50 GB</td><td>Cloudflare free, uptime monitor, log rotation</td></tr>
+<tr><td><b>500</b></td><td>1–2 app: 4 vCPU / 8 GB</td><td>Separate DB server 8 vCPU / 16 GB (~250k tables if ~100 tables/tenant [[UNK]])</td><td>Redis 2 GB dedicated; 2–3 workers</td><td>320 GB; nightly per-tenant dumps; R2 ~100–250 GB</td><td>Cloudflare, Sentry/Log service, Prometheus or paid APM</td></tr>
+<tr><td><b>1,000</b></td><td>2–3 app: 8 vCPU / 16 GB behind a load balancer; sticky sessions or Redis sessions</td><td>2 DB servers × 8 vCPU / 32 GB (≤ 500 tenants each); replica for backups</td><td>Redis 4 GB; queue on its own worker node</td><td>Object storage for uploads; R2 ~0.5–1 TB</td><td>Load balancer, CDN for assets, centralized logs</td></tr>
+<tr><td><b>5,000</b></td><td>4–6 app nodes (8 vCPU/16 GB), autoscaling optional</td><td>8–10 DB shards (16 vCPU/64 GB); tenant→shard map; replicas</td><td>Redis cluster/HA pair; 6–10 workers; Horizon</td><td>Object storage mandatory; R2 ~3–5 TB</td><td>LB pair, CDN, SIEM-style logging, on-call</td></tr>
+<tr><td><b>10,000</b></td><td>8–12 app nodes</td><td>16–20 shards; migration orchestrator; per-shard DR</td><td>Redis HA + separate queue infra</td><td>R2/S3 ~6–10 TB; cross-region backup</td><td>Full observability stack; 24×7 ops</td></tr>
+</tbody></table></div>
+
+<h3>When to move off a single VPS [[REC]]</h3>
+<ul>
+<li>CPU sustained &gt; 60% at evening peak, MySQL buffer-pool hit &lt; 98%, <code>open_tables</code> churn, or backups no longer finish in the nightly window → split DB from app (~150–300 tenants).</li>
+<li>Any single server whose loss would take &gt; 1 hour to restore → add replicas/standby (~500 tenants or first enterprise/SLA customer).</li>
+<li>Above ~1,000 tenants the add-on's "Update Client DB" loop and file-per-table counts (≈ 100k+ tables) become the bottleneck: add sharding and a migration runner (custom work; the add-on does not document one [[UNK]]).</li>
+<li>Above ~5,000 tenants a per-tenant-DB-on-one-MySQL design should be considered end-of-life for the core; expect dedicated platform engineering.</li>
+</ul>
+
+<h2>9. Cloud cost estimation (monthly)</h2>
+<div class="callout warn"><b>Source conflict — Hetzner</b> Northflank and others report Hetzner CX/CPX increases in April–June 2026 (e.g. CX33 €25.47, CPX22 €19.49 [[TP]]) while CostGoat's September 2026 table lists CX33 at €8.49 and CPX22 at €19.49 [[TP]]. We use the CostGoat table below and a ±30% band. Hetzner also has no verified India region in our sources [[UNK]]; latency to Odisha via Singapore/Europe must be tested. DigitalOcean has a Bangalore region (not verified this session).</div>
+
+<h3>Provider price points used</h3>
+<div class="tblw"><table>
+<thead><tr><th>Provider</th><th>Instance</th><th>Price</th><th>≈ ₹/month</th><th>Source</th></tr></thead><tbody>
+<tr><td><b>Hostinger (current host)</b></td><td>KVM 2: 2 vCPU / 8 GB / 100 GB NVMe / 8 TB</td><td>₹799/mo promo · ₹1,199/mo renewal</td><td>₹800–1,200</td><td><a href="https://www.hostinger.com/in/vps-hosting">Hostinger India</a> [[V]]; matches the server your audit found (2 vCPU / 7.8 GiB)</td></tr>
+<tr><td>Hostinger</td><td>KVM 4: 4 vCPU / 16 GB / 200 GB NVMe / 16 TB</td><td>₹1,099 promo · ₹2,399 renewal</td><td>₹1,100–2,400</td><td>same [[V]]</td></tr>
+<tr><td>Hostinger</td><td>KVM 8: 8 vCPU / 32 GB / 400 GB NVMe / 32 TB</td><td>₹2,199 promo · ₹4,399 renewal</td><td>₹2,200–4,400</td><td>same [[V]]; largest plan. KVM 1 (1 vCPU / 4 GB) is ₹599 / ₹999</td></tr>
+<tr><td>Hetzner</td><td>CX33 4 vCPU / 8 GB / 80 GB</td><td>€8.49</td><td>₹850</td><td><a href="https://costgoat.com/pricing/hetzner">CostGoat</a> [[TP]]</td></tr>
+<tr><td>Hetzner</td><td>CX43 8 vCPU / 16 GB</td><td>€15.99</td><td>₹1,600</td><td>same</td></tr>
+<tr><td>Hetzner</td><td>CCX23 4 vCPU dedicated / 16 GB</td><td>€85.99</td><td>₹8,600</td><td>same</td></tr>
+<tr><td>Hetzner</td><td>CCX33 8 vCPU dedicated / 32 GB</td><td>€138.49</td><td>₹13,850</td><td>same; backups +20%; LB ≈ €5.4–6</td></tr>
+<tr><td>DigitalOcean</td><td>Basic 4 vCPU / 8 GB</td><td>$48</td><td>₹4,320</td><td><a href="https://www.digitalocean.com/pricing/droplets">DO pricing</a> [[V]]</td></tr>
+<tr><td>DigitalOcean</td><td>Basic 8 vCPU / 16 GB</td><td>$96</td><td>₹8,640</td><td>[[V]]</td></tr>
+<tr><td>DigitalOcean</td><td>General Purpose 8 vCPU / 32 GB</td><td>$252</td><td>₹22,700</td><td>[[V]]</td></tr>
+<tr><td>AWS Lightsail (Mumbai)</td><td>from $5; overage $0.13/GB in Mumbai</td><td>—</td><td>—</td><td><a href="https://cloudburn.io/blog/amazon-lightsail-pricing">CloudBurn</a> [[TP]]</td></tr>
+<tr><td>AWS EC2/RDS Mumbai</td><td>General-purpose instances + managed DB</td><td>—</td><td>see table</td><td>Not re-verified this session — [[EST]] from general knowledge</td></tr>
+<tr><td>Contabo</td><td>VPS tiers</td><td>—</td><td>see table</td><td>Not re-verified this session [[UNK]]; typically the cheapest but Singapore/EU regions and noisy shared hosts [[EST]]</td></tr>
+<tr><td>Cloudflare R2</td><td>Object storage</td><td>$0.015/GB-mo, free egress</td><td>~₹1.35/GB</td><td><a href="https://filebase.com/blog/cloudflare-r2-pricing-costs-savings-and-alternatives-in-2026/">Filebase</a> [[TP]]</td></tr>
+<tr><td>Backblaze B2</td><td>Object storage</td><td>$6.95/TB-mo</td><td>~₹625/TB</td><td><a href="https://www.backblaze.com/cloud-storage/pricing">Backblaze</a> [[TP]]</td></tr>
+</tbody></table></div>
+
+<h3>Infrastructure only (servers + DB + Redis + backups + LB), ₹/month [[EST]]</h3>
+<div class="tblw"><table>
+<thead><tr><th>Tenants</th><th>Hostinger (current)</th><th>Hetzner</th><th>DigitalOcean</th><th>AWS (Mumbai)</th><th>Contabo</th></tr></thead><tbody>
+<tr><td>100</td><td>₹1,200–2,400 (1× KVM 2–4)</td><td>₹1,500–2,500</td><td>₹5,000–6,500</td><td>₹7,000–11,000</td><td>₹1,500–3,000</td></tr>
+<tr><td>500</td><td>₹2,200–4,800 (2× KVM 4)</td><td>₹4,000–8,000</td><td>₹17,000–25,000</td><td>₹25,000–40,000</td><td>₹4,000–8,000</td></tr>
+<tr><td>1,000</td><td>₹7,000–14,000 (2× KVM 4 app + 2× KVM 8 DB)</td><td>₹18,000–30,000</td><td>₹40,000–60,000</td><td>₹55,000–90,000</td><td>₹12,000–25,000</td></tr>
+<tr><td>5,000</td><td>₹30,000–60,000 (about 5 app + 12 DB nodes)</td><td>₹90,000–1,50,000</td><td>₹2,50,000–3,50,000</td><td>₹3,50,000–5,50,000</td><td>Not recommended at this scale</td></tr>
+<tr><td>10,000</td><td>₹70,000–1,40,000 (about 10 app + 24 DB nodes)</td><td>₹1,80,000–3,00,000</td><td>₹5,00,000–7,00,000</td><td>₹8,00,000–12,00,000</td><td>Not recommended</td></tr>
+</tbody></table></div>
+
+<div class="callout"><b>Hostinger notes</b> Ranges run from the promo price (12-month term) to the renewal price, so budget the renewal figure. Hostinger's largest plan is KVM 8 (8 vCPU / 32 GB), so the 5,000 and 10,000 rows use more, smaller database nodes than the other providers. Only VPS plans were checked: a managed database, load balancer, private networking, object storage, a documented India data-centre location and snapshot pricing were not seen [[UNK]] — running many DB nodes and a load balancer yourself is extra operations work. "Free weekly backups" are included and daily backups can be enabled [[V]], but they are server-level, not per-tenant; keep the off-site per-tenant dumps. Hostinger prices are shown as monthly equivalents of a prepaid term; GST is added at checkout [[TP]] <a href="https://hostadvice.com/hosting-company/hostinger-reviews/vps-pricing/">HostAdvice</a>.</div>
+
+<h3>Other running costs (all providers) [[EST]] unless noted</h3>
+<div class="tblw"><table>
+<thead><tr><th>Line</th><th>100</th><th>500</th><th>1,000</th><th>5,000</th><th>10,000</th><th>Basis</th></tr></thead><tbody>
+<tr><td>Object storage/backups</td><td>₹150</td><td>₹400</td><td>₹1,000</td><td>₹5,000</td><td>₹10,000</td><td>R2 rate above [[TP]]</td></tr>
+<tr><td>CDN / DNS / WAF</td><td>₹0</td><td>₹0–2,000</td><td>₹2,000</td><td>₹10,000</td><td>₹25,000</td><td>Cloudflare tiers [[ASM]]</td></tr>
+<tr><td>Monitoring + logging + error tracking</td><td>₹0–1,500</td><td>₹3,000</td><td>₹8,000</td><td>₹35,000</td><td>₹80,000</td><td>SaaS tools [[ASM]]</td></tr>
+<tr><td>Transactional e-mail (SES/Brevo)</td><td>₹500</td><td>₹1,500</td><td>₹3,000</td><td>₹12,000</td><td>₹25,000</td><td>[[ASM]]</td></tr>
+<tr><td>SMS (DLT registered, OTP + alerts)</td><td>₹500</td><td>₹2,500</td><td>₹5,000</td><td>₹25,000</td><td>₹50,000</td><td>≈ ₹0.15–0.25/SMS [[UNK]] verify with a DLT provider; SalePro itself supports only Twilio and Clickatell (Part 12)</td></tr>
+<tr><td>WhatsApp (Meta fees only)</td><td>₹4,000</td><td>₹20,000</td><td>₹40,000</td><td>₹2,00,000</td><td>₹4,00,000</td><td>30% of tenants × ~600 utility msgs × ₹0.115 + BSP margin; Meta list: ₹0.115 utility, ₹0.8631 marketing [[TP]] <a href="https://myoperator.com/blog/whatsapp-business-api-pricing-india-2026">MyOperator</a></td></tr>
+<tr><td>Payment gateway fees</td><td>₹2,100</td><td>₹10,300</td><td>₹20,600</td><td>₹1,03,000</td><td>₹2,06,000</td><td>≈ 2.4% of collections: Razorpay platform fee 2% + 18% GST [[TP]] <a href="https://razorpay.com/blog/upi-charges-explained-mdr-vs-platform-fees/">Razorpay</a>; UPI MDR is 0% by law but gateways charge platform fees</td></tr>
+<tr><td>Domains/SSL/misc</td><td>₹500</td><td>₹1,000</td><td>₹2,000</td><td>₹5,000</td><td>₹10,000</td><td>[[ASM]]</td></tr>
+</tbody></table></div>
+<p>Note: Razorpay is offering 0% platform fee for 90 days / ₹5 lakh on new merchant accounts activated on or after 1 July 2026 [[TP]] — a launch-period saving, not a steady state. Meta also begins charging service messages from 1 October 2026, with 1,000 free per number [[TP]].</p>

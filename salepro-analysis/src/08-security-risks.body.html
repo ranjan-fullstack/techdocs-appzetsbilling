@@ -1,0 +1,62 @@
+<!--TITLE:08 Security, Technical &amp; Business Risks — Sections 19–21-->
+<p class="sub">SalePro's code has not been inspected, so the security section is a <b>pre-launch checklist and hypothesis list</b>, not findings. Items marked [[V]] come from vendor documentation; other items are what we must verify by code review and penetration test before charging customers.</p>
+
+<h2>19. Security risks / audit checklist</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>What to verify / do</th><th>Known so far</th><th>Rating</th></tr></thead><tbody>
+<tr><td>Tenant isolation</td><td>Host-based tenant resolution cannot be spoofed via Host/X-Forwarded-Host; separate DB users per tenant (not one root); no shared cache keys/sessions across tenants; file storage paths per tenant; queue jobs carry tenant context</td><td>Separate DBs [[V]]; DB creation uses cPanel/Plesk API or MySQL root [[V]] → likely high-privilege credential in app config [[INF]]</td><td><b>CRITICAL</b> until reviewed</td></tr>
+<tr><td>Authentication / password security</td><td>Bcrypt/Argon hashes; lockout; password reset token expiry; default <code>superadmin/superadmin</code> forced change</td><td>Default credentials exist at install and must be rotated [[V]]</td><td>HIGH</td></tr>
+<tr><td>Authorization / RBAC</td><td>Route-level permission checks, IDOR tests on every ID parameter (sale, customer, product), API role checks</td><td>Roles/permissions exist [[V]]; enforcement quality [[UNK]]</td><td>HIGH</td></tr>
+<tr><td>SQL injection</td><td>Eloquent/query builder use, raw queries audit, DataTables server-side search inputs</td><td>[[UNK]] — legacy Laravel apps often carry raw fragments</td><td>MEDIUM</td></tr>
+<tr><td>XSS</td><td>Blade escaping, product names, customer notes, receipts/print templates, CMS content editor (super admin CMS accepts HTML)</td><td>[[UNK]]</td><td>MEDIUM–HIGH</td></tr>
+<tr><td>CSRF</td><td>Laravel default middleware on web routes; token on AJAX; exclusions list (payment webhooks)</td><td>[[UNK]]</td><td>MEDIUM</td></tr>
+<tr><td>File upload security</td><td>Extension + MIME validation, non-executable storage, image re-encoding, size limits, virus scanning for attachments</td><td>Products/purchases attachments and CMS uploads exist [[V]]; validation [[UNK]]</td><td>HIGH</td></tr>
+<tr><td>API security / rate limiting</td><td>Token scopes, throttling, tenant binding on tokens; webhook signature verification for gateways</td><td>No API chapter in the full docs page [[V]]</td><td>MEDIUM</td></tr>
+<tr><td>Audit logs</td><td>Immutable log of price changes, voids, deletes, logins, super-admin actions and impersonation</td><td>Activity Log report covers create/update/delete of sales, purchases, quotations (Part 12) [[V]]; logins, price changes and super-admin actions not documented</td><td>HIGH</td></tr>
+<tr><td>Encryption</td><td>Gateway keys and SMTP passwords encrypted at rest (Laravel Crypt) not plain columns; DB-at-rest encryption; TLS everywhere; backups encrypted</td><td>Your AppZetBilling audit found plain JSON gateway creds and unencrypted R2 backups [[V]] — repeat the check on SalePro</td><td>HIGH</td></tr>
+<tr><td>Backups / DR</td><td>Per-tenant automated schedule (add-on has manual "Backup Client DB" [[V]]), off-site copy, restore test monthly, RPO/RTO published</td><td>In-app "Backup Database" (.sql, restore drops and replaces the DB, files excluded) [[V]]; add-on has a manual "Backup Client DB" [[V]]; scheduling and cron/queue dependency [[UNK]]</td><td>HIGH</td></tr>
+<tr><td>Session security</td><td>Secure/HttpOnly/SameSite cookies, session regeneration, idle timeout, concurrent-login policy</td><td>[[UNK]]</td><td>MEDIUM</td></tr>
+<tr><td>Admin security / 2FA</td><td>2FA for super admin and tenant owners, IP allow-list for super-admin, alerting on new device</td><td>Not documented [[UNK]]</td><td>HIGH</td></tr>
+<tr><td>IP/device monitoring</td><td>Login history per user visible to owner</td><td>[[UNK]]</td><td>MEDIUM</td></tr>
+<tr><td>Payment security</td><td>Use hosted Razorpay/UPI flows; never store card data; webhook verification; idempotent order creation; reconcile daily</td><td>Gateway integration native [[V]]; verification [[UNK]]</td><td>HIGH</td></tr>
+<tr><td>Secrets management</td><td><code>.env</code> outside webroot, no <code>.env.bak</code>/zip artefacts (your audit found such files on AppZetBilling), rotate keys, <code>APP_DEBUG=false</code></td><td>Docs also warn: keep APP_DEBUG false, rotate tokens [[V]]</td><td>HIGH</td></tr>
+<tr><td>Server hardening</td><td>Key-only SSH, firewall, fail2ban, unattended upgrades, separate MySQL user, no root DB for the web app at runtime</td><td>Yours to do</td><td>HIGH</td></tr>
+<tr><td>Privacy / compliance</td><td>DPDP-era consent for customer phone numbers and WhatsApp marketing, data-processing terms with tenants, erasure workflow, retention policy</td><td>Legal review needed [[UNK]]</td><td>MEDIUM</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Gate [[REC]]</b> Before any paying tenant: external penetration test focused on tenant isolation, IDOR, file upload and CMS XSS; static analysis (PHPStan/Larastan, Psalm), dependency audit (<code>composer audit</code>), and a written DR drill. Budget ₹1–2.5 lakh for the pen test [[ASM]].</div>
+
+<h2>20. Technical risks</h2>
+<div class="tblw"><table>
+<thead><tr><th>#</th><th>Risk</th><th>Rating</th><th>Why</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>R1</td><td>Vendor dependency (single author, LionCoders)</td><td>HIGH</td><td>Add-on has 72 sales, last update 2 Aug 2026 [[V]]; a stalled vendor strands us</td><td>Written continuity terms; keep our changes modular; escrow of latest source; contract paid support</td></tr>
+<tr><td>R2</td><td>Tenant isolation flaw</td><td>CRITICAL</td><td>Root-level DB credential in the app; unreviewed code</td><td>Pen test, per-tenant DB users, least privilege, network segmentation</td></tr>
+<tr><td>R3</td><td>Upgrade conflicts with our customizations</td><td>HIGH</td><td>Vendor releases monthly-ish; forked code drifts</td><td>Extension modules, no vendor-file edits, upgrade branch + regression suite</td></tr>
+<tr><td>R4</td><td>SaaS scaling beyond ~1,000 tenants</td><td>HIGH</td><td>DB-per-tenant, manual "Update Client DB", table count</td><td>Sharding map, batch migration runner, load testing at 500 synthetic tenants before scale</td></tr>
+<tr><td>R5</td><td>Offline sync data integrity</td><td>HIGH</td><td>Undocumented conflict handling; duplicate invoice numbers</td><td>Offline invoice-series per device; server-side idempotency; disable offline until proven</td></tr>
+<tr><td>R6</td><td>Laravel / PHP version churn</td><td>MEDIUM</td><td>PHP requirement already moved 8.2 → 8.3 [[V]]</td><td>Follow vendor's version; container image pinned; upgrade test cadence</td></tr>
+<tr><td>R7</td><td>Third-party package dependency</td><td>MEDIUM</td><td>Unknown composer tree [[UNK]]</td><td>SBOM, <code>composer audit</code>, license scan</td></tr>
+<tr><td>R8</td><td>Code quality / test coverage</td><td>MEDIUM–HIGH</td><td>8-year legacy; unknown tests</td><td>Two-week code review sprint before commit; characterisation tests around billing</td></tr>
+<tr><td>R9</td><td>Payment failures / duplicate charges</td><td>HIGH</td><td>One-time payments per renewal likely; no dunning [[UNK]]</td><td>Razorpay Subscriptions/AutoPay, idempotency, daily reconciliation</td></tr>
+<tr><td>R10</td><td>Backup failure / long restore</td><td>HIGH</td><td>N databases; manual per-tenant backup</td><td>Automated per-tenant dumps, restore drills, replicas</td></tr>
+<tr><td>R11</td><td>WhatsApp API dependency</td><td>MEDIUM</td><td>Template approval, quality rating bans, cost changes (service messages billable from 1 Oct 2026 [[TP]])</td><td>Multi-BSP abstraction; credit ledger; opt-in evidence</td></tr>
+<tr><td>R12</td><td>E-mail / SMS dependency (DLT rules for SMS)</td><td>MEDIUM</td><td>Deliverability, DLT template approval</td><td>Two providers; SPF/DKIM/DMARC; DLT registration early</td></tr>
+<tr><td>R13</td><td>Database bottlenecks (open files, table cache, lock contention on sales numbering)</td><td>MEDIUM–HIGH</td><td>Per-tenant schema volume</td><td>Tune MySQL, monitor, cap tenants per server</td></tr>
+<tr><td>R14</td><td>Wildcard/custom-domain SSL automation</td><td>HIGH</td><td>Add-on does not issue custom-domain certs [[V]]; your wildcard renewal was already manual and broken [[V]]</td><td>DNS-01 API hooks, Caddy/on-demand TLS, cert-expiry alerts</td></tr>
+<tr><td>R15</td><td>CodeCanyon licensing interpretation</td><td>HIGH</td><td>Part 01</td><td>Written author confirmation, Extended ×2, keep purchase codes/invoices</td></tr>
+<tr><td>R16</td><td>Vendor support responsiveness</td><td>MEDIUM</td><td>6-month support window [[V]], the listed support phone has Bangladesh's +880 code, so the team is probably Bangladesh-based [[INF]]; no SLA is published</td><td>Pre-sale test ticket, response-time measurement</td></tr>
+</tbody></table></div>
+
+<h2>21. Business risks</h2>
+<div class="tblw"><table>
+<thead><tr><th>#</th><th>Risk</th><th>Rating</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>B1</td><td>Duplicated product: SalePro vs AppZetBilling — split engineering focus, two data models, double licence/hosting cost</td><td>CRITICAL</td><td>Decide one core platform; consider SalePro only as a retail vertical with a hard scope</td></tr>
+<tr><td>B2</td><td>Incumbent response: Petpooja/GoFrugal bundle features and discount in Odisha</td><td>HIGH</td><td>Local trust, Odia UX, onboarding, aggressive annual pricing; avoid head-on feature race</td></tr>
+<tr><td>B3</td><td>Low ARPU vs human-heavy support</td><td>HIGH</td><td>Self-serve onboarding, in-app videos, WhatsApp bot; charge onboarding fee</td></tr>
+<tr><td>B4</td><td>High churn in SMB segment (shop closures, price switching)</td><td>HIGH</td><td>Annual prepay discounts, data lock-in via value not exit barriers, CRM features</td></tr>
+<tr><td>B5</td><td>Hardware/printer support burden</td><td>MEDIUM–HIGH</td><td>Certified hardware list; dealer partnerships; remote diagnostics</td></tr>
+<tr><td>B6</td><td>Regulatory change (GST, e-invoice thresholds, DPDP)</td><td>MEDIUM</td><td>CA advisor; modular tax layer</td></tr>
+<tr><td>B7</td><td>Payment-gateway / WhatsApp policy or price shifts</td><td>MEDIUM</td><td>Pass-through pricing, multi-provider abstraction</td></tr>
+<tr><td>B8</td><td>Capital: ₹20–30 lakh to reach break-even [[EST]]</td><td>MEDIUM–HIGH</td><td>Stage-gate spending; revenue-first vertical (retail) to fund restaurant depth</td></tr>
+<tr><td>B9</td><td>Key-person risk (one lead developer knows the forked code)</td><td>HIGH</td><td>Documentation, second developer, code reviews</td></tr>
+<tr><td>B10</td><td>Brand collision or trademark dispute after launch</td><td>MEDIUM</td><td>Pre-launch trademark search (Part 10)</td></tr>
+</tbody></table></div>

@@ -1,0 +1,76 @@
+<!--TITLE:09 Go-to-Market, Operations, Roadmap &amp; Scaling — Sections 14, 22–24 and the Odisha-first plan-->
+<p class="sub">Builds on the Odisha strategy already written in gap-analysis Part 11 (cities, channels, competitor list) and adds the numbers and phases this decision needs. City-level demand data was not verifiable [[UNK]]; ordering below is reasoning, not measurement.</p>
+
+<h2>Business model (Section 14 of the brief)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Acquisition channel</th><th>Realism in Odisha</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Direct field sales + demos</td><td>High</td><td>Trust and localisation are the edge; small team per city cluster</td></tr>
+<tr><td>Digital (Google search, Instagram/YouTube in Odia, WhatsApp click-to-chat)</td><td>Medium–high</td><td>Competitors already rank locally [[TP]]; keep paid budget small, measure cost per trial</td></tr>
+<tr><td>Local sales agents (commission)</td><td>High</td><td>Pay on activated + paid month 2, not on signup</td></tr>
+<tr><td>Resellers / hardware dealers (POS printers, billing machines)</td><td>High</td><td>Dealers meet new outlets first; give 25–35% first-year margin</td></tr>
+<tr><td>CA / accountant partnerships</td><td>High for GST-heavy retail and wholesale</td><td>Needs Tally/GSTR exports (P1)</td></tr>
+<tr><td>Restaurant consultants, franchise partnerships</td><td>Medium</td><td>Few in Odisha; good for multi-outlet groups</td></tr>
+<tr><td>Channel partners outside Odisha</td><td>Later</td><td>After playbook proven</td></tr>
+</tbody></table></div>
+<div class="tblw"><table>
+<thead><tr><th>Revenue stream</th><th>Realistic?</th><th>Why</th></tr></thead><tbody>
+<tr><td>Monthly subscription</td><td>Yes</td><td>Core; monthly for trial-converters</td></tr>
+<tr><td>Annual subscription</td><td>Yes — push it</td><td>Cuts churn and payment-fee count</td></tr>
+<tr><td>Setup / onboarding fee</td><td>Yes (restaurants)</td><td>₹1,500–5,000; funds onboarding people</td></tr>
+<tr><td>Premium support</td><td>Yes, modest</td><td>Priority WhatsApp line, on-site visit</td></tr>
+<tr><td>WhatsApp/SMS credits</td><td>Yes</td><td>Pass-through at cost + margin</td></tr>
+<tr><td>Additional branch/users/storage</td><td>Yes</td><td>Cleanest expansion revenue</td></tr>
+<tr><td>Hardware bundles</td><td>Referral only</td><td>Inventory and warranty risk not worth it early</td></tr>
+<tr><td>Ecommerce, API, mobile app, custom integrations</td><td>Later</td><td>After 500+ customers; low early demand [[INF]]</td></tr>
+</tbody></table></div>
+
+<h2>22. Go-to-market and operations</h2>
+<h3>Geographic expansion logic</h3>
+<div class="tblw"><table>
+<thead><tr><th>Wave</th><th>Cities/states</th><th>Rationale</th></tr></thead><tbody>
+<tr><td>1</td><td>Bhubaneswar → Cuttack (twin-city cluster)</td><td>Highest density of cafés, cloud kitchens, modern retail; existing local competitors show demand [[TP]]; one team covers both</td></tr>
+<tr><td>2</td><td>Puri, Berhampur, Sambalpur, Rourkela</td><td>Tourism restaurants (Puri, seasonal), regional trade hubs, industrial canteens; requires per-city partners</td></tr>
+<tr><td>3</td><td>Balasore, Jharsuguda, Angul, Baripada</td><td>Smaller markets; serve by remote onboarding + dealer partners</td></tr>
+<tr><td>4</td><td>West Bengal, Andhra Pradesh, Telangana, Tamil Nadu, Karnataka</td><td>Order by language reuse and partner availability: Bengali/Telugu/Tamil/Kannada UI; West Bengal shares borders and business links with Odisha [[INF]]</td></tr>
+</tbody></table></div>
+<p><b>Does the expansion strategy make sense?</b> Yes for waves 1–2, because local trust and Odia support are cheap advantages; do not leave Odisha until you hit a measurable threshold (e.g. 500 paying tenants, monthly churn under 3%, CAC payback under 9 months) [[REC]]. Neighbouring-state expansion should follow partners and language readiness, not map adjacency.</p>
+
+<h3>Support and operations by scale [[ASM]]</h3>
+<div class="tblw"><table>
+<thead><tr><th>Function</th><th>100</th><th>500</th><th>1,000</th><th>5,000</th></tr></thead><tbody>
+<tr><td>Developers</td><td>1</td><td>2</td><td>4</td><td>12</td></tr>
+<tr><td>DevOps / SRE</td><td>0 (fractional)</td><td>1</td><td>1</td><td>3</td></tr>
+<tr><td>Technical support</td><td>1</td><td>2</td><td>4</td><td>15</td></tr>
+<tr><td>Onboarding</td><td>(shared)</td><td>1</td><td>2</td><td>8</td></tr>
+<tr><td>Sales</td><td>1</td><td>3</td><td>4</td><td>15</td></tr>
+<tr><td>Customer success</td><td>0</td><td>0</td><td>1</td><td>5</td></tr>
+<tr><td>Management/finance/HR</td><td>founders</td><td>founders</td><td>founders</td><td>2</td></tr>
+<tr><td><b>Total</b></td><td><b>3</b></td><td><b>9</b></td><td><b>16</b></td><td><b>60</b></td></tr>
+</tbody></table></div>
+<p><b>Likely support problems</b> [[INF]]: thermal printer set-up and drivers; Odia characters printing as blanks; internet drop-outs mid-service; wrong GST rate/HSN on products; staff sharing one login; menu/product import errors from CSV; forgotten passwords; WhatsApp template rejections; UPI settlement mismatches; "software is slow" (actually a cheap Android tablet); accidental deletions ("Fresh Business Reset" exists for admins [[V]]); subscription lapse on festival days.</p>
+
+<h2>23. 12-month roadmap</h2>
+<p>Assumes the decision to proceed and a team of 3–5. Effort from Part 05. If AppZetBilling stays the core, Phases 1–3 apply to hardening it instead and SalePro enters only in Phase 6.</p>
+<div class="tblw"><table>
+<thead><tr><th>Phase</th><th>Months</th><th>Features</th><th>Effort</th><th>Dependencies</th><th>Objective</th><th>Priority</th></tr></thead><tbody>
+<tr><td><b>0 Due diligence</b></td><td>0–1</td><td>Author Q&amp;A, demo walk, licence confirmation, code sample review, decision memo</td><td>2–3 wks</td><td>Part 01 questions</td><td>Decide platform</td><td>P0</td></tr>
+<tr><td><b>1 Purchase + install</b></td><td>1–2</td><td>Buy Extended ×2; staging + production servers; wildcard DNS/SSL automation; cron/queue; backups</td><td>3–4 wks</td><td>Licence answer</td><td>Working environment</td><td>P0</td></tr>
+<tr><td><b>2 Branding</b></td><td>2</td><td>Name, logo, CMS site, Odia + English landing, legal pages, GST invoice for subscriptions</td><td>2–3 wks</td><td>Trademark check</td><td>Public identity</td><td>P0</td></tr>
+<tr><td><b>3 SaaS hardening</b></td><td>2–4</td><td>Security checklist, pen test, audit log, 2FA, per-tenant DB users, monitoring, Razorpay Subscriptions + dunning</td><td>8–12 wks</td><td>Code access</td><td>Safe to charge</td><td>P0</td></tr>
+<tr><td><b>4 Indian adaptation</b></td><td>3–5</td><td>CGST/SGST invoices, GSTR/Tally exports, Odia UI, Odia receipts, UPI QR, onboarding videos</td><td>8–12 wks</td><td>CA review, translator</td><td>Legal + local fit</td><td>P0</td></tr>
+<tr><td><b>5 Restaurant features</b></td><td>4–8</td><td>Recipe deduction, KOT printing, split/merge bill, captain app, QR table ordering</td><td>16–28 wks</td><td>Platform decision</td><td>Restaurant vertical</td><td>P0/P1</td></tr>
+<tr><td><b>6 Retail features</b></td><td>5–9</td><td>Scale integration, size-colour matrix, wholesale price lists, pharmacy pack (later), barcode label templates</td><td>8–14 wks</td><td>—</td><td>Retail vertical</td><td>P1</td></tr>
+<tr><td><b>7 Integrations</b></td><td>8–12</td><td>WhatsApp Cloud API, Swiggy/Zomato (subject to approval), delivery partners, payment terminals</td><td>20–35 wks</td><td>Partner approval, Meta verification</td><td>Retention and revenue</td><td>P1</td></tr>
+<tr><td><b>8 Mobile apps</b></td><td>9–12</td><td>Owner app, captain app, white-label pipeline</td><td>10–18 wks</td><td>Store accounts; tenant app source [[V]]</td><td>Owner engagement</td><td>P1</td></tr>
+<tr><td><b>9 Scale</b></td><td>12+</td><td>Sharding map, batch migrations, load test, replicas, observability</td><td>12–20 wks</td><td>500+ tenants</td><td>Reliability</td><td>P1</td></tr>
+<tr><td><b>10 AI features</b></td><td>18+</td><td>Owner insights, demand forecast, menu suggestions</td><td>6–12 wks</td><td>Clean data</td><td>Differentiation</td><td>P3</td></tr>
+</tbody></table></div>
+
+<h2>24. Three-year scaling plan (base scenario) [[ASM]]</h2>
+<div class="tblw"><table>
+<thead><tr><th>Year</th><th>Tenants (year end)</th><th>Team</th><th>Focus</th><th>Infrastructure</th><th>Gate to next stage</th></tr></thead><tbody>
+<tr><td>1</td><td>200</td><td>3–5</td><td>Bhubaneswar/Cuttack, retail + café first; P0 delivered; 20–30 owner interviews before ad spend</td><td>One VPS → app/DB split at ~150–300 tenants</td><td>Churn &lt; 3%/mo, 100 paying tenants, one repeatable channel</td></tr>
+<tr><td>2</td><td>700</td><td>10–14</td><td>Restaurants with recipes/KOT; WhatsApp; CA and dealer channels; Puri/Berhampur/Rourkela</td><td>Separate DB + Redis + workers; nightly restore drill; second app node</td><td>Positive operating result, CAC payback &lt; 9 months</td></tr>
+<tr><td>3</td><td>1,600</td><td>20–26</td><td>Aggregators, multi-outlet, one neighbouring state, partner programme</td><td>2 DB servers, LB, sharding map, per-tenant restore tooling</td><td>Decide multi-state and funding</td></tr>
+</tbody></table></div>
+<div class="callout"><b>What we should build ourselves vs buy [[REC]]</b> Build: Indian tax/invoice layer, Odia UX, recipe/KOT logic, onboarding flow, WhatsApp automation orchestration, owner dashboards, tenant metering. Buy/rent: payment gateway, WhatsApp BSP, SMS/DLT, e-invoice GSP, object storage, monitoring, error tracking, support desk tool. Do <b>not</b> build: your own payment processing, your own aggregator marketplace, hardware manufacturing, a custom accounting engine (adopt SalePro's or export to Tally).</div>

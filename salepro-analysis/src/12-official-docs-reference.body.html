@@ -1,0 +1,141 @@
+<!--TITLE:12 SalePro Official Documentation Reference — every chapter checked-->
+<p class="sub">Source: <a href="https://lion-coders.com/blog/salepropos">lion-coders.com/blog/salepropos</a> — the full page was downloaded and read this session (≈ 34,600 words, 23 chapters, 540 headings, page dated "Updated Sep 2, 2026" on the site). Everything below is [[V]] from that page unless tagged. Parts 01–11 were written from summaries before this was read; the box below lists what this document changes.</p>
+
+<div class="callout bad"><b>Corrections to earlier parts (docs override my earlier "not found")</b>
+<ul>
+<li><b>WhatsApp exists</b> (Ch. 18, 21.25, POS): WhatsApp Cloud API (Meta) settings, approved-template sync, send from Customer List, "Send WhatsApp Message" tick-box in the POS payment modal, per-event In-App/WhatsApp/SMS/Email matrix. Sending is mostly staff-triggered, not automatic. Earlier: "NOT FOUND / NOT AVAILABLE" → now <b>PARTIAL</b>.</li>
+<li><b>Indian GST invoice format exists</b> (5.3): General Setting → Invoice Format "Indian GST" auto-calculates CGST/SGST/IGST and shows them separately on the receipt. Earlier: "UNK" → now <b>AVAILABLE (test with real invoices)</b>. e-invoice and e-way bill are still not mentioned.</li>
+<li><b>Activity Log exists</b> (20.1): who created/updated/deleted sales, purchases and quotations. Earlier "audit log likely absent" → <b>PARTIAL</b> (no login, price-change or super-admin coverage documented).</li>
+<li><b>Cash register, coupons, discount plans, gift cards, customer credit limits, deposits, reward points, direct ESC/POS network printing, low-stock notification in POS, expiry and quantity-alert reports</b> are all documented → earlier UNK items now <b>AVAILABLE</b>.</li>
+<li><b>Offline POS</b> is documented in detail (see Ch. 5.3 below) — browser-only, single device, data lost if browser storage is cleared. This confirms the earlier inference.</li>
+<li><b>Restaurant depth is still thin in the docs:</b> only a few paragraphs in 5.3 and "Tables" 21.5. Floors only work "when the Restaurant module is installed/active"; KDS and modifiers are named but have <b>no chapter</b>. Ask whether the Restaurant module is a separate paid item.</li>
+<li><b>Manufacturing and Repair are listed as Addons</b> (Ch. 22) and Project/eCommerce/Tailoring/Social Commerce as "enabled modules". The CodeCanyon page says several are included — ask exactly which are in the $30 licence.</li>
+<li><b>Recipes:</b> "Wastage Percent" is reference info only and does not change stock deduction; production is a manual entry that adds finished stock and deducts ingredients. Confirms there is no auto-deduction per restaurant sale.</li>
+<li><b>SMS is Twilio or Clickatell only</b> (21.14) — no Indian DLT provider (MSG91, etc.). Extra work for India.</li>
+<li><b>Languages:</b> the docs mention Bengali as the example; Odia still not confirmed.</li>
+</ul></div>
+
+<h2>Getting started (Ch. 0)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>What the docs say</th></tr></thead><tbody>
+<tr><td>0.0 How to use</td><td>Recommended setup order: install → general settings/currency/tax → warehouses, billers, roles, users → units/categories/brands/products → suppliers/customers/opening stock → payment accounts → test one purchase/sale/payment/return → optional modules (Restaurant, Manufacturing, Repair, eCommerce, Tailoring, Social Commerce, WhatsApp, HRM). Core flow: Supplier → Purchase → Warehouse stock → Sale/POS → Payment → Return/Exchange → Accounting → Reports.</td></tr>
+<tr><td>0.1 Server requirements</td><td>Laravel app, PHP 8.3, MySQL 5.7+, required extensions, Apache/Nginx/LiteSpeed; troubleshooting.</td></tr>
+<tr><td>0.2 Installation</td><td>cPanel and XAMPP/WAMP installs with a web wizard (DB creation, upload/extract, wizard fields).</td></tr>
+<tr><td>0.3 Change domain / hosting</td><td>Export DB, zip files, import, edit <code>.env</code>.</td></tr>
+<tr><td>0.4 Updating</td><td>Download update, upload and replace files, run update script. <b>Warning: any custom code in core files is overwritten by updates</b> — confirms upgrade-conflict risk R3.</td></tr>
+<tr><td>0.5 Quick start</td><td>Login, dummy data, <b>Fresh Business Reset</b> to wipe demo data.</td></tr>
+</tbody></table></div>
+
+<h2>1. Dashboard</h2>
+<p>Date filter; KPI cards (Sale, Sale Due, Sale Return, Expense, Purchase, Purchase Due, Purchase Return, Profit); cash-flow chart (6 months); monthly summary donut; yearly report; recent transactions; best-seller panels (month, year by qty, year by value). Cards hidden by role.</p>
+
+<h2>2. People</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>2.1 Customers</td><td>Customer groups (price adjustment %), walk-in customer, WhatsApp number, credit limit, payment term, customer type, custom fields, reward point balance, deposit balance, total due; actions: Edit, Due Report, <b>Clear Due</b> (cash, gift card, card, cheque, PayPal, deposit, points), Add/View Deposit, <b>WhatsApp Notification</b>, Add/View Points; CSV import.</td></tr>
+<tr><td>2.2 Suppliers</td><td>Profiles, total due, View Payment, Clear Due, purchases link to supplier payables; CSV import.</td></tr>
+<tr><td>2.3 Users</td><td>Users tied to a Role; default Biller and Warehouse per staff user; status control; password reset; user creation by role.</td></tr>
+<tr><td>2.4 Sale Agents</td><td>Sales-target tiers and commission; commission calculated during payroll from sales under the agent's linked user.</td></tr>
+<tr><td>2.5 Billers</td><td>Branch/store/company issuer profiles; company name and VAT number print on invoices.</td></tr>
+</tbody></table></div>
+
+<h2>3. Product</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>3.1–3.3</td><td>Nested categories (CSV import), brands (CSV import), units with base and sub-units (box→piece).</td></tr>
+<tr><td>3.4 Product list</td><td>Filters (warehouse, type, stock status), stock worth at price and cost, history, CSV import.</td></tr>
+<tr><td>3.5 Add product</td><td><b>Four types: Standard, Combo (bundle of standard products), Digital (file), Service.</b> Auto/manual code, price, promotional price (only the end date is enforced — start date is ignored, a documented quirk), variants (unique code/extra cost/price per combination), IMEI/serial (blocks duplicate IMEI), batch and expiry (required at purchase), featured (priority on POS grid), tax method inclusive/exclusive, warranty period shown on invoice, alert quantity, eCommerce toggles, custom fields. There is no "is recipe" flag — recipes are set in Manufacturing.</td></tr>
+<tr><td>3.6 Barcodes</td><td>Built-in generator, A4/label-roll printing, name/price/promo text on labels, weight-embedded barcodes (7-digit code + 5-digit weight) for deli scales — the barcode never encodes price; price = weight × normal price.</td></tr>
+<tr><td>3.7–3.9</td><td>Quantity adjustment (add/subtract), stock count with downloadable expected-quantity file and reconciliation, damage list (reduction only).</td></tr>
+</tbody></table></div>
+
+<h2>4. Purchase</h2>
+<p>Purchase list with detail modal and filters; add purchase (warehouse, supplier, status Received/Pending/Ordered, live tax/discount/shipping, payment status, stock logic by status, attachments per settings); CSV import; purchase return by original reference with supplier refund. A purchase both raises stock and posts to accounting (expense or payable).</p>
+
+<h2>5. Sale</h2>
+<div class="tblw"><table>
+<thead><tr><th>Section</th><th>Features</th></tr></thead><tbody>
+<tr><td>5.1 Sale list</td><td>Invoice detail modal, filters (including <b>Sale Type</b>: POS, eCommerce, Social Commerce, Tailoring), add payment, add delivery, add return, delete (restores stock), WhatsApp links when Social Commerce active.</td></tr>
+<tr><td>5.2 Instalments</td><td>Plans created from sales; paid/remaining/next due; instalment report with overdue amount.</td></tr>
+<tr><td>5.3 POS</td><td>Customer, warehouse/biller, currency and exchange rate, retail/wholesale price toggle, product search by name/code/IMEI, barcode scan, category/brand/featured filters, variant modal, price and discount override (manager permission), flat/percent discount, coupon, order tax, shipping, drafts, recent transactions, calculator, sale-return shortcut, customer display, print last receipt, cash register, notifications with low-stock alerts, offline indicator, keyboard shortcuts (Shift+C/D/E/F/K/P/Q/R/S/X/T/W), on-screen keyboard, sound, custom POS CSS.<br><b>Payments:</b> cash, card, cheque, gift card, deposit, points; <b>multiple pay (split tender)</b>; credit sale with pay term and credit-limit check; instalment; gateways with polling/QR (M-Pesa, MTN MoMo, PayHere, Stripe); <b>Razorpay is UPI-only and needs customer name/email/phone</b>; tick-boxes "Print Invoice" and "Send WhatsApp Message". Out-of-stock sales blocked unless "Sale without stock" is enabled.</td></tr>
+<tr><td>5.3 Offline / auto sync</td><td>POS caches products in the browser while online; on connection loss it switches automatically, hides online-only options, saves completed sales in the same browser, shows a pending count, prints an offline receipt; on reconnect it sends pending sales one by one, failures stay pending. <b>Limits (from the docs' own warnings):</b> tied to one computer/browser; clearing browser storage before sync can lose sales; POS must be opened online first; the server record (stock, payments, accounting) is created only after sync.</td></tr>
+<tr><td>5.3 Restaurant mode</td><td>POS mode Regular / Restaurant / Ask-every-time; service type Dine-in/Take-away/Delivery; table picker (green free, red occupied); waiter select; order kept as a Draft until paid; reopen occupied table; add items while kitchen works; kitchen-routed items appear in KDS with configured statuses; modifiers; one stock deduction at finalize. Requires prior set-up of floors/tables, waiters, kitchens/KDS routing and modifiers — <b>the set-up screens for floors, kitchens and modifiers are not documented in this page</b>.</td></tr>
+<tr><td>5.3 Catalog QR</td><td>Per-table QR that opens a digital menu where customers browse and order.</td></tr>
+<tr><td>5.4–5.5 Add sale / import</td><td>Full sale form, global modifiers, sale status Completed/Pending/Draft, CSV import.</td></tr>
+<tr><td>5.6–5.8, 5.11 Delivery</td><td>Delivery records, packing slips/challans, statuses Packing/Delivering/Delivered, delivery person, courier list.</td></tr>
+<tr><td>5.9–5.10 Gift cards, coupons</td><td>Gift card (random or scanned physical card, amount, customer); coupons (percentage or fixed, generate code).</td></tr>
+<tr><td>5.12–5.13 Return, exchange</td><td>Returns restock and post refund; exchange computes returned value vs new items and settles the difference.</td></tr>
+</tbody></table></div>
+
+<h2>6–9. Quotation, transfer, expense, income</h2>
+<ul>
+<li><b>Quotation:</b> price offer with status, e-mail PDF, convert to sale; no stock or revenue until converted.</li>
+<li><b>Transfer:</b> warehouse-to-warehouse with status, shipping cost, CSV import; must have stock in source.</li>
+<li><b>Expense:</b> categories, list with filters, receipt attachment, warehouse-tagged; <b>Income:</b> categories, list; posts a credit to the account (no receipt upload).</li>
+</ul>
+
+<h2>10. Accounting</h2>
+<p>Double-entry. Accounts (with default account for checkout), add account, money transfer (journal), balance sheet, account statement with opening balance and running balance. Sales, purchases and payments post automatically; edits/deletes reverse the earlier effect rather than rewriting history; <b>periodic inventory</b> for COGS/profit (not per-sale COGS); Accounting Health/reconciliation tool for admins. Not documented: trial balance in this chapter (product page mentions it), Tally/GSTR export.</p>
+
+<h2>11. HRM</h2>
+<p>Department, designation, shift, employee (payroll is tied to the employee record, not the user), attendance, holiday, overtime, leave type, leaves, payroll (sale-agent commission flows in), HRM settings (default check-in/out).</p>
+
+<h2>12. Manufacturing (add-on)</h2>
+<p>Recipe (Standard or Combo products; ingredient rows with quantity, unit cost/price, wastage % as reference), Production (select recipe, quantity, cost → finished stock added, ingredients deducted), production details and calculation examples. Manual, not per-sale.</p>
+
+<h2>13–16. Repair, Project, eCommerce, Tailoring</h2>
+<div class="tblw"><table>
+<thead><tr><th>Module</th><th>Features</th></tr></thead><tbody>
+<tr><td>13 Repair (add-on)</td><td>Dashboard and filters, service jobs, device and vehicle records, customer management, parts and billing, payments, technician assignment, device/vehicle types, job status and priority management, print/receipt.</td></tr>
+<tr><td>14 Project management</td><td>Projects (customer, dates, priority, employees, status, discussions, bugs, files), project categories, tasks (hours, WhatsApp notify).</td></tr>
+<tr><td>15 eCommerce</td><td>Sliders, menus, collections, pages with page builder (home included), widgets, FAQ categories/FAQs, social links, blog, payment gateways (same global screen), storefront settings (Default/Fashion theme, RTL, warehouse/biller for online orders, tracking codes), product reviews, newsletter, delivery areas, theme.</td></tr>
+<tr><td>16 Tailoring</td><td>Dashboard, orders with multiple garment pieces, measurement profiles (versioned, PDF), Kanban production board with material reservation and consumption, notification templates (only WhatsApp link delivers; SMS/e-mail are logged only), public order-tracking page, reports (CSV) and profit estimate.</td></tr>
+</tbody></table></div>
+
+<h2>17–19. AI Assistant, WhatsApp, Social Commerce</h2>
+<ul>
+<li><b>AI Assistant (17):</b> a fixed library of ten questions answered from your own data (sales/purchase/expense summaries, daily snapshot, low stock, top and slow sellers, customer/supplier dues, cash and bank). Not a free-form chatbot; no external AI API or cost; respects warehouse restriction. (Consistent with the CodeCanyon "no external API" claim.)</li>
+<li><b>WhatsApp (18):</b> Cloud API credentials (permanent token, phone-number ID, business-account ID); templates are approved in Meta and only listed/deleted in SalePro; send from Customer List; falls back to wa.me link without credentials.</li>
+<li><b>Social Commerce (19):</b> dashboard by channel (WhatsApp/Facebook/Instagram/Telegram), publishable product catalog with share links and QR, Meta Commerce CSV feed with secret URL, settings including three staff-triggered WhatsApp text templates (order confirmation, payment request, delivery update).</li>
+</ul>
+
+<h2>20. Reports (34 documented)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Group</th><th>Reports</th></tr></thead><tbody>
+<tr><td>Audit</td><td>20.1 Activity Log (sales, purchases, quotations)</td></tr>
+<tr><td>Profit</td><td>20.2 Profit/Loss (revenue, COGS, gross, expenses, net — needs correct cost); 20.3–20.8 Profit by Product, Category, Brand, Customer, Location, Invoice</td></tr>
+<tr><td>Sales</td><td>20.9 Best Seller, 20.10 Product Report (slow on big data), 20.12 Daily Sale, 20.13 Monthly Sale, 20.16 Sale Report, 20.17 Challan Report, 20.18 Sale Report Chart, 20.30 Daily Sale Objective (needs a daily cron)</td></tr>
+<tr><td>Purchases</td><td>20.14 Daily Purchase, 20.15 Monthly Purchase, 20.20 Purchase Report</td></tr>
+<tr><td>Stock</td><td>20.11 Stock Report (weighted-average cost; in/low/out/negative filter), 20.26 Warehouse Report, 20.27 Warehouse Stock Chart, 20.28 Product Expiry, 20.29 Product Quantity Alert</td></tr>
+<tr><td>Money</td><td>20.19 Payment Report, 20.23 Customer Due, 20.25 Supplier Due, 20.33 Instalment Report, 20.34 Cash Register sessions (admin only)</td></tr>
+<tr><td>People</td><td>20.21 Customer, 20.22 Customer Group, 20.24 Supplier, 20.31 User, 20.32 Biller (only Sale/Quotation/Payment tabs populate)</td></tr>
+</tbody></table></div>
+<p>Export: CSV/PDF (and Excel/print on list pages). Not present in this list: dedicated <b>GST/GSTR report</b> (the product page mentions a consolidated India GST report — not in the docs chapter list; verify), <b>tax report by rate</b>, <b>staff/waiter performance</b>, <b>KOT/kitchen</b> reports, <b>table turnover</b>, <b>food-cost</b>.</p>
+
+<h2>21. Settings (27 sections)</h2>
+<div class="tblw"><table>
+<thead><tr><th>Area</th><th>What exists</th></tr></thead><tbody>
+<tr><td>Access</td><td>Role Permission matrix per module (products, purchases, sales, POS, reports…); user profile.</td></tr>
+<tr><td>Business</td><td>General settings (site, company, VAT number, logo, currency and position, timezone — do not change after selling —, date format, Indian GST invoice format, oversell toggle, POS CSS), languages, currency and exchange rate, taxes (unlimited, CSV import), warehouses, tables (with floors if Restaurant module), custom fields (product/sale/purchase/customer).</td></tr>
+<tr><td>Pricing</td><td>Discount plans, discounts (per product or all, day-of-week), customer groups (price %), reward points (amount per point, minimum, point value).</td></tr>
+<tr><td>POS</td><td>Default customer/biller/warehouse, POS mode, payment options list, touchscreen keyboard, table management, send SMS after sale, cash register lock, sound, print-invoice tick-box.</td></tr>
+<tr><td>Payments</td><td>PayPal, Stripe, Razorpay, Paystack, Mollie, Xendit, bKash, SSLCommerz, M-Pesa, Pesapal, MTN MoMo, PayHere, Moneipoint (keys entered here).</td></tr>
+<tr><td>Printing</td><td>ESC/POS printers (network IP:9100, Windows SMB, Linux device) or browser printing 58/80 mm; customer display on a second monitor; invoice templates (logo, footer, terms); barcode label settings.</td></tr>
+<tr><td>Messaging</td><td>SMTP mail; SMS via Twilio/Clickatell, bulk SMS, SMS templates; notification center (all/send) and per-event matrix (In-App, WhatsApp, SMS, Email; recipients admin/customer/supplier).</td></tr>
+<tr><td>Data</td><td>Backup Database: one-click .sql dump, download, restore (drops and replaces DB; files not included).</td></tr>
+</tbody></table></div>
+
+<h2>22. Addons and 23. Glossary</h2>
+<ul>
+<li><b>WooCommerce:</b> orders sync Woo→SalePro, products/categories SalePro→Woo, tax mapping; installed with an Envato purchase key.</li>
+<li><b>eCommerce:</b> separate storefront add-on with its own docs. <b>SaaS add-on:</b> must sit at the root domain; installing over live data may overwrite it — back up first; existing installs can be added as a tenant. <b>Repair</b> and <b>Manufacturing</b> are listed as add-ons.</li>
+<li>Glossary covers warehouse, biller, dues, payment account, variant, batch/expiry, IMEI, return vs exchange, credit sale, instalment, recipe/production, service job, tailoring piece, draft, journal.</li>
+</ul>
+
+<h2>What this changes for the decision</h2>
+<ul>
+<li>SalePro is broader than I first reported (WhatsApp Cloud API, Indian GST invoice, activity log, cash register, tailoring, social commerce, 34 reports). Retail and wholesale fit improves; the AI, HRM and accounting claims hold up.</li>
+<li>The restaurant verdict does <b>not</b> improve: KDS, kitchens, modifiers and floors are only referenced, with no set-up documentation, and there is still no automatic ingredient deduction, aggregator integration, split/merge bill or captain app in the docs.</li>
+<li>India gaps that remain: e-invoice/e-way bill, Indian SMS (DLT) providers, Odia language and printing, Tally/GSTR exports, UPI beyond Razorpay's UPI-only POS flow.</li>
+<li>New questions for the author (add to Part 01): Is Restaurant/KDS a separate paid module? Which of Manufacturing, Repair, Tailoring, Social Commerce, Project are in the $30 licence? Where is the GST consolidated report? Is the Activity Log per tenant in SaaS? Does the tenant DB backup ("Backup Database") run in SaaS per tenant?</li>
+</ul>

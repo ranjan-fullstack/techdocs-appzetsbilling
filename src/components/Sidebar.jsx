@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { GAP_COMBINED, GAP_PARTS } from '../data/gapAnalysis.js';
+import { SP_COMBINED, SP_PARTS } from '../data/salePro.js';
 
 const PAGES = [
   { to: '/db-architecture', ico: '🗄', label: 'DB Architecture' },
@@ -13,11 +14,14 @@ const PAGES = [
   { to: '/whatsapp-module', ico: '💬', label: 'WhatsApp Module' },
   { to: '/petpooja-comparison', ico: '🆚', label: 'Petpooja Comparison' },
   { to: '/gap-analysis', ico: '📊', label: 'Gap Analysis' },
+  { to: '/salepro-analysis', ico: '🧾', label: 'SalePro Due Diligence' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
   const [open, setOpen] = useState(false);
-  const onGap = useLocation().pathname.startsWith('/gap-analysis');
+  const pathname = useLocation().pathname;
+  const onGap = pathname.startsWith('/gap-analysis');
+  const onSp = pathname.startsWith('/salepro-analysis');
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -50,6 +54,19 @@ export default function Sidebar({ toc, activeSection, meta }) {
             </NavLink>
           ))}
           <a href={GAP_COMBINED} target="_blank" rel="noreferrer" onClick={close}>
+            <span className="ico">📄</span> Combined report ↗
+          </a>
+        </nav>
+      )}
+      {onSp && (
+        <nav className="site-nav gap-nav" aria-label="SalePro Due Diligence">
+          <div className="nav-label">SalePro parts</div>
+          {SP_PARTS.map((p) => (
+            <NavLink key={p.id} to={`/salepro-analysis/${p.id}`} onClick={close} className={({ isActive }) => (isActive ? 'active' : undefined)}>
+              <span className="ico num">{p.num}</span> {p.label}
+            </NavLink>
+          ))}
+          <a href={SP_COMBINED} target="_blank" rel="noreferrer" onClick={close}>
             <span className="ico">📄</span> Combined report ↗
           </a>
         </nav>
