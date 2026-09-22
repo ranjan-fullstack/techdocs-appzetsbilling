@@ -1,0 +1,16 @@
+<!--TITLE:CI/CD Strategy-->
+<p><strong>Today:</strong> no CI/CD pipeline was found. The production app directory is a live git working tree (<code>origin</code> = a real GitHub repo) that appears to be pulled/pushed to directly on the VPS — deploys happen by editing or syncing the production server itself, evidenced by a recent commit made in that working tree ("sync: VPS server working tree state"). There is no build/test gate before code reaches production, and no staging environment to catch issues first.</p>
+<h3>Recommended pipeline (proportionate to a 39-tenant SaaS — not enterprise-scale tooling)</h3>
+<pre><code>git push (feature branch)
+  -&gt; CI: backend tests (phpunit) + mobile tests (flutter test) + lint
+  -&gt; merge to main
+  -&gt; CI: deploy to staging (backend) automatically
+  -&gt; manual smoke test on staging
+  -&gt; tag release -&gt; CI: deploy to production (backend)
+  -&gt; mobile: CI builds signed APK/AAB (and iOS build) -&gt; internal testing track -&gt; store release</code></pre>
+<h3>Backend</h3>
+<ul><li>Move off "edit/pull directly on the VPS" to a proper deploy step: GitHub Actions (or similar) that SSHes in, pulls the tagged commit, runs <code>composer install --no-dev</code>, <code>php artisan migrate --force</code>, <code>php artisan config:cache</code>, and restarts PHP-FPM — all scripted and repeatable, never manual.</li><li>Gate merges to <code>main</code> on <code>phpunit</code> passing (once the test suite in §18 exists).</li><li>Stand up the staging environment from §16 as the pipeline's first deploy target.</li></ul>
+<h3>Mobile</h3>
+<ul><li>CI job running <code>flutter analyze</code> + <code>flutter test</code> on every PR.</li><li>CI build producing signed Android App Bundle (fixing the debug-keystore issue from §15 as part of this work) and, if iOS is targeted, a signed IPA — using <code>--dart-define</code> per §16 to select the environment per build.</li><li>Automatic distribution to an internal testing track (Play Console internal testing / TestFlight) on merge to <code>main</code>, manual promotion to production release.</li></ul>
+<h3>Sequencing note</h3>
+<p>CI/CD and the staging environment (§16) are prerequisites for safely shipping most of the rest of this roadmap (branch support, offline sync, refresh-token adoption) — recommend standing these up early (Roadmap Phase 0, §20) rather than bolting them on after feature work is already underway.</p>

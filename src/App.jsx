@@ -11,6 +11,7 @@ import PetpoojaComparison from './pages/PetpoojaComparison.jsx';
 import GapAnalysis from './pages/GapAnalysis.jsx';
 import SaleProAnalysis from './pages/SaleProAnalysis.jsx';
 import PrinterAnalysis from './pages/PrinterAnalysis.jsx';
+import ArchitectureAudit from './pages/ArchitectureAudit.jsx';
 
 export default function App() {
   return (
@@ -30,6 +31,8 @@ export default function App() {
       <Route path="/printer-analysis" element={<PrinterAnalysis />} />
       <Route path="/salepro-analysis" element={<SaleProAnalysis />} />
       <Route path="/salepro-analysis/:part" element={<SaleProAnalysis />} />
+      <Route path="/architecture-audit" element={<ArchitectureAudit />} />
+      <Route path="/architecture-audit/:part" element={<ArchitectureAudit />} />
     </Routes>
   );
 }

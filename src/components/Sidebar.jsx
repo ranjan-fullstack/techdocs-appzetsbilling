@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { GAP_COMBINED, GAP_PARTS } from '../data/gapAnalysis.js';
 import { SP_COMBINED, SP_PARTS } from '../data/salePro.js';
+import { AA_COMBINED, AA_PARTS } from '../data/architectureAudit.js';
 
 const PAGES = [
   { to: '/db-architecture', ico: '🗄', label: 'DB Architecture' },
@@ -16,6 +17,7 @@ const PAGES = [
   { to: '/gap-analysis', ico: '📊', label: 'Gap Analysis' },
   { to: '/salepro-analysis', ico: '🧾', label: 'SalePro Due Diligence' },
   { to: '/printer-analysis', ico: '🖨', label: 'Printer Analysis' },
+  { to: '/architecture-audit', ico: '🏗', label: 'Architecture Audit' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
@@ -23,6 +25,7 @@ export default function Sidebar({ toc, activeSection, meta }) {
   const pathname = useLocation().pathname;
   const onGap = pathname.startsWith('/gap-analysis');
   const onSp = pathname.startsWith('/salepro-analysis');
+  const onAa = pathname.startsWith('/architecture-audit');
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -68,6 +71,19 @@ export default function Sidebar({ toc, activeSection, meta }) {
             </NavLink>
           ))}
           <a href={SP_COMBINED} target="_blank" rel="noreferrer" onClick={close}>
+            <span className="ico">📄</span> Combined report ↗
+          </a>
+        </nav>
+      )}
+      {onAa && (
+        <nav className="site-nav gap-nav" aria-label="Architecture Audit">
+          <div className="nav-label">Architecture Audit parts</div>
+          {AA_PARTS.map((p) => (
+            <NavLink key={p.id} to={`/architecture-audit/${p.id}`} onClick={close} className={({ isActive }) => (isActive ? 'active' : undefined)}>
+              <span className="ico num">{p.num}</span> {p.label}
+            </NavLink>
+          ))}
+          <a href={AA_COMBINED} target="_blank" rel="noreferrer" onClick={close}>
             <span className="ico">📄</span> Combined report ↗
           </a>
         </nav>

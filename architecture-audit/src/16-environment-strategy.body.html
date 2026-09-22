@@ -1,0 +1,13 @@
+<!--TITLE:Environment Strategy-->
+<p><strong>Today:</strong> mobile has exactly one environment — a compile-time constant pointing at production (<code>https://app.appzetsbilling.com</code>). There is no dev/staging split anywhere in the mobile build, and the backend audit found no separate staging deployment on the VPS either (one nginx vhost, one <code>.env</code>, one database).</p>
+<pre><code>Development (localhost / LAN backend)
+        |
+Staging (staging.appzetsbilling.com — to be created)
+        |
+Production (app.appzetsbilling.com)</code></pre>
+<h3>Recommended mobile change</h3>
+<p>Replace the hardcoded <code>AppConfig.baseUrl</code> with a build-time value injected via <code>--dart-define=API_BASE_URL=...</code> (read with <code>String.fromEnvironment</code>), with three VS Code/CI run configurations (dev/staging/prod). This is a small, self-contained change (one file, <code>lib/app/core/static/app_config/_app_config.dart</code>) and immediately removes the risk of engineers accidentally testing against live tenant data.</p>
+<h3>Recommended backend change</h3>
+<p>Stand up one staging environment: a second CloudPanel site (or subdomain vhost) pointed at a separate <code>.env</code> and a separate database (can be a periodic sanitized copy of production, or seeded fixture data — never a live copy with real customer data). Deploys to staging should be the first stop in the CI/CD pipeline (§19) before anything reaches production.</p>
+<h3>Rule going forward</h3>
+<p>No production URL, API key, or credential should ever be hardcoded directly into mobile source under version control — use <code>--dart-define</code> (or a build-time secrets mechanism, e.g. injected at CI build time) for all three environments, matching how the backend already keeps secrets in <code>.env</code> outside the repo.</p>

@@ -1,0 +1,20 @@
+<!--TITLE:Database Architecture-->
+<p><strong>Percona Server 8.4.10-10 (MySQL-compatible)</strong>, database <code>appzetsbilling</code>, <strong>97 tables</strong>, single shared schema (no schema-per-tenant). Representative row counts confirm an early-stage/low-volume production instance: 39 tenant <code>businesses</code>, 55 <code>users</code>, 327 <code>products</code>, 77 <code>sales</code>, 872 <code>notifications</code>.</p>
+<h3>Tenant chain</h3>
+<pre><code>business_categories -&gt; businesses -&gt; branches -&gt; users / staff
+                                              -&gt; roles / permissions (Spatie, polymorphic)</code></pre>
+<p><code>businesses</code> is the tenant root (has <code>plan_subscribe_id</code>). <code>branches</code> cascade-deletes from <code>businesses</code>. <code>users</code> (login accounts) carry <code>business_id</code>, <code>branch_id</code>, and <code>active_branch_id</code>. <code>staff</code> is a <strong>separate, lighter HR record</strong> (business_id only) used by HrmAddon — distinct from <code>users</code>. Roles/permissions use spatie/laravel-permission's standard polymorphic pivot tables (<code>model_has_roles</code>, <code>role_has_permissions</code>, <code>model_has_permissions</code>), matched by <code>model_type</code>/<code>model_id</code>, not a direct FK to <code>users</code>.</p>
+<h3>Product -&gt; order chain</h3>
+<pre><code>categories -&gt; products -&gt; sale_details &lt;- sales &lt;- parties / tables / taxes / coupons / payment_types</code></pre>
+<p>All cascade from <code>businesses</code>. There is <strong>no separate </strong><strong><code>invoices</code></strong><strong> table</strong> — an "invoice" is a view over <code>sales</code> (<code>sales.invoiceNumber</code> is the identifier); the mobile app's and web admin's "Invoices" screens both read/write the same <code>sales</code> rows.</p>
+<h3>Purchasing chain (mirrors sales)</h3>
+<pre><code>parties (type=supplier) -&gt; purchases -&gt; purchase_details -&gt; ingredients / units</code></pre>
+<h3>Finance</h3>
+<p><code>payment_types</code> (tenant-configurable label list, not a gateway integration) is referenced by both <code>sales</code> and <code>purchases</code>. <code>transactions</code> is the <strong>unified ledger</strong> across both (<code>sale_id</code> / <code>purchase_id</code> nullable FKs + a <code>type</code> column) — this is the single source of truth for money movement per tenant.</p>
+<h3>SaaS subscription/billing (distinct from tenant POS billing)</h3>
+<pre><code>plans -&gt; plan_subscribes -&gt; gateways
+            ^
+         businesses</code></pre>
+<p><code>plan_subscribes</code> <strong>snapshots</strong> the plan's limits and <code>available_modules</code> at subscribe-time, so a later plan change doesn't retroactively alter an already-subscribed tenant's entitlements — important to know before building any mobile "upgrade plan" flow.</p>
+<h3>Key relationship takeaway for mobile integration</h3>
+<p>Every core business object (<code>products</code>, <code>sales</code>, <code>purchases</code>, <code>parties</code>, <code>staff</code>, etc.) is already <code>business_id</code>-scoped (and mostly <code>branch_id</code>-scoped) in the schema. A mobile client that authenticates via the same Sanctum flow and hits the same <code>/api/v1/*</code> routes inherits this isolation automatically — there is <strong>no separate mobile data model to reconcile</strong>; mobile and web are structurally reading/writing the same rows today, mediated by the same controllers.</p>

@@ -1,0 +1,27 @@
+<!--TITLE:Recommended Target Architecture-->
+<p>The target is close to what already exists — this is a completion and hardening plan, not a rebuild.</p>
+<pre class="mermaid">flowchart TB
+    WebUI[Web Business Panel&lt;br/&gt;Blade + Alpine/Tailwind]
+    MobileUI[Mobile App&lt;br/&gt;Flutter, staff-facing]
+    API[AppZetBilling API&lt;br/&gt;Laravel 10, Sanctum auth, /api/v1]
+    Backend[Business logic &amp; modules&lt;br/&gt;Core + InventoryAddon + HrmAddon + MultiBranchAddon + CashRegisterAddon]
+    DB[(MySQL / Percona&lt;br/&gt;one shared schema, business_id-scoped)]
+    Cache[(Redis cache)]
+    Storage[(File storage&lt;br/&gt;local now, S3-ready)]
+    Queue[Queue worker&lt;br/&gt;needs enabling]
+    Push[FCM push]
+
+    WebUI --&gt; API
+    MobileUI --&gt; API
+    API --&gt; Backend
+    Backend --&gt; DB
+    Backend --&gt; Cache
+    Backend --&gt; Storage
+    Backend --&gt; Queue
+    Backend --&gt; Push
+    Push --&gt; MobileUI</pre>
+<h3>What's already right and should not change</h3>
+<ul><li><strong>One backend, one database, one API.</strong> Mobile should keep authenticating and reading/writing through <code>https://app.appzetsbilling.com/api/v1/*</code> exactly as it does today — do not stand up a second backend or a mobile-only database.</li><li><strong>Sanctum + spatie/laravel-permission</strong> as the single auth/authorization mechanism for both clients.</li><li><strong>The module system</strong> (<code>nwidart/laravel-modules</code>) is a reasonable way to keep Inventory/HRM/MultiBranch/CashRegister decoupled; mobile should adopt the same module-awareness (via <code>/module-check</code>) rather than hardcoding which features are visible.</li></ul>
+<h3>What needs to change</h3>
+<ol><li><strong>Confirm and, if needed, converge web's data path.</strong> If the Blade panel bypasses <code>/api/v1</code> with separate controllers, that logic should be consolidated so the API controllers are the single source of truth for business rules (tax, discounts, stock deduction), with Blade views calling the same API internally or via shared service classes — not reimplementing the rules.</li><li><strong>Move tenant isolation from "remembered per-controller" to enforced-by-default</strong> — an Eloquent global scope (or a base repository/trait) keyed off the authenticated user's <code>business_id</code>/<code>branch_id</code>, so a forgotten <code>where()</code> can't leak another tenant's data. This matters more, not less, as mobile drives more traffic through the same endpoints.</li><li><strong>Turn on what's already configured</strong>: a queue worker (Supervisor + <code>artisan queue:work</code>), the Laravel scheduler (<code>* * * * * php artisan schedule:run</code> in cron), and a real decision on Pusher/Soketi if realtime is wanted (§13).</li><li><strong>Give mobile an environment-aware build</strong> (dev/staging/prod via <code>--dart-define</code>, see §16) instead of one hardcoded production URL.</li><li><strong>Deliberately scope Multi-branch and Cash Register for mobile</strong> — build against the existing <code>branches</code>/<code>switch-branch</code>/register endpoints rather than treating the gap as acceptable by default.</li></ol>
+<p>This keeps the backend as the sole source of truth for business rules (tax, stock, pricing, permissions) as required, with both web and mobile as thin, replaceable clients of the same API.</p>
