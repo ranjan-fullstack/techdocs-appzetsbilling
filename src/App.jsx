@@ -14,6 +14,7 @@ import PrinterAnalysis from './pages/PrinterAnalysis.jsx';
 import ArchitectureAudit from './pages/ArchitectureAudit.jsx';
 import FeatureBook from './pages/FeatureBook.jsx';
 import MobileBook from './pages/MobileBook.jsx';
+import GramBazar from './pages/GramBazar.jsx';
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
       <Route path="/architecture-audit/:part" element={<ArchitectureAudit />} />
       <Route path="/feature-book" element={<FeatureBook />} />
       <Route path="/mobile-book" element={<MobileBook />} />
+      <Route path="/grambazar" element={<GramBazar />} />
     </Routes>
   );
 }

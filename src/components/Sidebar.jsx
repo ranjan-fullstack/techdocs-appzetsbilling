@@ -20,6 +20,7 @@ const PAGES = [
   { to: '/architecture-audit', ico: '🏗', label: 'Architecture Audit' },
   { to: '/feature-book', ico: '📖', label: 'Feature Book' },
   { to: '/mobile-book', ico: '📱', label: 'Mobile Book' },
+  { to: '/grambazar', ico: '🌾', label: 'GramBazar Prototype' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
