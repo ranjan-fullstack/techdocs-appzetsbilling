@@ -19,6 +19,7 @@ const PAGES = [
   { to: '/printer-analysis', ico: '🖨', label: 'Printer Analysis' },
   { to: '/architecture-audit', ico: '🏗', label: 'Architecture Audit' },
   { to: '/feature-book', ico: '📖', label: 'Feature Book' },
+  { to: '/mobile-book', ico: '📱', label: 'Mobile Book' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {

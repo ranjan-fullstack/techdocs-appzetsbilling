@@ -13,6 +13,7 @@ import SaleProAnalysis from './pages/SaleProAnalysis.jsx';
 import PrinterAnalysis from './pages/PrinterAnalysis.jsx';
 import ArchitectureAudit from './pages/ArchitectureAudit.jsx';
 import FeatureBook from './pages/FeatureBook.jsx';
+import MobileBook from './pages/MobileBook.jsx';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
       <Route path="/architecture-audit" element={<ArchitectureAudit />} />
       <Route path="/architecture-audit/:part" element={<ArchitectureAudit />} />
       <Route path="/feature-book" element={<FeatureBook />} />
+      <Route path="/mobile-book" element={<MobileBook />} />
     </Routes>
   );
 }
