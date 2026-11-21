@@ -18,6 +18,7 @@ const PAGES = [
   { to: '/salepro-analysis', ico: '🧾', label: 'SalePro Due Diligence' },
   { to: '/printer-analysis', ico: '🖨', label: 'Printer Analysis' },
   { to: '/architecture-audit', ico: '🏗', label: 'Architecture Audit' },
+  { to: '/feature-book', ico: '📖', label: 'Feature Book' },
 ];
 
 export default function Sidebar({ toc, activeSection, meta }) {
